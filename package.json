@@ -9,6 +9,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@sveltejs/adapter-netlify": "^1.0.0-next.0",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/kit": "next",
 		"@tailwindcss/jit": "^0.1.1",
