@@ -40,7 +40,7 @@
               <div>
                 {#each movie_details.genres as genre, i}
                   <a class='hover:text-textDark' href='/genre/{genre.id}' >{genre.name}</a>
-                  {#if (i!==movie_details.genres.length-1)}<span class='mr-2'>, </span>{/if}
+                  {#if (i!==movie_details.genres.length-1)}<span class='mx-2'>|</span>{/if}
                 {/each}
               </div>
               {#if movie_details.runtime}

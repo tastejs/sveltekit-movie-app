@@ -1,54 +1,56 @@
 <script>
 	import MovieList from './MovieList.svelte'
-	import Pagination from './Pagination.svelte'
+	import PersonList from './PersonList.svelte'
+	// import Pagination from './Pagination.svelte'
 	// import MorePages from './MorePages.svelte'
 	import InfiniteScroll from '$lib/InfiniteScroll.svelte'
-	import Genres from  './Genres.svelte'
+	// import Genres from  './Genres.svelte'
 	import { onMount } from 'svelte'
-	import { current_page } from './store'
+	import { current_page, media_type } from './store'
 	export let api_url
 	$current_page = 1
-	let movies =[]
+	let data =[]
 	
-	let total_pages = 0
-
 	onMount(async () => {
-			getMovies(api_url + $current_page)
+		getData(api_url + $current_page)
 	})
-
-	async function getMovies (API) {
+	let total_pages = 0
+	async function getData (API) {
 		const res = await fetch(API)
-		
 		const res_json = await res.json()
-		movies = await res_json.results
+		data = await res_json.results
 		total_pages = res_json.total_pages
 	}
 
- async function moreMovies (API) {
+ async function moreData (API) {
 		const res = await fetch(API)
 		const res_json = await res.json()
 		const res_results = await res_json.results
-		movies = [...movies,...res_results ]
+		data = [...data,...res_results ]
 		
  }
  function loadMorePages () {
 	 $current_page ++
-	 moreMovies(api_url + $current_page)
+	 moreData(api_url + $current_page)
  }
 
 </script>
 
-<Genres />
+<!-- <Genres />
 
 {#if total_pages&&$current_page}
 	<Pagination
 		{total_pages}
 		on:change ="{(ev) => getMovies(api_url + ev.detail)}">
 	</Pagination>
-{/if}
+{/if} -->
 
 <section id='main' class='h-full'>
-	<MovieList {movies}/>
+	{#if $media_type === 'person'}
+		<PersonList {data}/>
+	{:else}
+		<MovieList {data}/>
+	{/if}
 	{#if $current_page < total_pages}
 		<InfiniteScroll 	
 			on:loadMore={() => loadMorePages()} />

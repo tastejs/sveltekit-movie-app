@@ -43,7 +43,7 @@
 		<div class='percent'>
 			<canvas class='w-24 h-24' bind:this={canvas} width="98" height="98"></canvas>
 			<div class='absolute top-0 left-0 w-full h-full flex justify-center items-center'>
-				<h2 class='text-textLight font-semibold text-3xl'>{progress_percent}<span class='text-xl align-top'>%</span></h2>
+				<h2 class='text-textLight text-3xl'>{progress_percent}<span class='text-xl align-top'>%</span></h2>
 			</div>
 		</div>
 	</div>

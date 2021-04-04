@@ -1,49 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
-  --primary-colour: #0b327d;
-  --secondary-colour: #021973;
-  --background-colour: #8e8e8e;
-  --light-text: #ececec;
-  --dark-text: #070206;
-  --border-colour: #5771d5;
-  --selected: #158a69;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  overflow-y: scroll;
-}
-
-body {
-  background-color: var(--background-colour);
-  color: var(--light-text);
-  font-family: 'Source Sans Pro', sans-serif;
-  margin: 0 auto;
-}
-
-a {
-  color: var(--light-text);
-}
-
-.root {
-  display: flex;
-  flex-direction: column;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 @layer base {
+	@font-face {
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-style: normal;
+    font-display: auto;
+    unicode-range: U+000-5FF;
+    src: local('Raleway');
+    font-display: swap;
+  }
+
   h1 {
     @apply text-4xl;
   }
@@ -65,4 +34,27 @@ code {
   h1,h2,h3,h4,h5,h6 {
     @apply font-semibold;
   }
+  body {
+    @apply text-textLight;
+    @apply bg-bgcolour;
+    @apply mx-auto;
+  }
 }
+
+
+
+
+html {
+  overflow-y: scroll;
+}
+
+
+a {
+  color: #ececec;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+

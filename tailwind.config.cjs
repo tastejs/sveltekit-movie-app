@@ -18,17 +18,18 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Source Sans Pro']
+        body: ['Raleway']
       },
       colors: {
-        'primary':      "var(--primary-colour)",
-        'secondary':     "var(--secondary-colour)",
-        'bgcolour':     "var(--background-colour)",
-        'textLight':    "var(--light-text)",
-        'textDark':     "var(--dark-text)",
-        'border':       "var(--border-colour)",
-        'selected':     "var(--selected)"
+        'primary':    '#0b327d',
+        'secondary':  '#021973',
+        'bgcolour':   '#8e8e8e',
+        'textLight':  '#ececec',
+        'textDark':   '#070206',
+        'border':     '#5771d5',
+        'selected':   '#158a69'
       },
+
       spacing: {
         '42': '10.5rem',
         '66': '16.5rem',

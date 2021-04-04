@@ -23,6 +23,7 @@
 <section id=tv-movie-toggle class="flex justify-right items-center w-20 md:w-28 h-7 text-textLight border-2 border-border rounded-full">
   <div class="relative">
       <button
+        aria-label='Movies'
         class:active={$media_type==='movie'}
         class='inline-flex items-center justify-center whitespace-nowrap content-center text-textLight h-7 w-10 md:w-14 rounded-full border-background
         hover-selected'
@@ -32,6 +33,7 @@
   </div>
   <div class="relative">
       <button
+      aria-label='Tv Series'
       class='inline-flex items-center justify-center whitespace-nowrap content-center text-textLight h-7 w-10 md:w-14 rounded-full  border-background
       hover-selected'
         class:active={$media_type==='tv'}
@@ -42,48 +44,6 @@
 </section>
 
 <style>
-  /* .selector {
-    display: flex;
-    justify-content: right;
-    align-items:center;
-    width: 120px;
-    height: 30px;
-    color: var(--light-text);
-    border-left: 2px solid var(--light-text);
-    border-top: 2px solid var(--light-text);
-    border-bottom: 2px solid var(--border-colour);
-    border-right: 2px solid var(--border-colour);
-    border-radius: 15px;
-  }
-
-  .anchor {
-    box-sizing: border-box;
-    left: 0px;
-    position: relative;
-    top: 0px;
-    z-index: 1
-  } */
-
-  /* button {
-    display: inline-flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    font-size: 1em;
-    white-space: nowrap;
-    text-decoration: none;
-    transition-delay: 0s;
-    transition-duration: 0.5s;
-    transition-property: -webkit-text-fill-color;
-    transition-timing-function: ease;
-    color: var(--light-text);
-    height:28px;
-    width: 59px;
-    border-radius: 15px;
-    border:none;
-    background-color: var(--background-color);
-    border: 1px solid var(--background-color);
-  } */
 
   button:hover:not(.active) {
     color:var(--selected);
