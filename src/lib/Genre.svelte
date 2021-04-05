@@ -2,7 +2,7 @@
 	import { genres_list, media_type, selected } from '$lib/store';
 </script>
 
-<div class='w-full'>
+<div class='w-full xl:w-100'>
 	<p class="py-0.5 justify-center bg-black" />
 	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
 	<p class="py-0.5 justify-center bg-black" />
