@@ -92,7 +92,7 @@
       </button>
       <ul 
         
-        class="rounded absolute hidden bg-gray-200 text-gray-700 pt-1 group-hover:block">
+        class="rounded xl:absolute fixed left-0 hidden bg-gray-200 text-gray-700 pt-1 group-hover:block">
         <Genre />
       </ul>
     </div>

@@ -2,11 +2,11 @@
 	import { genres_list, media_type, selected } from '$lib/store';
 </script>
 
-<div class='absolute left-0 top-3'>
+<div class='w-full'>
 	<p class="py-0.5 justify-center bg-black" />
 	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
 	<p class="py-0.5 justify-center bg-black" />
-	<div class="flex flex-wrap w-full justify-center">
+	<div class="flex flex-wrap justify-center">
 		{#each $genres_list['movie'] as genre, i}
 			<li class="flex">
 				<a
@@ -27,7 +27,7 @@
 	<p class="py-0.5 justify-center bg-black" />
 	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-tv" aria-hidden="true"></i></span>Tv</h4>
 	<p class="py-0.5 justify-center bg-black" />
-	<div class="flex flex-wrap w-100 justify-center">
+	<div class="flex flex-wrap justify-center">
 		{#each $genres_list['tv'] as genre, j}
 			<li class="flex">
 				<a
