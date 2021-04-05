@@ -31,7 +31,7 @@
 </script>  
   
   
-  <div class="pl-4 xl:pl-8 ">
+  <div class="pl-6 xl:pl-8 ">
     <div class="group inline-block relative z-50">
       <button
         on:click|preventDefault = {toggleMovie}
@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <div class="pl-4 xl:pl-8 ">
+  <div class="pl-6 xl:pl-8 ">
     <div class="group inline-block relative z-50">
       <button 
         on:click|preventDefault = {toggleTv}
@@ -58,16 +58,16 @@
         <span><i class="fa fa-television" aria-hidden="true"></i></span>
         <span class="hidden xl:block mx-2">Tv</span>
       </button>
-      <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
+      <!-- <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
         <li class=""><a class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block text-black whitespace-nowrap" href="/">Popular</a></li>
         <li class=""><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block text-black whitespace-nowrap" href="/">Airing Today</a></li>
         <li class=""><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block text-black whitespace-nowrap" href="/">On Air</a></li>
         <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block text-black whitespace-nowrap" href="/">Top Rated</a></li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 
-  <div class="pl-4 xl:pl-8 ">
+  <div class="pl-6 xl:pl-8 ">
     <div class="group inline-block relative z-50">
       <button
         on:click|preventDefault = {togglePerson}
@@ -76,14 +76,14 @@
         <span><i class="fa fa-user" aria-hidden="true"></i></span>
         <span class="hidden xl:block mx-2">People</span>
       </button>
-      <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
+      <!-- <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
         <li class=""><a class="rounded bg-gray-200 hover:bg-gray-400 py-2 px-4 block text-black whitespace-nowrap" href="/person_popular">Popular People</a></li>
-      </ul>
+      </ul> -->
     </div>
   </div>
   {#key $selected}
 
-  <div class="pl-4 xl:pl-8 ">
+  <div class="pl-6 xl:pl-8 ">
     <div class="group inline-block relative z-50">
       <button 
         class="text-white font-semibold py-2 rounded inline-flex items-center">
