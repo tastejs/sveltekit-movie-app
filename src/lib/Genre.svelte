@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import { genres_list, media_type, selected } from '$lib/store';
 </script>
 

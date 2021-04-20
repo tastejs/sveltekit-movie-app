@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import MovieList from './MovieList.svelte'
 	import PersonList from './PersonList.svelte'
 	// import Pagination from './Pagination.svelte'
@@ -22,17 +22,17 @@
 		total_pages = res_json.total_pages
 	}
 
- async function moreData (API) {
-		const res = await fetch(API)
-		const res_json = await res.json()
-		const res_results = await res_json.results
-		data = [...data,...res_results ]
-		
- }
- function loadMorePages () {
-	 $current_page ++
-	 moreData(api_url + $current_page)
- }
+	async function moreData (API) {
+			const res = await fetch(API)
+			const res_json = await res.json()
+			const res_results = await res_json.results
+			data = [...data,...res_results ]
+			
+	}
+	function loadMorePages () {
+		$current_page ++
+		moreData(api_url + $current_page)
+	}
 
 </script>
 
@@ -51,6 +51,7 @@
 	{:else}
 		<MovieList {data}/>
 	{/if}
+
 	{#if $current_page < total_pages}
 		<InfiniteScroll 	
 			on:loadMore={() => loadMorePages()} />

@@ -1,11 +1,12 @@
-<script>
+<script lang='ts'>
   import PersonList from '$lib/PersonList.svelte'
   import { onMount } from 'svelte'
   import Spinner from './Spinner.svelte'
   const IMAGE_API = 'https://image.tmdb.org/t/p/w500'
-  import { ApiKey } from '$lib/store'
+  import { ApiKey, current_page } from '$lib/store'
   import InfiniteScroll from '$lib/InfiniteScroll.svelte'
-  import { current_page } from './store'
+
+
 	$current_page = 1
 
   const PERSONS_API = `https://api.themoviedb.org/3/person/popular?api_key=${$ApiKey}&language=en-US&page=`

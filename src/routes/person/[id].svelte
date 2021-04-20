@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import { onMount } from  'svelte'
   import Person from '$lib/Person.svelte'
   import Spinner from '$lib/Spinner.svelte'
@@ -7,7 +7,7 @@
 
   const PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`
  
-  let person = []
+  let person:PersonType[] = []
 
   onMount(async () => {
     person = await fetch(PERSONS_API)
@@ -16,7 +16,7 @@
 
 </script>
 
-{#if person.id}
+{#if person.length !==0}
   <Person {person}/>
 {:else}
   <Spinner />

@@ -12,7 +12,7 @@
   const MOVIE_DETAIL_API = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${$ApiKey}&language=en-US`
   const VIDEO_API = `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${$ApiKey}&language=en-US`
 
-  let movie_details = []
+  let movie_details:MovieType[] = []
   let trailer_id:string
 
   onMount(async()=>{

@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   export let total_pages
   import { current_page } from '$lib/store'
 

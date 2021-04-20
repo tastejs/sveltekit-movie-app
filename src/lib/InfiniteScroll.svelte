@@ -1,11 +1,11 @@
-<script>
+<script lang='ts'>
   import { onMount, onDestroy, createEventDispatcher } from "svelte"
 
   const dispatch = createEventDispatcher()
 
   let isLoadMore = false
   let component
-  let element
+  let element: Document
 
   onMount(() => {
     element = document

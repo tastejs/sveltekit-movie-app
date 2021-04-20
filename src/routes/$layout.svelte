@@ -1,27 +1,10 @@
 <script context="module" lang="ts">
 	
-	const ApiKey: string|boolean = import.meta.env.VITE_API_KEY
+	const ApiKey = import.meta.env.VITE_API_KEY as string
 	const GENRES_MOVIE_API:string = `https://api.themoviedb.org/3/genre/movie/list?api_key=${ApiKey}&language-en-GB`
 	const GENRES_TV_API:string =  `https://api.themoviedb.org/3/genre/tv/list?api_key=${ApiKey}&language-en-GB`
 
-	type Media = {
-		genres:[Genre]
-	}
-
-	type MediaPlatform = "movie" | "tv";
-
-	type Genre = {
-		id: number;
-		name: string;
-	}
-
-	type Genres = {
-		[Key in MediaPlatform]: Genre[];
-	}
-	const genre:Genres = {
-		movie: [],
-		tv: []
-	}
+	const genre = {} as Genres
 
 	export async function load({fetch}) {
 		const res_mov:Response = await fetch(GENRES_MOVIE_API)
@@ -38,10 +21,7 @@
 <script lang="ts">
 	
 	import "../global.css";
-	export let genre:Genres = {
-  	movie: [],
-  	tv: []
-	}
+	export let genre = {} as Genres
 
 	import Header from '$lib/Header.svelte'
 	import { genres_list } from '$lib/store'

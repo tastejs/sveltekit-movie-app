@@ -1,20 +1,12 @@
 <script lang="ts">
-	type Person = {
-		id: number;
-		profile_path: string;
-		character: string;
-		name: string;
-	};
-	type Data = {
-		cast: [Person];
-	};
+
 	import { onMount } from 'svelte';
 	import { media_type, ApiKey } from '$lib/store';
 
 	export let movie_id: number;
 	const PERSONS_API: string = `https://api.themoviedb.org/3/${$media_type}/${movie_id}/credits?api_key=${$ApiKey}&language=en-US`;
 	const IMAGE_API: string = 'https://image.tmdb.org/t/p/w200/';
-	let persons: Person[] = [];
+	let persons: PersonType[] = [];
 
 	onMount(async () => {
 		const res = await fetch(PERSONS_API);

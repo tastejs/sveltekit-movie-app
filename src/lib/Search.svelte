@@ -1,7 +1,7 @@
-<script>
+<script lang='ts'>
   import {goto} from '$app/navigation';
   
-  let searchTerm
+  let searchTerm:string
   const handleOnSubmit = () => {
     if (searchTerm) {
       let searching = searchTerm

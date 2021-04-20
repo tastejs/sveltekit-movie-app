@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import Spinner from './Spinner.svelte'
   const IMAGE_API = 'https://image.tmdb.org/t/p/w500'
     export let id

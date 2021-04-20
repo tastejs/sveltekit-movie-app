@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import PersonCard from '$lib/PersonCard.svelte'
 	import Spinner from '$lib/Spinner.svelte'
 	export let data = []

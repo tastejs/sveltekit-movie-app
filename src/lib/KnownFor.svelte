@@ -1,9 +1,10 @@
-<script>
+<script lang='ts'>
 	import { onMount } from 'svelte';
 	import { ApiKey } from './store';
 	let films = [];
 	let tv = [];
 	export let personId;
+	console.log('known for personId', personId)
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
 	const KNOWN_API = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${$ApiKey}&language=en-US`;
@@ -43,11 +44,17 @@
 								alt={movie.title}
 							/>
 							<div class="w-28 h-12 p-0.5">
-								<h6
-									class="text-sm text-center flex justify-center items-center text-textLight line-clamp-2"
+								<p
+									class="text-xs text-center flex justify-center items-center text-textLight line-clamp-1"
 								>
-									{movie.title}
-								</h6>
+									{movie.title }
+								</p>
+								<p
+								class="text-sm text-center flex justify-center items-center text-textLight"
+							>
+							{movie.first_air_date ? (movie.first_air_date.substring(0,4)) : 
+								movie.release_date? (movie.release_date.substring(0,4)) : ''}
+							</p>
 							</div>
 						</a>
 					</div>

@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"moduleResolution": "node",
-		"target": "es2018",
+		"target": "esnext",
+		"module": "esnext",
 		/**
 			svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
 			to enforce using \`import type\` instead of \`import\` for Types.

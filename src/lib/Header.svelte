@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	// import ToggleTvMovie from './ToggleTvMovie.svelte'
 	import Search from './Search.svelte';
 	import Selector from '$lib/Selector.svelte';

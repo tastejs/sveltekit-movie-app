@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import ProgressBar from '$lib/ProgressBar.svelte'
   import Spinner from '$lib/Spinner.svelte'
   import Modal from "$lib/Modal.svelte"
@@ -25,12 +25,12 @@
         </div>
         <div class='xl:col-start-2 xl:col-end-5 flex flex-wrap content-start xl:pl-10'>
           <div class='mt-6 xl:mt-0 w-full mb-6 flex flex-wrap'>
-            <h3 class='w-full xl:text-4xl'>{movie_details.name? movie_details.name: movie_details.title}
-              <span class="xl:text-4xl text-gray-300">
+            <h4 class='w-full xl:text-4xl'>{movie_details.name? movie_details.name: movie_details.title}
+              <span class="text-lg xl:text-4xl text-gray-300">
                 {movie_details.first_air_date ? (movie_details.first_air_date.substring(0,4)) : 
                 movie_details.release_date? (movie_details.release_date.substring(0,4)) : ''}
               </span>
-            </h3>
+            </h4>
             <div class='xl:flex'>
               <div class='pl-0'>
                 {movie_details.first_air_date ? movie_details.first_air_date: 
@@ -38,8 +38,8 @@
                   <span class='hidden xl:px-2 xl:inline'>&#x2022;</span>
               </div>
               <div>
-                {#each movie_details.genres as genre, i}
-                  <a class='hover:text-textDark' href='/genre/{genre.id}' >{genre.name}</a>
+                {#each movie_details.genres as {id, name}, i}
+                  <a class='hover:text-textDark' href='/genre/{id}' >{name}</a>
                   {#if (i!==movie_details.genres.length-1)}<span class='mx-2'>|</span>{/if}
                 {/each}
               </div>

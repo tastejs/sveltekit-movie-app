@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   export let trailer_id
   let shown = false;
   export function show() {
@@ -18,7 +18,6 @@
             title='Trailer'
             src="https://www.youtube.com/embed/{trailer_id}?rel=0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            controls='true'
             allowfullscreen >
             <track default kind="captions" />
           </iframe>
