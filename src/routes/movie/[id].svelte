@@ -5,12 +5,13 @@
   import { onMount } from 'svelte'
   import Media from '$lib/Media.svelte'
 	import { page } from '$app/stores'
+  import Spinner from '$lib/Spinner.svelte'
 
   $media_type= 'movie'
   let movie_id = $page.params.id
 
-  const MOVIE_DETAIL_API = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${$ApiKey}&language=en-US`
-  const VIDEO_API = `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${$ApiKey}&language=en-US`
+  let MOVIE_DETAIL_API = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${$ApiKey}&language=en-US`
+  let VIDEO_API = `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${$ApiKey}&language=en-US`
 
   let movie_details:MovieType[] = []
   let trailer_id:string
@@ -23,4 +24,7 @@
 </script>
 {#if movie_details.length!==0 && trailer_id}  
   <Media {movie_details} {trailer_id} {movie_id}/>
+{:else}
+  <Spinner />
 {/if}
+

@@ -4,8 +4,8 @@
   const dispatch = createEventDispatcher()
 
   let isLoadMore = false
-  let component
-  let element: Document
+  let component: HTMLDivElement
+  let element: HTMLDocument
 
   onMount(() => {
     element = document
@@ -15,8 +15,8 @@
     element.addEventListener("scroll", onScroll)
   }
 
-  const onScroll = e => {
-    const offset = calcOffset(e)
+  const onScroll = (ev:Event) => {
+    const offset = calcOffset(ev)
     if (offset <= 450) {
       if (!isLoadMore) {
         dispatch("loadMore")
@@ -27,9 +27,11 @@
     }
   }
 
-  const calcOffset = (e) => {
-    const element = e.target.documentElement
+  const calcOffset = (e:Event) => {
+    const target = e.target as Document
+    const element = target.documentElement 
     return (element.scrollHeight - element.clientHeight - element.scrollTop)
+    
   }
 
   onDestroy(() => {

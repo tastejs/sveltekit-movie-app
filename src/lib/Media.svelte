@@ -3,6 +3,7 @@
   import Spinner from '$lib/Spinner.svelte'
   import Modal from "$lib/Modal.svelte"
   import Cast from './Cast.svelte'
+  import { media_type } from '$lib/store'
 
   export let movie_details
   export let trailer_id
@@ -39,7 +40,7 @@
               </div>
               <div>
                 {#each movie_details.genres as {id, name}, i}
-                  <a class='hover:text-textDark' href='/genre/{id}' >{name}</a>
+                  <a class='hover:text-textDark' href='/genre/{$media_type}/{id}' >{name}</a>
                   {#if (i!==movie_details.genres.length-1)}<span class='mx-2'>|</span>{/if}
                 {/each}
               </div>

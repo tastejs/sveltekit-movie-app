@@ -49,12 +49,12 @@ type MovieType = {
     overview: string | null
     popularity: number
     poster_path: string | null
-    production_companies: Array<ProductionCompanies>
-    production_countries: Array<ProductionCountries>
+    production_companies: ProductionCompanies[]
+    production_countries: ProductionCountries[]
     release_date: string
     revenue: number
     runtime: number | null
-    spoken_languages: Array<SpokenLanguages>
+    spoken_languages: SpokenLanguages[]
     status: 'Rumored' | 'Planned' | 'In Production' | 'Post Production' | 'Released' | 'Canceled'
     tagline: string | null
     title: string
@@ -64,7 +64,7 @@ type MovieType = {
 }
 
 type Data = {
-    cast: [Person];
+    cast: PersonType[]
 };
  type ProductionCompanies = {
     name: string

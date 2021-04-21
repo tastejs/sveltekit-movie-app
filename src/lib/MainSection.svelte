@@ -1,12 +1,13 @@
 <script lang='ts'>
 	import MovieList from './MovieList.svelte'
 	import PersonList from './PersonList.svelte'
+	import PageTitle from '$lib/PageTitle.svelte'
 	// import Pagination from './Pagination.svelte'
 	// import MorePages from './MorePages.svelte'
 	import InfiniteScroll from '$lib/InfiniteScroll.svelte'
 	// import Genres from  './Genres.svelte'
 	import { onMount } from 'svelte'
-	import { current_page, media_type } from './store'
+	import { current_page, media_type } from '$lib/store'
 	export let api_url
 	$current_page = 1
 	let data =[]
@@ -46,6 +47,8 @@
 {/if} -->
 
 <section id='main' class='h-full'>
+	<PageTitle />
+
 	{#if $media_type === 'person'}
 		<PersonList {data}/>
 	{:else}

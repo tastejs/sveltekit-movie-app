@@ -34,7 +34,7 @@
       <a class='w-full backface-hidden text-textDark top-0 right-0 bg-white rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm border-t-8 overflow-auto transform duration-300 z-10'
         href={`/${$media_type}/${id}`}>
         <h6 class='mt-1 xl:text-xl uppercase text-white bg-secondary pl-2 rounded'>Overview</h6>
-        <p class='mt-1'>{overview}</p>
+        <p class='md:text-base mt-1'>{overview}</p>
       </a>
     </div>
   </section>

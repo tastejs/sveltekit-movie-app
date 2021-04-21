@@ -14,32 +14,32 @@
       <img class='mt-4 xl:pt-0 flex justify-end w-64 h-96 rounded-2xl mx-auto' src='/person.svg' alt='profile'>
       {/if}
       <h4 class='mt-2 w-full text-center mx-auto xl:hidden'>{person.name}</h4>
-      <div class='pl-8 w-full xl:p-3'>
+      <div class='text-white xl:text-black pl-8 w-full xl:p-3'>
         <h4 class='xl:text-2xl mt-2'>Personal Info</h4>
         <h6 class='xl:text-lg font-bold mt-4 mb-1'>Known For</h6>
-        <p>{person.known_for_department}</p>
+        <p class='xl:text-base'>{person.known_for_department}</p>
         <h6 class='xl:text-lg font-bold mt-4 mb-1'>Gender</h6>
         {#if person.gender === 2}
-          <p>Male</p>
+          <p class='xl:text-base'>Male</p>
         {:else}
-          <p>Female</p>
+          <p class='xl:text-base'>Female</p>
         {/if}
         <h6 class='xl:text-lg font-bold mt-4 mb-1'>Birthdate</h6>
         {#if person.birthday}
-          <p>{person.birthday}</p>
+          <p class='xl:text-base'>{person.birthday}</p>
         {:else}
-          <p>Unknown</p>
+          <p class='xl:text-base'>Unknown</p>
         {/if}
         <h6 class='xl:text-lg font-bold mt-4 mb-1'>Place of Birth</h6>
         {#if person.place_of_birth}
-          <p>{person.place_of_birth}</p>
+          <p class='xl:text-base'>{person.place_of_birth}</p>
           {:else}
-          <p>Unknown</p>
+          <p class='xl:text-base'>Unknown</p>
         {/if}
         {#if (person.also_known_as && person.also_known_as.length) }
           <h4 class='mt-4 mb-1'>Also Known As</h4>
           {#each person.also_known_as as alias}
-            <p>{alias}</p>
+            <p class='xl:text-base'>{alias}</p>
           {/each}
         {/if}
       </div>
@@ -48,7 +48,7 @@
       <div class='mb-2 xl:mb-4 relative bg-primary xl:ml-5 p-3.5 rounded-2xl'>
         <h4 class='xl:text-2xl hidden xl:inline-block'>{person.name}</h4>
         <h6 class='xl:text-lg font-bold mt-4 mb-1'>Biography</h6>
-        <p>{person.biography}</p>
+        <p class='xl:text-base'>{person.biography}</p>
 
       </div>
     </div>

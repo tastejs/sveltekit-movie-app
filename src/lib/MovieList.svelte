@@ -5,7 +5,7 @@
 
 </script>
 
-<section id='movie-list' class='bg-primary flex flex-wrap justify-around max-w-7xl mx-auto xl:rounded-2xl'>
+<section id='movie-list' class='bg-primary flex flex-wrap justify-around max-w-7xl mx-auto xl:mt-2 xl:rounded-2xl'>
 	{#if data.length > 0 } 
 		{#each data as datum, i}
 			<MovieCard key={i} {...datum}/>

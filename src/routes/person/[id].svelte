@@ -5,7 +5,7 @@
   import { ApiKey } from '$lib/store'
   import { page } from '$app/stores';
 
-  const PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`
+  let PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`
  
   let person:PersonType[] = []
 

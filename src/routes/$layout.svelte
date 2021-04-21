@@ -22,7 +22,6 @@
 	
 	import "../global.css";
 	export let genre = {} as Genres
-
 	import Header from '$lib/Header.svelte'
 	import { genres_list } from '$lib/store'
 
@@ -43,4 +42,3 @@
 		<slot></slot>
 	</section>
 </main>
-
