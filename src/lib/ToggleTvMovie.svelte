@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { current_page, media_type } from './store'
+  import { current_page, media_type } from '$lib/store'
   import { goto } from '$app/navigation';
 
   function toggleMovie() {

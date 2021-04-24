@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { media_type, ApiKey } from '$lib/store';
 
-	export let movie_id: number;
+	export let movie_id: string;
 	
 	const PERSONS_API: string = `https://api.themoviedb.org/3/${$media_type}/${movie_id}/credits?api_key=${$ApiKey}&language=en-US`;
 	const IMAGE_API: string = 'https://image.tmdb.org/t/p/w200/';

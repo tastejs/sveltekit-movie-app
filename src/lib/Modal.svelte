@@ -1,5 +1,5 @@
 <script lang='ts'>
-  export let trailer_id
+  export let trailer_id:string
   let shown = false;
   export function show() {
     shown = true;

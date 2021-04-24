@@ -13,7 +13,7 @@
   let MOVIE_DETAIL_API = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${$ApiKey}&language=en-US`
   let VIDEO_API = `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${$ApiKey}&language=en-US`
 
-  let movie_details:MovieType[] = []
+  let movie_details
   let trailer_id:string
 
   onMount(async()=>{
@@ -22,7 +22,7 @@
   })
 
 </script>
-{#if movie_details.length!==0 && trailer_id}  
+{#if movie_details && movie_details.length!==0 && trailer_id}  
   <Media {movie_details} {trailer_id} {movie_id}/>
 {:else}
   <Spinner />

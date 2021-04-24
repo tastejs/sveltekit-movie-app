@@ -1,5 +1,5 @@
 <script lang='ts'>
-  export let total_pages
+  export let total_pages:number
   import { current_page } from '$lib/store'  
 
   import { createEventDispatcher } from 'svelte';
@@ -15,7 +15,7 @@
   //   return [...Array(size).keys()].map(i => i + startAt);
   // }
 
-  function range(from, to) {
+  function range(from:number, to:number) {
     let i = from;
     const range = []
     while (i <= to) {
@@ -49,7 +49,7 @@
     pages = range(1, total_pages)
   }
 }
-  function handleClick(page) {
+  function handleClick(page:number) {
     if (page !== $current_page) {
       $current_page = page
       dispatch('change', page);

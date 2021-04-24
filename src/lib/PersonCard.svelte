@@ -1,9 +1,9 @@
 <script lang='ts'>
-  import Spinner from './Spinner.svelte'
+  import Spinner from '$lib/Spinner.svelte'
   const IMAGE_API = 'https://image.tmdb.org/t/p/w500'
-    export let id
-    export let profile_path
-    export let name
+    export let id: number
+    export let profile_path: string | null
+    export let name: string
     
 </script>
   {#if id}

@@ -3,7 +3,7 @@
 	import { ApiKey } from '$lib/store';
 	let films = [];
 	let tv = [];
-	export let personId;
+	export let personId:number;
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
 	const KNOWN_API = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${$ApiKey}&language=en-US`;

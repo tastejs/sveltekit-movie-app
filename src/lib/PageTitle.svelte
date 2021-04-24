@@ -3,7 +3,7 @@
     import { page } from '$app/stores'
     let page_title = ''
     let media_option = ''
-    let genre ={}
+    let genre ={} as Genre
     
         if ($media_type === 'tv') {   
             media_option = 'TV' 
@@ -16,7 +16,7 @@
             page_title = media_option + ' > Search > ' + $page.path.substring(8)
 
         } else if ($page.path !== '/') {
-            genre =$genres_list[$media_type].find(genre => genre.id == $page.params.id).name;
+            genre =$genres_list[$media_type].find((genre: { id: string; }) => genre.id == $page.params.id).name;
 
             page_title = media_option + ' > ' + genre
         }  else {

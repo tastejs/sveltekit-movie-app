@@ -1,6 +1,6 @@
 <script lang='ts'>
-	import MovieList from './MovieList.svelte'
-	import PersonList from './PersonList.svelte'
+	import MovieList from '$lib/MovieList.svelte'
+	import PersonList from '$lib/PersonList.svelte'
 	import PageTitle from '$lib/PageTitle.svelte'
 	// import Pagination from './Pagination.svelte'
 	// import MorePages from './MorePages.svelte'
@@ -8,7 +8,7 @@
 	// import Genres from  './Genres.svelte'
 	import { onMount } from 'svelte'
 	import { current_page, media_type } from '$lib/store'
-	export let api_url
+	export let api_url:string
 	$current_page = 1
 	let data =[]
 	
@@ -16,14 +16,14 @@
 		getData(api_url + $current_page)
 	})
 	let total_pages = 0
-	async function getData (API) {
+	async function getData (API:string) {
 		const res = await fetch(API)
 		const res_json = await res.json()
 		data = await res_json.results
 		total_pages = res_json.total_pages
 	}
 
-	async function moreData (API) {
+	async function moreData (API: string) {
 			const res = await fetch(API)
 			const res_json = await res.json()
 			const res_results = await res_json.results

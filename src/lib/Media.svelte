@@ -2,16 +2,16 @@
   import ProgressBar from '$lib/ProgressBar.svelte'
   import Spinner from '$lib/Spinner.svelte'
   import Modal from "$lib/Modal.svelte"
-  import Cast from './Cast.svelte'
+  import Cast from '$lib/Cast.svelte'
   import { media_type } from '$lib/store'
 
-  export let movie_details
-  export let trailer_id
-  export let movie_id
+  export let movie_details: MovieType | TvType
+  export let trailer_id: string
+  export let movie_id:string
 
   const IMAGE_API = "https://image.tmdb.org/t/p/"
   
-  let modal;
+  let modal: { show: () => any; };
   window.scrollTo({top: -1000, behavior: 'smooth'})
 
 </script>
@@ -26,15 +26,15 @@
         </div>
         <div class='xl:col-start-2 xl:col-end-5 flex flex-wrap content-start xl:pl-10'>
           <div class='mt-6 xl:mt-0 w-full mb-6 flex flex-wrap'>
-            <h4 class='w-full xl:text-4xl'>{movie_details.name? movie_details.name: movie_details.title}
+            <h4 class='w-full xl:text-4xl'>{"name" in movie_details? movie_details.name: movie_details.title}
               <span class="text-lg xl:text-4xl text-gray-300">
-                {movie_details.first_air_date ? (movie_details.first_air_date.substring(0,4)) : 
+                {"first_air_date"in movie_details? (movie_details.first_air_date.substring(0,4)) : 
                 movie_details.release_date? (movie_details.release_date.substring(0,4)) : ''}
               </span>
             </h4>
             <div class='xl:flex'>
               <div class='pl-0'>
-                {movie_details.first_air_date ? movie_details.first_air_date: 
+                {"first_air_date" in movie_details ? movie_details.first_air_date: 
                   movie_details.release_date? movie_details.release_date :'No Date Available'}
                   <span class='hidden xl:px-2 xl:inline'>&#x2022;</span>
               </div>
@@ -44,7 +44,7 @@
                   {#if (i!==movie_details.genres.length-1)}<span class='mx-2'>|</span>{/if}
                 {/each}
               </div>
-              {#if movie_details.runtime}
+              {#if "runtime" in movie_details}
                 <div class='duration'><span class='hidden xl:px-2 xl:inline'>&#x2022;</span>{(movie_details.runtime - (movie_details.runtime % 60))/60}h {movie_details.runtime % 60}m</div>
               {/if}
             </div>
@@ -73,7 +73,6 @@
           </div>
         </div>
       </div>
-      <!-- </div> -->
     </div>
   </section>
   

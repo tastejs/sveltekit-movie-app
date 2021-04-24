@@ -1,7 +1,6 @@
 <script lang='ts'>
 	import PersonCard from '$lib/PersonCard.svelte'
-	import Spinner from '$lib/Spinner.svelte'
-	import Skeleton from './skeleton.svelte';
+	import Skeleton from '$lib/skeleton.svelte';
 	export let data = []
 
 </script>

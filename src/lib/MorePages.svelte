@@ -1,5 +1,5 @@
 <script lang='ts'>
-  export let total_pages
+  export let total_pages: number
   import { current_page } from '$lib/store'
 
   import { createEventDispatcher } from 'svelte';

@@ -5,15 +5,15 @@
   const IMAGE_API = 'https://image.tmdb.org/t/p/w300'
   
 
-  export let poster_path
-  export let name
-  export let title
-  export let vote_average
-  export let overview
-  export let id
-  export let release_date
+  export let poster_path:string | null
+  export let name:string
+  export let title: string
+  export let vote_average: number
+  export let overview: string | null
+  export let id: number
+  export let release_date :string 
   release_date ? release_date : 0
-  export let first_air_date
+  export let first_air_date : string
   
 
 </script>
