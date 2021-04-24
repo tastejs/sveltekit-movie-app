@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import MovieCard from '$lib/MovieCard.svelte'
-	import Skeleton from '$lib/skeleton.svelte';
+	import Skeleton from '$lib/Skeleton.svelte';
 	export let data = []
 
 </script>
