@@ -18,12 +18,12 @@
 
 {#if persons.length}
 	<section id="people"class="max-w-7xl mx-auto xl:mt-5 xl:mb-10 bg-secondary xl:pl-5 pt-1 xl:rounded-2xl">
-		<h2 class="flex xl:inline-block justify-center xl:justify-start xl:my-5 text-2xl font-bold">Top Billed Cast</h2>
+		<h3 class="flex xl:inline-block justify-center xl:justify-start xl:my-5 text-2xl font-bold">Top Billed Cast</h3>
 		<div class="flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative">
 			{#each persons as person}
 				<div class="w-28 flex-shrink-0 mb-2 rounded relative bg-primary m-0.5 sm:mr-3 hover:bg-selected">
 					<a href={`/person/${person.id}`}>
-						<div class="w-28 h-42 bg-indigo-800">
+						<div class="w-28 h-42 bg-blue-900">
 							{#if person.profile_path}
 								<img class="w-28 h-42 rounded-t" src={IMAGE_API + person.profile_path} alt="profile" />
 							{:else}

@@ -3,7 +3,7 @@
 	import { genres_list, media_type, selected } from '$lib/store';
 	
 </script>
-<div class='w-full xl:w-100'>
+<div class='w-full xl:w-96'>
 	<p class="py-0.5 justify-center bg-black" />
 	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
 	<p class="py-0.5 justify-center bg-black" />
@@ -13,7 +13,7 @@
 				<button
 					class="bg-gray-200 hover:bg-gray-400 p-1 block text-black whitespace-nowrap"
 					class:bg-selected={$selected === genre.id && $media_type === 'movie'}
-					on:click|preventDefault|stopPropagation={() => {
+					on:click|preventDefault={() => {
 						$selected = genre.id;
 						goto(`/genre/movie/${genre.id}`)
 					}}
@@ -33,7 +33,7 @@
 				<button
 					class="bg-gray-200 hover:bg-gray-400 p-1 block text-black whitespace-nowrap"
 					class:bg-selected={$selected === genre.id && $media_type === 'tv'}
-					on:click|preventDefault|stopPropagation={() => {
+					on:click|preventDefault={() => {
 						$selected = genre.id;	
 						goto(`/genre/tv/${genre.id}`)
 					}}

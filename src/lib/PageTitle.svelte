@@ -12,8 +12,10 @@
         } else {
             media_option = 'Movies' 
         }
+        if ($page.path.startsWith("/search/")) {
+            page_title = media_option + ' > Search > ' + $page.path.substring(8)
 
-        if ($page.path !== '/') {
+        } else if ($page.path !== '/') {
             genre =$genres_list[$media_type].find(genre => genre.id == $page.params.id).name;
 
             page_title = media_option + ' > ' + genre
@@ -23,5 +25,5 @@
 </script>
 
 <div class=' bg-primary max-w-7xl xl:rounded-2xl xl:mt-2'>
-    <h4 class=' py-2 ml-4'>{page_title}</h4>
+    <h4 class='py-2 ml-4'>{page_title}</h4>
 </div>

@@ -8,7 +8,7 @@
 			{#each $genres_list[$media_type] as {id, name}}
 				<a 
 					on:click="{() => $selected=id}"
-					class:selected="{$selected===id}"
+					class:bg-selected={$selected === id }
 					class='bg-secondary text-textLight flex flex-nowrap justify-center border-border rounded-full border-2 no-underline font-semibold px-1 py-0.5 m-0.5 whitespace-nowrap flex-grow hover:bg-selected hover:cursor-pointer'
 					href={`/genre/${id}`}>
 					{name}
@@ -16,11 +16,3 @@
 			{/each}
 		</div>
 	</section>
-
-
-<style>
-	.selected {
-    background-color: var(--selected);
-		cursor: default;
-  }
-</style>

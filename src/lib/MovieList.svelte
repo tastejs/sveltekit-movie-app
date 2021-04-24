@@ -1,6 +1,7 @@
 <script lang='ts'>
 	import MovieCard from '$lib/MovieCard.svelte'
 	import Spinner from '$lib/Spinner.svelte'
+	import Skeleton from './skeleton.svelte';
 	export let data = []
 
 </script>
@@ -11,6 +12,6 @@
 			<MovieCard key={i} {...datum}/>
 		{/each}
 	{:else}
-		<Spinner />
+		<Skeleton />
 	{/if}
 </section>

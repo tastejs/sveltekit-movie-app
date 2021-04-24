@@ -1,6 +1,7 @@
 <script lang='ts'>
 	import PersonCard from '$lib/PersonCard.svelte'
 	import Spinner from '$lib/Spinner.svelte'
+	import Skeleton from './skeleton.svelte';
 	export let data = []
 
 </script>
@@ -11,6 +12,6 @@
 			<PersonCard key={i} {...person}/>
 		{/each}
 	{:else}
-		<Spinner />
+		<Skeleton/>
 	{/if}
 </section>

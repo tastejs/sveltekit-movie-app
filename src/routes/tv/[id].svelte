@@ -24,6 +24,6 @@
 
 {#if movie_details.length!==0 && trailer_id}
   <Media {movie_details} {trailer_id} {movie_id}/>
-  {:else}
+{:else}
   <Spinner />
 {/if}
