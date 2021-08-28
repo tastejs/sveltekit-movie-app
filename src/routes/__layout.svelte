@@ -20,12 +20,12 @@
 
 <script lang="ts">
 	
-	import "../global.css";
-	export let genre = {} as Genres
-	import Header from '$lib/Header.svelte'
-	import { genres_list } from '$lib/store'
+	import "../app.postcss";
+    // export let genre = {} as Genres
+    import Header from '$lib/Header.svelte'
+    import { genres_list } from '$lib/store'
 
-	$genres_list= genre
+    $genres_list= genre
 </script>
 
 
@@ -40,9 +40,9 @@
 
 </svelte:head>
 
-<main >
+<main>
 	<Header />
-	<section class= 'max-w-7xl mx-auto' >
+	<section class="max-w-7xl mx-auto">
 		<slot></slot>
 	</section>
 </main>
