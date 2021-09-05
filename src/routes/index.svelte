@@ -1,5 +1,5 @@
 <script lang='ts'>
-	import MainSection from '$lib/MainSection.svelte'
+	import MainSection from '$lib/pages/MainSection.svelte'
 	import { media_type, ApiKey, selected } from '$lib/store'
 	$selected = null
 	

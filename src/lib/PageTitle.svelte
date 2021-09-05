@@ -24,6 +24,6 @@
         }
 </script>
 
-<div class=' bg-primary max-w-7xl xl:rounded-2xl xl:mt-2'>
+<div class=' bg-skin-primary text-skin-base max-w-7xl xl:rounded-2xl xl:mt-2'>
     <h4 class='py-2 ml-4'>{page_title}</h4>
 </div>

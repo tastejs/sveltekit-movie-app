@@ -2,7 +2,7 @@
   import PersonList from '$lib/PersonList.svelte'
   import { onMount } from 'svelte'
   import { ApiKey, current_page } from '$lib/store'
-  import InfiniteScroll from '$lib/InfiniteScroll.svelte'
+  import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte'
 
 
 	$current_page = 1

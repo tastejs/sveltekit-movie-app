@@ -1,11 +1,8 @@
 <script lang='ts'>
-	import MovieList from '$lib/MovieList.svelte'
-	import PersonList from '$lib/PersonList.svelte'
+	import MovieList from '$lib/pages/MovieList.svelte'
+	import PersonList from '$lib/pages/PersonList.svelte'
 	import PageTitle from '$lib/PageTitle.svelte'
-	// import Pagination from './Pagination.svelte'
-	// import MorePages from './MorePages.svelte'
-	import InfiniteScroll from '$lib/InfiniteScroll.svelte'
-	// import Genres from  './Genres.svelte'
+	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte'
 	import { onMount } from 'svelte'
 	import { current_page, media_type } from '$lib/store'
 	export let api_url:string
@@ -37,21 +34,14 @@
 
 </script>
 
-<!-- <Genres />
-
-{#if total_pages&&$current_page}
-	<Pagination
-		{total_pages}
-		on:change ="{(ev) => getMovies(api_url + ev.detail)}">
-	</Pagination>
-{/if} -->
-
 <section id='main' class='h-full'>
 	<PageTitle />
 
 	{#if $media_type === 'person'}
 		<PersonList {data}/>
-	{:else}
+	{:else if $media_type === 'movie'}
+		<MovieList {data}/>
+	{:else if $media_type === 'tv'}
 		<MovieList {data}/>
 	{/if}
 
@@ -60,14 +50,3 @@
 			on:loadMore={() => loadMorePages()} />
 	{/if}
 </section>
-
-
-
-
-
-<!-- {#if (total_pages-$current_page)}
-	<MorePages 
-    {total_pages}
-    on:change="{(ev) => moreMovies(api_url + ev.detail)}">
-	</MorePages>
-{/if} -->

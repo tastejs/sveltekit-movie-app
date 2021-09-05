@@ -1,8 +1,8 @@
 <script lang='ts'>
-  import ProgressBar from '$lib/ProgressBar.svelte'
-  import Spinner from '$lib/Spinner.svelte'
-  import Modal from "$lib/Modal.svelte"
-  import Cast from '$lib/Cast.svelte'
+  import ProgressBar from '$lib/utilities/ProgressBar.svelte'
+  import Spinner from '$lib/utilities/Spinner.svelte'
+  import Modal from "$lib/utilities/Modal.svelte"
+  import Cast from '$lib/pages/Cast.svelte'
   import { media_type } from '$lib/store'
 
   export let movie_details: MovieType | TvType
@@ -17,7 +17,7 @@
 </script>
 
 {#if movie_details.id && trailer_id}
-  <section id='media' class='xl:mt-5 bg-no-repeat bg-right-top bg-contain xl:bg-cover xl:rounded-2xl' style='background-image: url({IMAGE_API}original/{movie_details.backdrop_path})'>
+  <section id='media' class='text-skin-inverted xl:mt-5 bg-no-repeat bg-right-top bg-contain xl:bg-cover xl:rounded-2xl' style='background-image: url({IMAGE_API}original/{movie_details.backdrop_path})'>
     <div class='bg-gradient-to-r xl:rounded-2xl' style='background-image: linear-gradient(to right, rgb(5, 69, 112) 150px, rgba(37, 137, 204, 0.84) 100%)'>  
       <div class='grid max-w-7xl xl:grid-cols-4 px-10 py-8 mx-auto xl:rounded-2xl'>
         <div class='col-start-1 col-end-2 '>
@@ -27,7 +27,7 @@
         <div class='xl:col-start-2 xl:col-end-5 flex flex-wrap content-start xl:pl-10'>
           <div class='mt-6 xl:mt-0 w-full mb-6 flex flex-wrap'>
             <h4 class='w-full xl:text-4xl'>{"name" in movie_details? movie_details.name: movie_details.title}
-              <span class="text-lg xl:text-4xl text-gray-300">
+              <span class="text-lg xl:text-4xl text-skin-inverted">
                 {"first_air_date"in movie_details? (movie_details.first_air_date.substring(0,4)) : 
                 movie_details.release_date? (movie_details.release_date.substring(0,4)) : ''}
               </span>
@@ -40,7 +40,7 @@
               </div>
               <div>
                 {#each movie_details.genres as {id, name}, i}
-                  <a class='hover:text-textDark' href='/genre/{$media_type}/{id}' >{name}</a>
+                  <a class='hover:text-skin-selected' href='/genre/{$media_type}/{id}' >{name}</a>
                   {#if (i!==movie_details.genres.length-1)}<span class='mx-2'>|</span>{/if}
                 {/each}
               </div>

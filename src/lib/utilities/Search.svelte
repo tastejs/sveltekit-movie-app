@@ -15,7 +15,7 @@
     on:submit|preventDefault = {handleOnSubmit}>
     <input 
       label='search'
-      class='bg-transparent w-24 xl:w-48 h-7 rounded-full text-l px-2 text-textLight placeholder-textLight::placeholder border-2 border-border'
+      class='bg-transparent w-24 xl:w-48 h-7 rounded-full text-l px-2 text-skin-muted placeholder-text-skin-base::placeholder border-2 border-skin-border'
       type='text'
       placeholder='Search...'
       bind:value={searchTerm}

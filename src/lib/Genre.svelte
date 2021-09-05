@@ -1,17 +1,17 @@
 <script lang='ts'>
-	import { goto } from '$app/navigation';
-	import { genres_list, media_type, selected } from '$lib/store';
-	
+	import { goto } from '$app/navigation'
+	import { genres_list, media_type, selected } from '$lib/store'	
 </script>
-<div class='w-full xl:w-96'>
-	<p class="py-0.5 justify-center bg-black" />
-	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
-	<p class="py-0.5 justify-center bg-black" />
+
+<div class='bg-skin-primary w-full xl:w-96'>
+	<p class="py-0.5 justify-center bg-skin-bg" />
+	<h4 class="uppercase items-center flex justify-center text-skin-base"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
+	<p class="py-0.5 justify-center bg-skin-inverted" />
 	<div class="flex flex-wrap justify-center">
 		{#each $genres_list['movie'] as genre, i }
 			<li class="flex">
 				<button
-					class="bg-gray-200 hover:bg-gray-400 p-1 block text-black whitespace-nowrap"
+					class="hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
 					class:bg-selected={$selected === genre.id && $media_type === 'movie'}
 					on:click|preventDefault={() => {
 						$selected = genre.id;
@@ -24,14 +24,14 @@
 			</li>
 		{/each}
 	</div>
-	<p class="py-0.5 justify-center bg-black" />
-	<h4 class="uppercase items-center flex justify-center text-black"><span class='mr-2'><i class="fa fa-tv" aria-hidden="true"></i></span>Tv</h4>
-	<p class="py-0.5 justify-center bg-black" />
+	<p class="py-0.5 justify-center bg-skin-bg" />
+	<h4 class="uppercase items-center flex justify-center text-skin-base"><span class='mr-2'><i class="fa fa-tv" aria-hidden="true"></i></span>Tv</h4>
+	<p class="py-0.5 justify-center text-skin-base" />
 	<div class="flex flex-wrap justify-center">
 		{#each $genres_list['tv'] as genre, j }
 			<li class="flex">
 				<button
-					class="bg-gray-200 hover:bg-gray-400 p-1 block text-black whitespace-nowrap"
+					class=" hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
 					class:bg-selected={$selected === genre.id && $media_type === 'tv'}
 					on:click|preventDefault={() => {
 						$selected = genre.id;	
@@ -45,8 +45,3 @@
 		{/each}
 	</div>
 </div>
-<!-- <style>
-	.selected, .selected::hover {
-    @apply bg-selected;
-  }
-</style> -->

@@ -1,5 +1,36 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 @layer base {
+	:root {
+		--color-text-base: #000000;
+		--color-text-muted: #616161;
+		--color-text-inverted: #ffffff;
+		--color-text-muted-inverted: #d7d7d7d;
+		--color-text-selected: #0db652;
+		--color-bg:#ffffff;
+		--color-primary: #aed6f1;
+		--color-secondary:#c5ecff;
+		--color-tertiary: #ececec;
+		--color-border:#616161;
+	}
+
+	.theme-dark {
+		--color-text-base: #00ff00;
+		--color-text-muted: #f6ff45;
+		--color-text-inverted:#ececec;
+		--color-text-muted-inverted: #616161;
+		--color-text-selected:#158a69;
+		--color-bg:#000000;
+		--color-primary:#021973;
+		--color-secondary:#0b327d;
+		--color-tertiary:#1c1c1c;
+		--color-border:#ffff00;
+
+	}
+
 	@font-face {
 		font-family: 'Raleway';
 		font-weight: 400;
@@ -40,9 +71,8 @@
 		@apply font-semibold;
 	}
 	body {
-		@apply text-textLight;
-		@apply bg-bgcolour;
 		@apply mx-auto;
+		@apply bg-skin-bg;
 	}
 }
 
@@ -50,14 +80,8 @@ html {
 	overflow-y: scroll;
 }
 
-a {
-	color: #ececec;
-}
 
 .root {
 	display: flex;
 	flex-direction: column;
 }
-
-@tailwind components;
-@tailwind utilities

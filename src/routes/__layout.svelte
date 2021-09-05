@@ -21,9 +21,10 @@
 <script lang="ts">
 	
 	import "../app.postcss";
-    // export let genre = {} as Genres
+    export let genre:Genres
     import Header from '$lib/Header.svelte'
     import { genres_list } from '$lib/store'
+	import { theme_dark } from '$lib/store'
 
     $genres_list= genre
 </script>
@@ -36,13 +37,16 @@
 	<title>TMDB on Sveltekit</title>
 	<meta name="description" content="TMDB movie & tv database">
 	<meta name="keywords" content="HTML, CSS, JavaScript, svelte">
-	<meta name="author" content="4737 Carlin">
+	<meta name="author" content="Wayne Morgan">
 
 </svelte:head>
 
-<main>
+<main 
+	class:theme-dark={$theme_dark}
+	class='theme-dark bg-skin-bg min-h-screen'>
 	<Header />
 	<section class="max-w-7xl mx-auto">
 		<slot></slot>
 	</section>
 </main>
+

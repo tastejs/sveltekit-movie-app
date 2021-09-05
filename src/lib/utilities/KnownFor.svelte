@@ -27,7 +27,7 @@
 	<section id="known-for" class="grid mx-auto">
 		{#if films}
 			<h3 class="flex xl:inline-block justify-center xl:justify-start xl:my-5 text-2xl font-bold">Movies</h3>
-			<div class="flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative">
+			<div class="text-skin-base flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative">
 				{#each films as movie}
 					<div class="w-28 h-56 flex-shrink-0 rounded mb-2 relative bg-secondary m-0.5 sm:mr-3 hover:bg-selected">
 						<a class="rounded w-28" href={`/movie/${movie.id}`}>
@@ -37,8 +37,8 @@
 								alt={movie.title}
 							/>
 							<div class="w-28 h-12 p-0.5">
-								<p class="text-xs text-center flex justify-center items-center text-textLight line-clamp-2">{movie.title}</p>
-								<p class="text-xs text-center flex justify-center items-center text-textLight">
+								<p class="text-xs text-center flex justify-center items-center line-clamp-2">{movie.title}</p>
+								<p class="text-xs text-center flex justify-center items-center">
 									{movie.first_air_date
 										? movie.first_air_date.substring(0, 4)
 										: movie.release_date
@@ -63,8 +63,8 @@
 								alt={show.name}
 							/>
 							<div class="w-28 h-12 p-0.5">
-								<p class="text-xs text-center flex justify-center items-center text-textLight line-clamp-2">{show.name}</p>
-								<p class="text-xs text-center flex justify-center items-center text-textLight">
+								<p class="text-xs text-center flex justify-center items-center line-clamp-2">{show.name}</p>
+								<p class="text-xs text-center flex justify-center items-center ">
 									{show.release_date
 										? show.release_date.substring(0, 4)
 										: show.first_air_date

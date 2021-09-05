@@ -1,11 +1,11 @@
 <script lang='ts'>
   import { media_type, ApiKey } from '$lib/store'
-  import { getMovieDetails, } from '$lib/fetchData'
-  import { getTrailerId } from '$lib/fetchTrailer'
+  import { getMovieDetails, } from '$lib/utilities/fetchData'
+  import { getTrailerId } from '$lib/utilities/fetchTrailer'
   import { onMount } from 'svelte'
-  import Media from '$lib/Media.svelte'
+  import Media from '$lib/pages/Media.svelte'
 	import { page } from '$app/stores'
-  import Spinner from '$lib/Spinner.svelte'
+  import Spinner from '$lib/utilities/Spinner.svelte'
 
   $media_type= 'movie'
   let movie_id:string = $page.params.id

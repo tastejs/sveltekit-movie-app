@@ -6,19 +6,35 @@ const config = {
 	],
 	theme: {
 		extend: {
+			borderColor: {
+				skin: {
+					border: 'var(--color-border)'
+				},
+			},
+			textColor: {
+				skin: {
+					base: 'var(--color-text-base)',
+					muted: 'var(--color-text-muted)',
+					inverted: 'var(--color-text-inverted)',
+					selected: 'var(--color-text-selected)',
+					mutedinverted: 'var(--color-text-muted-inverted)'
+
+				},
+			},
+			backgroundColor: {
+				skin: {
+					primary: 'var(--color-primary)',
+					secondary: 'var(--color-secondary)',
+					tertiary: 'var(--color-tertiary)',
+					bg: 'var(--color-bg)',
+					border: 'var(--color-border)',
+					selected: 'var(--color-selected)'				
+				},
+			},
 			fontFamily: {
 			  body: ['Raleway']
 			},
-			colors: {
-			  'primary':    '#0b327d',
-			  'secondary':  '#021973',
-			  'bgcolour':   '#8e8e8e',
-			  'textLight':  '#ececec',
-			  'textDark':   '#070206',
-			  'border':     '#5771d5',
-			  'selected':   '#158a69'
-			},
-	  
+  
 			spacing: {
 			  '5': '1.125rem',
 			  '18': '4.5rem',
