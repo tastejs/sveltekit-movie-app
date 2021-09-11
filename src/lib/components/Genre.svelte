@@ -11,6 +11,7 @@
 		{#each $genres_list['movie'] as genre, i }
 			<li class="flex">
 				<button
+					aria-label={genre.name}
 					class="hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
 					class:bg-selected={$selected === genre.id && $media_type === 'movie'}
 					on:click|preventDefault={() => {
