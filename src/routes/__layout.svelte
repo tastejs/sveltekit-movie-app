@@ -28,7 +28,7 @@
 	
 	import "../app.postcss";
     // export let genre:Genres
-    import Header from '$lib/Header.svelte'
+    import Header from '$lib/components/Header.svelte'
     import { genres_list } from '$lib/stores/store'
 	import { theme } from '$lib/stores/theme-store';
 	theme.init()

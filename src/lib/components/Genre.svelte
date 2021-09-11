@@ -7,7 +7,7 @@
 	<p class="py-0.5 justify-center bg-skin-bg" />
 	<h4 class="uppercase items-center flex justify-center text-skin-base"><span class='mr-2'><i class="fa fa-video-camera" aria-hidden="true"></i></span>Movies</h4>
 	<p class="py-0.5 justify-center bg-skin-inverted" />
-	<div class="flex flex-wrap justify-center">
+	<ul class="flex flex-wrap justify-center">
 		{#each $genres_list['movie'] as genre, i }
 			<li class="flex">
 				<button
@@ -23,11 +23,11 @@
                 {#if (i!==$genres_list['movie'].length-1)}<span class='mx-2'>|</span>{/if}
 			</li>
 		{/each}
-	</div>
+	</ul>
 	<p class="py-0.5 justify-center bg-skin-bg" />
 	<h4 class="uppercase items-center flex justify-center text-skin-base"><span class='mr-2'><i class="fa fa-tv" aria-hidden="true"></i></span>Tv</h4>
 	<p class="py-0.5 justify-center text-skin-base" />
-	<div class="flex flex-wrap justify-center">
+	<ul class="flex flex-wrap justify-center">
 		{#each $genres_list['tv'] as genre, j }
 			<li class="flex">
 				<button
@@ -43,5 +43,5 @@
                 {#if (j!==$genres_list['tv'].length-1)}<span class='mx-2'>|</span>{/if}
 			</li>
 		{/each}
-	</div>
+	</ul>
 </div>

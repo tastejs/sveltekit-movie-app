@@ -2,7 +2,7 @@
 	import MovieList from '$lib/pages/MovieList.svelte'
 	import TvList from '$lib/pages/TvList.svelte'
 	import PersonList from '$lib/pages/PersonList.svelte'
-	import PageTitle from '$lib/PageTitle.svelte'
+	import PageTitle from '$lib/components/PageTitle.svelte'
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte'
 	import { onMount } from 'svelte'
 	import { current_page, media_type } from '$lib/stores/store'

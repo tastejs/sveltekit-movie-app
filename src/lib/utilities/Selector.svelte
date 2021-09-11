@@ -1,7 +1,7 @@
 <script lang='ts'>
   import { current_page, media_type, selected } from '$lib/stores/store'
   import { goto } from '$app/navigation';
-  import Genre from '$lib/Genre.svelte'
+  import Genre from '$lib/components/Genre.svelte'
 
 
   function toggleMovie() {
