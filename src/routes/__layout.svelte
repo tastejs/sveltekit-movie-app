@@ -6,14 +6,20 @@
 
 	const genre = {} as Genres
 
-	export async function load({fetch}) {
+	export const load = async ({fetch}) => {
 		const res_mov:Response = await fetch(GENRES_MOVIE_API)
 		const res_mov_json:Media = await res_mov.json()
 		genre.movie = res_mov_json.genres
+
 		const res_tv:Response = await fetch(GENRES_TV_API)
 		const res_tv_json:Media = await res_tv.json()
 		genre.tv = res_tv_json.genres
-		return { props:{genre} }
+
+		return { 
+			props:{
+				genre
+			}
+		}
 	}
 
 </script>
@@ -21,7 +27,7 @@
 <script lang="ts">
 	
 	import "../app.postcss";
-    // export let genre:Genres
+    export let genre:Genres
     import Header from '$lib/Header.svelte'
     import { genres_list } from '$lib/store'
 	import { theme_dark } from '$lib/store'
@@ -43,7 +49,7 @@
 
 <main 
 	class:theme-dark={$theme_dark}
-	class='theme-dark bg-skin-bg min-h-screen'>
+	class='bg-skin-bg min-h-screen'>
 	<Header />
 	<section class="max-w-7xl mx-auto">
 		<slot></slot>
