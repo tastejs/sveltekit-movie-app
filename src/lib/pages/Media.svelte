@@ -3,7 +3,7 @@
   import Spinner from '$lib/utilities/Spinner.svelte'
   import Modal from "$lib/utilities/Modal.svelte"
   import Cast from '$lib/pages/Cast.svelte'
-  import { media_type } from '$lib/store'
+  import { media_type } from '$lib/stores/store'
 
   export let movie_details: MovieType | TvType
   export let trailer_id: string

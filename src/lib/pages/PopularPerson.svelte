@@ -1,7 +1,7 @@
 <script lang='ts'>
   import PersonList from '$lib/PersonList.svelte'
   import { onMount } from 'svelte'
-  import { ApiKey, current_page } from '$lib/store'
+  import { ApiKey, current_page } from '$lib/stores/store'
   import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte'
 
 

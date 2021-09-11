@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { media_type, ApiKey } from '$lib/store'
+  import { media_type, ApiKey } from '$lib/stores/store'
   import { getMovieDetails, } from '$lib/utilities/fetchData'
   import { getTrailerId } from '$lib/utilities/fetchTrailer'
   import { onMount } from 'svelte'

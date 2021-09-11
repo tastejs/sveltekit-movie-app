@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { media_type, ApiKey } from '$lib/store';
+	import { media_type, ApiKey } from '$lib/stores/store';
 
 	export let movie_id: string;
 	

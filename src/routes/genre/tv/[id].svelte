@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import MainSection from '$lib/pages/MainSection.svelte'
-	import { media_type, ApiKey } from '$lib/store'
+	import { media_type, ApiKey } from '$lib/stores/store'
   	import { page } from '$app/stores'
 	
 	$media_type = 'tv'

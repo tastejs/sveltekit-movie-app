@@ -1,10 +1,11 @@
 <script lang='ts'>
 	import MovieList from '$lib/pages/MovieList.svelte'
+	import TvList from '$lib/pages/TvList.svelte'
 	import PersonList from '$lib/pages/PersonList.svelte'
 	import PageTitle from '$lib/PageTitle.svelte'
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte'
 	import { onMount } from 'svelte'
-	import { current_page, media_type } from '$lib/store'
+	import { current_page, media_type } from '$lib/stores/store'
 	export let api_url:string
 	$current_page = 1
 	let data =[]
@@ -42,7 +43,7 @@
 	{:else if $media_type === 'movie'}
 		<MovieList {data}/>
 	{:else if $media_type === 'tv'}
-		<MovieList {data}/>
+		<TvList {data}/>
 	{/if}
 
 	{#if $current_page < total_pages}

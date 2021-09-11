@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ApiKey } from '$lib/store';
+	import { ApiKey } from '$lib/stores/store';
 	let films = [];
 	let tv = [];
 	export let personId:number;

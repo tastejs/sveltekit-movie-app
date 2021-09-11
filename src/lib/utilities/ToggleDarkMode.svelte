@@ -1,13 +1,17 @@
 <script>
-    import { theme_dark } from '$lib/store'
-    function toggle() {
-       $theme_dark= !$theme_dark
-    }
+    import { theme } from '$lib/stores/theme-store'
+	const toggleTheme = () => {
+		if ($theme === 'dark') {
+			$theme = 'light'
+		} else {
+			$theme = 'dark'
+		}
+	}
     
 </script>
     
-<button class='text-skin-base' on:click={toggle}>
-    {#if $theme_dark}
+<button class='text-skin-base' on:click={toggleTheme}>
+    {#if $theme ==='dark'}
     go light  
     {:else}
     go dark

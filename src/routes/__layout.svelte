@@ -29,10 +29,13 @@
 	import "../app.postcss";
     // export let genre:Genres
     import Header from '$lib/Header.svelte'
-    import { genres_list } from '$lib/store'
-	import { theme_dark } from '$lib/store'
+    import { genres_list } from '$lib/stores/store'
+	import { theme } from '$lib/stores/theme-store';
+	theme.init()
 
     $genres_list= genre
+
+	
 </script>
 
 
@@ -48,7 +51,7 @@
 </svelte:head>
 
 <main 
-	class:theme-dark={$theme_dark}
+	class:$theme
 	class='bg-skin-bg min-h-screen'>
 	<Header />
 	<section class="max-w-7xl mx-auto">

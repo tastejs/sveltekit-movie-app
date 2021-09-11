@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import { goto } from '$app/navigation'
-	import { genres_list, media_type, selected } from '$lib/store'	
+	import { genres_list, media_type, selected } from '$lib/stores/store'	
 </script>
 
 <div class='bg-skin-primary w-full xl:w-96'>

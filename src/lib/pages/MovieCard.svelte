@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { media_type } from  '$lib/store'
+  import { media_type } from  '$lib/stores/store'
   import ProgressBar from '$lib/utilities/ProgressBar.svelte'
   import Spinner from '$lib/utilities/Spinner.svelte'
   const IMAGE_API = 'https://image.tmdb.org/t/p/w300'

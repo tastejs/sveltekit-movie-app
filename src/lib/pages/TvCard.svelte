@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { media_type } from  '$lib/store'
+  import { media_type } from  '$lib/stores/store'
   import ProgressBar from '$lib/utilities/ProgressBar.svelte'
   import Spinner from '$lib/utilities/Spinner.svelte'
   const IMAGE_API = 'https://image.tmdb.org/t/p/w300'
@@ -19,7 +19,7 @@
 </script>
 {#if id}
 
-  <section id='movie-card' class='group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg'>
+  <section id='tv-card' class='group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg'>
     <div class= 'relative preserve-3d w-full duration-700 group-hover:rotate-y-180' >
       <div class='backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg'>
         <img class='oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg  text-skin-muted 'src={poster_path ? IMAGE_API + poster_path : '/default.jpg' } alt={title?title:name} /> 

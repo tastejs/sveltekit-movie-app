@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import { genres_list, media_type } from '$lib/store'
+    import { genres_list, media_type } from '$lib/stores/store'
     import { page } from '$app/stores'
     let page_title = ''
     let media_option = ''

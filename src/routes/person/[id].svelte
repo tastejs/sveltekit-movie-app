@@ -2,7 +2,7 @@
   import { onMount } from  'svelte'
   import Person from '$lib/pages/Person.svelte'
   import Spinner from '$lib/utilities/Spinner.svelte'
-  import { ApiKey, media_type } from '$lib/store'
+  import { ApiKey, media_type } from '$lib/stores/store'
   import { page } from '$app/stores';
 
   let PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`

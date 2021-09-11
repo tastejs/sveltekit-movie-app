@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { current_page, media_type, selected } from '$lib/store'
+  import { current_page, media_type, selected } from '$lib/stores/store'
   import { goto } from '$app/navigation';
   import Genre from '$lib/Genre.svelte'
 
