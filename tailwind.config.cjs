@@ -5,7 +5,7 @@ const config = {
 		"./src/**/*.{html,js,svelte,ts}",
 	],
 	theme: {
-		extend: {
+		extend: {	 
 			borderColor: {
 				skin: {
 					border: 'var(--color-border)'

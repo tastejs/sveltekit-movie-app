@@ -1,5 +1,5 @@
-export async function getMovieDetails(url:string) :Promise<MovieType[]>{
+export async function getMovieDetails(url: string): Promise<MovieType[]> {
   const res = await fetch(url)
-  const movieResult = await res.json()
+  const movieResult: MovieType[] = await res.json()
   return movieResult
 }

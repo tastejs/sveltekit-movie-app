@@ -1,24 +1,22 @@
-<script lang='ts'>
-  import { onMount } from  'svelte'
-  import Person from '$lib/pages/Person.svelte'
-  import Spinner from '$lib/utilities/Spinner.svelte'
-  import { ApiKey, media_type } from '$lib/stores/store'
-  import { page } from '$app/stores';
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import Person from '$lib/pages/Person.svelte';
+	import Spinner from '$lib/utilities/Spinner.svelte';
+	import { ApiKey, media_type } from '$lib/stores/store';
+	import { page } from '$app/stores';
 
-  let PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`
-  $media_type = 'person'
- 
-  let person = [] as PersonType|any
+	let PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`;
+	$media_type = 'person';
 
-  onMount(async () => {
-    person = await fetch(PERSONS_API)
-    .then(x => x.json())
-	})
+	let person = [] as PersonType | any;
 
+	onMount(async () => {
+		person = await fetch(PERSONS_API).then((x) => x.json());
+	});
 </script>
 
-{#if person.length !==0}
-  <Person {person}/>
+{#if person.length !== 0}
+	<Person {person} />
 {:else}
-  <Spinner />
+	<Spinner />
 {/if}
