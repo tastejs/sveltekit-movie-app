@@ -24,7 +24,6 @@
 					>
 						{name}
 					</h6>
-					<h6 class="xl:text-lg font-bold" />
 				</div>
 			</a>
 		</section>

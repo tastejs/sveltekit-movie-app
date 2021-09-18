@@ -7,9 +7,8 @@
 
 	onMount(async () => {
 		season_details = await fetch(api_url).then((x) => x.json());
-		console.log('itsme');
 	});
-	console.log('im here', api_url);
+	
 </script>
 
 <SeasonTitle />
