@@ -24,7 +24,7 @@
 
 <script lang="ts">
 	import '../app.postcss';
-	export let genre: Genres;
+	// export let genre: Genres;
 	import Header from '$lib/components/Header.svelte';
 	import { genres_list } from '$lib/stores/store';
 	import { theme } from '$lib/stores/theme-store';
