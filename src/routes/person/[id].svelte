@@ -1,22 +1,25 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
-	import Person from '$lib/pages/Person.svelte';
-	import Spinner from '$lib/utilities/Spinner.svelte';
-	import { ApiKey, media_type } from '$lib/stores/store';
-	import { page } from '$app/stores';
-
-	let PERSONS_API = `https://api.themoviedb.org/3/person/${$page.params.id}?api_key=${$ApiKey}&language=en-US`;
-	$media_type = 'person';
-
-	let person = [] as PersonType | any;
-
-	onMount(async () => {
-		person = await fetch(PERSONS_API).then((x) => x.json());
-	});
+<script context="module" lang="ts">
+	import { get } from 'svelte/store';
+	import { ApiKey } from '$lib/stores/store';
+	export async function load({ page }) {
+		let api_url = `https://api.themoviedb.org/3/person/${page.params.id}?api_key=${get(
+			ApiKey
+		)}&language=en-US`;
+		let person: PersonType = await fetch(api_url).then((x) => x.json());
+		return { props: { person } };
+	}
 </script>
 
-{#if person.length !== 0}
+<script lang="ts">
+	import Person from '$lib/pages/Person.svelte';
+	import { media_type } from '$lib/stores/store';
+	import { page } from '$app/stores';
+
+	$media_type = 'person';
+
+	export let person: PersonType;
+</script>
+
+{#key $page.params.id}
 	<Person {person} />
-{:else}
-	<Spinner />
-{/if}
+{/key}

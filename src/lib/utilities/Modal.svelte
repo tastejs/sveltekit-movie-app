@@ -1,10 +1,10 @@
 <script lang="ts">
-	export let trailer_id: string;
+	export let trailer_id: number;
 	let shown = false;
-	export function show() {
+	export function show(): void {
 		shown = true;
 	}
-	export function hide() {
+	export function hide(): void {
 		shown = false;
 	}
 </script>

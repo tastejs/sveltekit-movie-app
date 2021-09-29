@@ -4,7 +4,7 @@
 	import Spinner from '$lib/utilities/Spinner.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
 
-	export let datum;
+	export let datum: TvType;
 	$show_name = datum.name;
 </script>
 
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 			<a
-				class="w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto transform duration-300 z-10"
+				class="w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"
 				href={`/${$media_type}/${datum.id}`}
 			>
 				<h6 class="mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded">Overview</h6>

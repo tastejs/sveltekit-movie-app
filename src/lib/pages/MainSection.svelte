@@ -8,7 +8,7 @@
 	import { current_page, media_type } from '$lib/stores/store';
 	export let api_url: string;
 	$current_page = 1;
-	let data = [];
+	let data: any[]
 
 	onMount(async () => {
 		getData(api_url + $current_page);

@@ -1,22 +1,26 @@
 <script context="module" lang="ts">
-	const ApiKey = import.meta.env.VITE_API_KEY as string;
-	const GENRES_MOVIE_API: string = `https://api.themoviedb.org/3/genre/movie/list?api_key=${ApiKey}&language-en-GB`;
-	const GENRES_TV_API: string = `https://api.themoviedb.org/3/genre/tv/list?api_key=${ApiKey}&language-en-GB`;
-
-	const genre = {} as Genres;
+	import { get } from 'svelte/store';
+	import { ApiKey } from '$lib/stores/store';
+	const GENRES_MOVIE_API = `https://api.themoviedb.org/3/genre/movie/list?api_key=${get(
+		ApiKey
+	)}&language-en-GB`;
+	const GENRES_TV_API = `https://api.themoviedb.org/3/genre/tv/list?api_key=${get(
+		ApiKey
+	)}&language-en-GB`;
 
 	export const load = async ({ fetch }) => {
 		const res_mov: Response = await fetch(GENRES_MOVIE_API);
 		const res_mov_json: Media = await res_mov.json();
-		genre.movie = res_mov_json.genres;
+		let movie_genre: Array<Genre> = res_mov_json.genres;
 
 		const res_tv: Response = await fetch(GENRES_TV_API);
 		const res_tv_json: Media = await res_tv.json();
-		genre.tv = res_tv_json.genres;
+		let tv_genre: Array<Genre> = res_tv_json.genres;
 
 		return {
 			props: {
-				genre
+				tv_genre,
+				movie_genre
 			}
 		};
 	};
@@ -24,13 +28,14 @@
 
 <script lang="ts">
 	import '../app.postcss';
-	// export let genre: Genres;
+	export let tv_genre: Array<Genre>;
+	export let movie_genre: Array<Genre>;
 	import Header from '$lib/components/Header.svelte';
-	import { genres_list } from '$lib/stores/store';
+	import { tv_genres, movie_genres } from '$lib/stores/store';
 	import { theme } from '$lib/stores/theme-store';
 	theme.init();
-
-	$genres_list = genre;
+	$tv_genres = tv_genre;
+	$movie_genres = movie_genre;
 </script>
 
 <svelte:head>

@@ -1,25 +1,37 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { ApiKey } from '$lib/stores/store';
-	let films = [];
-	let tv = [];
+
 	export let personId: number;
 
-	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
-	const KNOWN_API = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${$ApiKey}&language=en-US`;
+	type TaggedMovie = MovieType & { media_type: 'movie' };
+	type TaggedTv = TvType & { media_type: 'tv' };
 
-	let movies = [];
+	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
+	const KNOWN_FOR_API = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${$ApiKey}&language=en-US`;
+
+	let movies: (TaggedTv | TaggedMovie)[];
+	let films: TaggedMovie[] = [];
+	let tv: TaggedTv[] = [];
+
+	function isMovie(x: TaggedTv | TaggedMovie): x is TaggedMovie {
+		return x.media_type === 'movie';
+	}
+	function isTv(x: TaggedTv | TaggedMovie): x is TaggedTv {
+		return x.media_type === 'tv';
+	}
 
 	onMount(async () => {
-		movies = await fetch(KNOWN_API)
+		movies = await fetch(KNOWN_FOR_API)
 			.then((x) => x.json())
 			.then((x) => x.cast);
-		films = movies.filter(function (movie) {
-			return movie.media_type === 'movie';
-		});
-		tv = movies.filter(function (movie) {
-			return movie.media_type === 'tv';
-		});
+		console.log(movies);
+
+		films = movies.filter(isMovie);
+		tv = movies.filter(isTv);
+
+		films.sort((a, b) => (a.release_date > b.release_date ? -1 : 1));
+		tv.sort((a, b) => (a.first_air_date > b.first_air_date ? -1 : 1));
 	});
 </script>
 
@@ -47,11 +59,7 @@
 									{movie.title}
 								</p>
 								<p class="text-xs text-center flex justify-center items-center">
-									{movie.first_air_date
-										? movie.first_air_date.substring(0, 4)
-										: movie.release_date
-										? movie.release_date.substring(0, 4)
-										: ''}
+									{movie.release_date ? movie.release_date.substring(0, 4) : ''}
 								</p>
 							</div>
 						</a>
@@ -81,11 +89,7 @@
 									{show.name}
 								</p>
 								<p class="text-xs text-center flex justify-center items-center ">
-									{show.release_date
-										? show.release_date.substring(0, 4)
-										: show.first_air_date
-										? show.first_air_date.substring(0, 4)
-										: ''}
+									{show.first_air_date ? show.first_air_date.substring(0, 4) : ''}
 								</p>
 							</div>
 						</a>

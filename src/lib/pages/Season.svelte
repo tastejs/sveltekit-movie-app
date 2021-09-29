@@ -1,43 +1,44 @@
 <script lang="ts">
-	import SeasonTitle from '$lib/components/SeasonTitle.svelte';
+	// import SeasonTitle from '$lib/components/SeasonTitle.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w500/';
-	let season_details: Season_type[] = [];
-	export let api_url: string;
-	import { onMount } from 'svelte';
-
-	onMount(async () => {
-		season_details = await fetch(api_url).then((x) => x.json());
-	});
-	
+	export let season_details: Season_type;
+	export let movie_id: string;
 </script>
 
-<SeasonTitle />
-{#key api_url}
-	<section id="season">
-		<div
-			class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 xl:rounded-2xl"
-		>
-			{#if season_details.id}
-				<h4 class="pb-8">Season Information</h4>
-				{#each season_details.episodes as episode, key}
-					<div class="flex flex-col pb-4">
-						<div class="text-skin-base">
+<!-- <SeasonTitle {season_details} /> -->
+
+<section id="season">
+	<div
+		class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 xl:rounded-2xl"
+	>
+		{#if season_details.id}
+			<h4 class="pb-8">Season Information</h4>
+			{#each season_details.episodes as episode}
+				<div class="flex flex-col xl:flex-row pb-4">
+					<a
+						href={`/episode/${movie_id}/${season_details.season_number}/${episode.episode_number}`}
+						class="flex flex-col xl:flex-row text-skin-base xl:rounded-lg"
+					>
+						<div
+							class="flex mx-auto max-h-full max-w-full xl:m-0 xl:flex-none xl:w-80 xl:h-44 xl:items-start"
+						>
 							<img
-								class="mx-auto block p-0 max-h-full max-w-full "
+								class="flex xl:w-80 xl:h-44 items-start"
 								src={episode.still_path ? IMAGE_API + episode.still_path : '/default.jpg'}
 								alt="episode"
 							/>
 						</div>
 						<div class="ml-2 block">
-							<h4>{key + 1}. {episode.name}</h4>
+							<h4>{episode.name}</h4>
 							<hr />
 							<h6>Air Date: {episode.air_date}</h6>
 							<h6>Overview:</h6>
-							<h6 class="text-skin-muted mb-4">{episode.overview}</h6>
+							<h6 class=" flex-1 pr-8 text-skin-muted mb-4">{episode.overview}</h6>
 						</div>
-					</div>
-				{/each}
-			{/if}
-		</div>
-	</section>
-{/key}
+					</a>
+				</div>
+			{/each}
+		{/if}
+	</div>
+	<pre>{JSON.stringify(season_details, null, 2)}</pre>
+</section>

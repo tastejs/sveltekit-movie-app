@@ -6,10 +6,10 @@
 	}
 </script>
 
-<script lang='ts'>
+<script lang="ts">
 	import { dev } from '$app/env';
 	export let status: any;
-	export let error: { message: any; stack: any; }
+	export let error: { message: any; stack: any };
 	const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
 	const title = offline ? 'Offline' : status;
 	const message = offline ? 'Find the internet and try again' : error.message;
@@ -28,7 +28,8 @@
 {/if}
 
 <style>
-	h1, p {
+	h1,
+	p {
 		margin: 0 auto;
 	}
 	h1 {

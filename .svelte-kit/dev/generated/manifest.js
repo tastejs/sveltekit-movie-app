@@ -1,15 +1,16 @@
 const c = [
-	() => import("..\\..\\..\\src\\routes\\__layout.svelte"),
-	() => import("..\\..\\..\\src\\routes\\__error.svelte"),
-	() => import("..\\..\\..\\src\\routes\\index.svelte"),
-	() => import("..\\..\\..\\src\\routes\\NotFound.svelte"),
-	() => import("..\\..\\..\\src\\routes\\seasons\\[id]\\[season_number].svelte"),
-	() => import("..\\..\\..\\src\\routes\\person\\[id].svelte"),
-	() => import("..\\..\\..\\src\\routes\\search\\[id].svelte"),
-	() => import("..\\..\\..\\src\\routes\\genre\\movie\\[id].svelte"),
-	() => import("..\\..\\..\\src\\routes\\genre\\tv\\[id].svelte"),
-	() => import("..\\..\\..\\src\\routes\\movie\\[id].svelte"),
-	() => import("..\\..\\..\\src\\routes\\tv\\[id].svelte")
+	() => import('..\\..\\..\\src\\routes\\__layout.svelte'),
+	() => import('..\\..\\..\\src\\routes\\__error.svelte'),
+	() => import('..\\..\\..\\src\\routes\\index.svelte'),
+	() => import('..\\..\\..\\src\\routes\\NotFound.svelte'),
+	() => import('..\\..\\..\\src\\routes\\episode\\[id]\\[season_number]\\[episode_number].svelte'),
+	() => import('..\\..\\..\\src\\routes\\seasons\\[id]\\[season_number].svelte'),
+	() => import('..\\..\\..\\src\\routes\\person\\[id].svelte'),
+	() => import('..\\..\\..\\src\\routes\\search\\[id].svelte'),
+	() => import('..\\..\\..\\src\\routes\\genre\\movie\\[id].svelte'),
+	() => import('..\\..\\..\\src\\routes\\genre\\tv\\[id].svelte'),
+	() => import('..\\..\\..\\src\\routes\\movie\\[id].svelte'),
+	() => import('..\\..\\..\\src\\routes\\tv\\[id].svelte')
 ];
 
 const d = decodeURIComponent;
@@ -21,26 +22,39 @@ export const routes = [
 	// src/routes/NotFound.svelte
 	[/^\/NotFound\/?$/, [c[0], c[3]], [c[1]]],
 
+	// src/routes/episode/[id]/[season_number]/[episode_number].svelte
+	[
+		/^\/episode\/([^/]+?)\/([^/]+?)\/([^/]+?)\/?$/,
+		[c[0], c[4]],
+		[c[1]],
+		(m) => ({ id: d(m[1]), season_number: d(m[2]), episode_number: d(m[3]) })
+	],
+
 	// src/routes/seasons/[id]/[season_number].svelte
-	[/^\/seasons\/([^/]+?)\/([^/]+?)\/?$/, [c[0], c[4]], [c[1]], (m) => ({ id: d(m[1]), season_number: d(m[2])})],
+	[
+		/^\/seasons\/([^/]+?)\/([^/]+?)\/?$/,
+		[c[0], c[5]],
+		[c[1]],
+		(m) => ({ id: d(m[1]), season_number: d(m[2]) })
+	],
 
 	// src/routes/person/[id].svelte
-	[/^\/person\/([^/]+?)\/?$/, [c[0], c[5]], [c[1]], (m) => ({ id: d(m[1])})],
+	[/^\/person\/([^/]+?)\/?$/, [c[0], c[6]], [c[1]], (m) => ({ id: d(m[1]) })],
 
 	// src/routes/search/[id].svelte
-	[/^\/search\/([^/]+?)\/?$/, [c[0], c[6]], [c[1]], (m) => ({ id: d(m[1])})],
+	[/^\/search\/([^/]+?)\/?$/, [c[0], c[7]], [c[1]], (m) => ({ id: d(m[1]) })],
 
 	// src/routes/genre/movie/[id].svelte
-	[/^\/genre\/movie\/([^/]+?)\/?$/, [c[0], c[7]], [c[1]], (m) => ({ id: d(m[1])})],
+	[/^\/genre\/movie\/([^/]+?)\/?$/, [c[0], c[8]], [c[1]], (m) => ({ id: d(m[1]) })],
 
 	// src/routes/genre/tv/[id].svelte
-	[/^\/genre\/tv\/([^/]+?)\/?$/, [c[0], c[8]], [c[1]], (m) => ({ id: d(m[1])})],
+	[/^\/genre\/tv\/([^/]+?)\/?$/, [c[0], c[9]], [c[1]], (m) => ({ id: d(m[1]) })],
 
 	// src/routes/movie/[id].svelte
-	[/^\/movie\/([^/]+?)\/?$/, [c[0], c[9]], [c[1]], (m) => ({ id: d(m[1])})],
+	[/^\/movie\/([^/]+?)\/?$/, [c[0], c[10]], [c[1]], (m) => ({ id: d(m[1]) })],
 
 	// src/routes/tv/[id].svelte
-	[/^\/tv\/([^/]+?)\/?$/, [c[0], c[10]], [c[1]], (m) => ({ id: d(m[1])})]
+	[/^\/tv\/([^/]+?)\/?$/, [c[0], c[11]], [c[1]], (m) => ({ id: d(m[1]) })]
 ];
 
 // we import the root layout/error components eagerly, so that

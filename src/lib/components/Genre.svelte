@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { genres_list, media_type, selected } from '$lib/stores/store';
+	import { tv_genres, movie_genres, media_type, selected } from '$lib/stores/store';
 </script>
 
 <div class="bg-skin-primary w-full xl:w-96">
@@ -10,7 +10,7 @@
 	</h4>
 	<p class="py-0.5 justify-center bg-skin-inverted" />
 	<ul class="flex flex-wrap justify-center">
-		{#each $genres_list['movie'] as genre, i}
+		{#each $movie_genres as genre, i}
 			<li class="flex">
 				<button
 					aria-label={genre.name}
@@ -23,7 +23,7 @@
 				>
 					{genre.name}
 				</button>
-				{#if i !== $genres_list['movie'].length - 1}<span class="mx-2">|</span>{/if}
+				{#if i !== $movie_genres.length - 1}<span class="mx-2">|</span>{/if}
 			</li>
 		{/each}
 	</ul>
@@ -33,7 +33,7 @@
 	</h4>
 	<p class="py-0.5 justify-center text-skin-base" />
 	<ul class="flex flex-wrap justify-center">
-		{#each $genres_list['tv'] as genre, j}
+		{#each $tv_genres as genre, j}
 			<li class="flex">
 				<button
 					class=" hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
@@ -45,7 +45,7 @@
 				>
 					{genre.name}
 				</button>
-				{#if j !== $genres_list['tv'].length - 1}<span class="mx-2">|</span>{/if}
+				{#if j !== $tv_genres.length - 1}<span class="mx-2">|</span>{/if}
 			</li>
 		{/each}
 	</ul>

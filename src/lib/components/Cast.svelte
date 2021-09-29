@@ -4,8 +4,8 @@
 
 	export let movie_id: string;
 
-	const PERSONS_API: string = `https://api.themoviedb.org/3/${$media_type}/${movie_id}/credits?api_key=${$ApiKey}&language=en-US`;
-	const IMAGE_API: string = 'https://image.tmdb.org/t/p/w200/';
+	const PERSONS_API = `https://api.themoviedb.org/3/${$media_type}/${movie_id}/credits?api_key=${$ApiKey}&language=en-US`;
+	const IMAGE_API = 'https://image.tmdb.org/t/p/w200/';
 	let persons: PersonType[] = [];
 
 	onMount(async () => {
