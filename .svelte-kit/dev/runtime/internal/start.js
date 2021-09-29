@@ -271,23 +271,7 @@ class Router {
 			query: info.query
 		});
 
-		await this.renderer.update(info, chain, false);
-
-		if (!keepfocus) {
-			document.body.focus();
-		}
-
-		const deep_linked = hash && document.getElementById(hash.slice(1));
-		if (scroll) {
-			scrollTo(scroll.x, scroll.y);
-		} else if (deep_linked) {
-			// Here we use `scrollIntoView` on the element instead of `scrollTo`
-			// because it natively supports the `scroll-margin` and `scroll-behavior`
-			// CSS properties.
-			deep_linked.scrollIntoView();
-		} else {
-			scrollTo(0, 0);
-		}
+		await this.renderer.update(info, chain, false, { hash, scroll, keepfocus });
 	}
 }
 
@@ -444,13 +428,15 @@ function initial_fetch(resource, opts) {
 }
 
 class Renderer {
-	/** @param {{
+	/**
+	 * @param {{
 	 *   Root: CSRComponent;
 	 *   fallback: [CSRComponent, CSRComponent];
 	 *   target: Node;
 	 *   session: any;
 	 *   host: string;
-	 * }} opts */
+	 * }} opts
+	 */
 	constructor({ Root, fallback, target, session, host }) {
 		this.Root = Root;
 		this.fallback = fallback;
@@ -605,8 +591,9 @@ class Renderer {
 	 * @param {import('./types').NavigationInfo} info
 	 * @param {string[]} chain
 	 * @param {boolean} no_cache
+	 * @param {{hash?: string, scroll: { x: number, y: number } | null, keepfocus: boolean}} [opts]
 	 */
-	async update(info, chain, no_cache) {
+	async update(info, chain, no_cache, opts) {
 		const token = (this.token = {});
 		let navigation_result = await this._get_navigation_result(info, no_cache);
 
@@ -644,12 +631,31 @@ class Renderer {
 
 			this.root.$set(navigation_result.props);
 			this.stores.navigating.set(null);
-
-			await 0;
 		} else {
 			this._init(navigation_result);
 		}
 
+		if (opts) {
+			const { hash, scroll, keepfocus } = opts;
+
+			if (!keepfocus) {
+				document.body.focus();
+			}
+
+			const deep_linked = hash && document.getElementById(hash.slice(1));
+			if (scroll) {
+				scrollTo(scroll.x, scroll.y);
+			} else if (deep_linked) {
+				// Here we use `scrollIntoView` on the element instead of `scrollTo`
+				// because it natively supports the `scroll-margin` and `scroll-behavior`
+				// CSS properties.
+				deep_linked.scrollIntoView();
+			} else {
+				scrollTo(0, 0);
+			}
+		}
+
+		await 0;
 		dispatchEvent(new CustomEvent('sveltekit:navigation-end'));
 		this.loading.promise = null;
 		this.loading.id = null;
@@ -770,9 +776,11 @@ class Renderer {
 	 */
 	async _get_navigation_result_from_branch({ page, branch }) {
 		const filtered = /** @type {import('./types').BranchNode[] } */ (branch.filter(Boolean));
+		const redirect = filtered.find((f) => f.loaded && f.loaded.redirect);
 
 		/** @type {import('./types').NavigationResult} */
 		const result = {
+			redirect: redirect && redirect.loaded ? redirect.loaded.redirect : undefined,
 			state: {
 				page,
 				branch,
@@ -1114,7 +1122,8 @@ class Renderer {
 
 // @ts-expect-error - value will be replaced on build step
 
-/** @param {{
+/**
+ * @param {{
  *   paths: {
  *     assets: string;
  *     base: string;
@@ -1131,7 +1140,8 @@ class Renderer {
  *     nodes: Array<Promise<import('types/internal').CSRComponent>>;
  *     page: import('types/page').Page;
  *   };
- * }} opts */
+ * }} opts
+ */
 async function start({ paths, target, session, host, route, spa, trailing_slash, hydrate }) {
 	if (import.meta.env.DEV && !target) {
 		throw new Error('Missing target element. See https://kit.svelte.dev/docs#configuration-target');

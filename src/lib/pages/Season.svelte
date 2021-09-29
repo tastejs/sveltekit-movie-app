@@ -40,5 +40,5 @@
 			{/each}
 		{/if}
 	</div>
-	<pre>{JSON.stringify(season_details, null, 2)}</pre>
+	<!-- <pre>{JSON.stringify(season_details, null, 2)}</pre> -->
 </section>

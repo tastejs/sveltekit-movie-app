@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MovieCard from '$lib/components/MovieCard.svelte';
 	import Skeleton from '$lib/utilities/Skeleton.svelte';
-	export let data:MovieType[]
+	export let data:MovieType[]=[]
 </script>
 
 <section

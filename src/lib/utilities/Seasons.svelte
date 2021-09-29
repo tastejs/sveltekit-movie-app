@@ -37,7 +37,7 @@
 		{/each}
 	</div>
 
-	<pre>{JSON.stringify(tv_details, null, 2)}</pre>
+	<!-- <pre>{JSON.stringify(tv_details, null, 2)}</pre> -->
 	<!--   
  
     {#each Object.entries(tv_details) as [key, value]}

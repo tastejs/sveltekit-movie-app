@@ -91,7 +91,7 @@
 		{/if}
 	</div>
 </section>
-<pre>{JSON.stringify(episode_details, null, 2)}</pre>
+<!-- <pre>{JSON.stringify(episode_details, null, 2)}</pre> -->
 
 <!-- "crew": [
     {
