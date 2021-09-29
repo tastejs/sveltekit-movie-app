@@ -25,7 +25,7 @@
 		movies = await fetch(KNOWN_FOR_API)
 			.then((x) => x.json())
 			.then((x) => x.cast);
-		console.log(movies);
+		// console.log(movies);
 
 		films = movies.filter(isMovie);
 		tv = movies.filter(isTv);

@@ -2,7 +2,7 @@
 	export let tv_details: TvType;
 	export let movie_id: string;
 	const IMAGE_API = 'https://www.themoviedb.org/t/p/original';
-	console.log('movie details', tv_details);
+	// console.log('movie details', tv_details);
 </script>
 
 <section id="Seasons">

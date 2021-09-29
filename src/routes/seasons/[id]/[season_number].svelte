@@ -15,7 +15,7 @@
 	import { page } from '$app/stores';
 	export let season_details: Season_type;
 	let movie_id = $page.params.id;
-	console.log('Season Details', season_details);
+	// console.log('Season Details', season_details);
 </script>
 
 {#key $page.params.season_number}
