@@ -1,4 +1,4 @@
-// const fetch = require('node-fetch')
+const fetch = require('node-fetch')
 
 exports.handler = async function (event, _context) {
   const eventBody = JSON.parse(event.body)
