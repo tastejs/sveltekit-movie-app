@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../../../../GitHub/sveltekit-movie-app/netlify/functions/good-morning.js"],
-  "sourceRoot": "C:/Users/Wayne/AppData/Local/Temp/tmp-14316-cIyDerCi9TUT",
+  "sourceRoot": "C:/Users/Wayne/AppData/Local/Temp/tmp-12132-AAFw4oPqPHt8",
   "sourcesContent": ["exports.handler = async function () {\r\n  return {\r\n    statusCode: 200,\r\n    body: JSON.stringify({ message: 'Good morning!' }),\r\n  };\r\n};"],
   "mappings": ";AAAA,QAAQ,UAAU,iBAAkB;AAClC,SAAO;AAAA,IACL,YAAY;AAAA,IACZ,MAAM,KAAK,UAAU,EAAE,SAAS;AAAA;AAAA;",
   "names": []
