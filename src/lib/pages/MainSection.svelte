@@ -9,11 +9,24 @@
 	export let api_url: string;
 	$current_page = 1;
 	let data = [];
+	let total_pages = 0;
 
 	onMount(async () => {
 		getData(api_url + $current_page);
+		getData2(api_url + $current_page)
 	});
-	let total_pages = 0;
+	async function getData2(API: string) {
+		const response = await fetch('/.netlify/functions/api-call', {
+            method: 'POST',
+            body: JSON.stringify({
+              url: API
+            })
+          }).then(response => response.json())
+
+         console.log(response)
+        }
+
+	
 	async function getData(API: string) {
 		const res = await fetch(API);
 		const res_json = await res.json();

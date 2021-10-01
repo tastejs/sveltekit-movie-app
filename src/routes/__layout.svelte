@@ -1,12 +1,8 @@
 <script context="module" lang="ts">
 	import { get } from 'svelte/store';
 	import { ApiKey } from '$lib/stores/store';
-	const GENRES_MOVIE_API = `https://api.themoviedb.org/3/genre/movie/list?api_key=${get(
-		ApiKey
-	)}&language-en-GB`;
-	const GENRES_TV_API = `https://api.themoviedb.org/3/genre/tv/list?api_key=${get(
-		ApiKey
-	)}&language-en-GB`;
+	const GENRES_MOVIE_API = `https://api.themoviedb.org/3/genre/movie/list?api_key=${get(ApiKey)}&language-en-GB`;
+	const GENRES_TV_API = `https://api.themoviedb.org/3/genre/tv/list?api_key=${get(ApiKey)}&language-en-GB`;
 
 	export const load = async ({ fetch }) => {
 		const res_mov: Response = await fetch(GENRES_MOVIE_API);
