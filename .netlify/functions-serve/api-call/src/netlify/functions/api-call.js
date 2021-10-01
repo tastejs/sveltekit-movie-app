@@ -4819,16 +4819,14 @@ var init_src = __esm({
 });
 
 // netlify/functions/api-call.js
-var fetch2 = (init_src(), src_exports);
+var fetch2 = (init_src(), src_exports).default;
 exports.handler = async function(event, _context) {
   const eventBody = JSON.parse(event.body);
-  const TMDB_API = eventBody.api;
-  const response = await fetch2(TMDB_API);
-  const data = await response.json();
-  console.log(data);
+  const TMDB_API = eventBody.url;
+  console.log("Ballocks");
   return {
     statusCode: 200,
-    body: JSON.stringify(data)
+    body: JSON.stringify(TMDB_API)
   };
 };
 //# sourceMappingURL=api-call.js.map

@@ -21,9 +21,9 @@
             body: JSON.stringify({
               url: API
             })
-          }).then(response => response.json())
+          })
 
-         console.log(response)
+         console.log('Main Section Response',response)
         }
 
 	
