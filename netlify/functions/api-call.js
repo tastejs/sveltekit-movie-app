@@ -6,7 +6,7 @@ exports.handler = async function (event, _context) {
 
   const response = await fetch(TMDB_API)
   const data = await response.json()
-  console.log
+  console.log(data)
 
   return {
     statusCode: 200,

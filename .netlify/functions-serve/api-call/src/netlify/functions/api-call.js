@@ -4825,7 +4825,7 @@ exports.handler = async function(event, _context) {
   const TMDB_API = eventBody.api;
   const response = await fetch2(TMDB_API);
   const data = await response.json();
-  console.log;
+  console.log(data);
   return {
     statusCode: 200,
     body: JSON.stringify(data)
