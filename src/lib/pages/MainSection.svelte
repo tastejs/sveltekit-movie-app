@@ -15,20 +15,19 @@
 		// getData(api_url + $current_page);
 		
         const response = await fetch('/.netlify/functions/api-call', {
-            method: 'POST',
-            body: JSON.stringify({
-              url: api_url + $current_page
-            })
-          }).then(response => response.json())
-		  data=await response.results
-		  total_pages=response.total_pages
-
-          
-		
+				method: 'POST',
+				body: JSON.stringify({
+					url: api_url + $current_page
+				})
+			}).then(response => response.json())
+			data = response.results
+			total_pages = response.total_pages;
+			
 	})
 
 		$:console.log('data', data)
 		$:console.log('total pages', total_pages)
+
 	async function getData(API: string) {
 		const res = await fetch(API);
 		const res_json = await res.json();
