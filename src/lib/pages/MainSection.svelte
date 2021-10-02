@@ -14,7 +14,7 @@
 	let total_pages2 = 0
 
 	onMount(async () => {
-		getData(api_url + $current_page);
+		// getData(api_url + $current_page);
 		
         const response = await fetch('/.netlify/functions/api-call', {
 				method: 'POST',
@@ -23,22 +23,22 @@
 				})
 			}).then(response => response.json())
 			
-			data2 = response.res.results
-			console.log('data in mount', data2)
-			total_pages2 = response.res.total_pages;
+			data = response.res.results
+			// console.log('data in mount', data)
+			total_pages = response.res.total_pages;
 			
 	})
 
 
-		$:console.log('data', data2)
-		$:console.log('total pages', total_pages2)
+		// $:console.log('data', data2)
+		// $:console.log('total pages', total_pages2)
 
-	async function getData(API: string) {
-		const res = await fetch(API);
-		const res_json = await res.json();
-		data = await res_json.results;
-		total_pages = res_json.total_pages;
-	}
+	// async function getData(API: string) {
+	// 	const res = await fetch(API);
+	// 	const res_json = await res.json();
+	// 	data = await res_json.results;
+	// 	total_pages = res_json.total_pages;
+	// }
 
 	async function moreData(API: string) {
 		const res = await fetch(API);
