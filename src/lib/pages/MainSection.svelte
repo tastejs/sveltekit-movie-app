@@ -10,8 +10,8 @@
 	$current_page = 1;
 	let data = [];
 	let total_pages = 0;
-	let data2 = []
-	let total_pages2 = 0
+	// let data2 = []
+	// let total_pages2 = 0
 
 	onMount(async () => {
 		// getData(api_url + $current_page);

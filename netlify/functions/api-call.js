@@ -6,7 +6,8 @@ export async function handler (event, _context) {
 
   const response = await fetch(TMDB_API)
   const res = await response.json()
-  console.log(res)
+  console.log('api-call-res',res)
+  console.log('api key',process.env.VITE_API_KEY)
 
   return {
     statusCode: 200,
