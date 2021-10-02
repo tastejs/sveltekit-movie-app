@@ -2,7 +2,7 @@
 exports.handler = async function() {
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Good morning!" })
+    body: "Ballocks"
   };
 };
 //# sourceMappingURL=good-morning.js.map

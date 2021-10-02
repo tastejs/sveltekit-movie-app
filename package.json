@@ -40,6 +40,7 @@
 		"node": ">= 12.17.0"
 	},
 	"dependencies": {
+		"@netlify/functions": "^0.7.2",
 		"@tailwindcss/line-clamp": "^0.2.1",
 		"sapper-environment": "^1.0.1"
 	}

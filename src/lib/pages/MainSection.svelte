@@ -13,18 +13,12 @@
 
 	onMount(async () => {
 		getData(api_url + $current_page);
-		getData2(api_url + $current_page)
-	});
-	async function getData2(API: string) {
-		const response = await fetch('/.netlify/functions/api-call', {
-            method: 'POST',
-            body: JSON.stringify({
-              url: API
-            })
-          })
-
-         console.log('Main Section Response',response)
-        }
+		
+        const response = await fetch('/netlify/functions/api-call').then(
+            response => response.json()
+          )
+		console.log(response)
+	})
 
 	
 	async function getData(API: string) {

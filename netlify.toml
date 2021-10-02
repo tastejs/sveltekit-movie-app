@@ -4,6 +4,7 @@
   
 [dev]
  command = "svelte-kit dev"
+ framework = "svelte-kit"
  
 [functions]
   directory = "netlify/functions"
