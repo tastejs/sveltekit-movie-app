@@ -6,7 +6,8 @@
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte';
 	import { onMount, tick } from 'svelte';
 	import { current_page, media_type } from '$lib/stores/store';
-	export let api_url: string;
+	export let api_url_start: string;
+	export let api_url_end: string;
 	$current_page = 1;
 	let data = [];
 	let total_pages = 0;
@@ -19,7 +20,8 @@
         const response = await fetch('/.netlify/functions/api-call', {
 				method: 'POST',
 				body: JSON.stringify({
-					url: api_url + $current_page
+					url1:api_url_start,
+					url2: api_url_end + $current_page
 				})
 			}).then(response => response.json())
 			

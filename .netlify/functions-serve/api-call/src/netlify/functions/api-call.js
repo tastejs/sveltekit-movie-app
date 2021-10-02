@@ -4735,7 +4735,7 @@ function fixResponseChunkedTransferBadEnding(request, errorCallback) {
 // netlify/functions/api-call.js
 async function handler(event, _context) {
   const eventBody = JSON.parse(event.body);
-  const TMDB_API = eventBody.url;
+  const TMDB_API = eventBody.url1 + process.env.VITE_API_KEY + eventBody.url2;
   const response = await fetch(TMDB_API);
   const res = await response.json();
   console.log("api-call-res", res);
