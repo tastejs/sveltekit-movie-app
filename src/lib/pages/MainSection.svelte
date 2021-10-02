@@ -4,15 +4,17 @@
 	import PersonList from '$lib/pages/PersonList.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { current_page, media_type } from '$lib/stores/store';
 	export let api_url: string;
 	$current_page = 1;
 	let data = [];
 	let total_pages = 0;
+	let data2 = []
+	let total_pages2 = 0
 
 	onMount(async () => {
-		// getData(api_url + $current_page);
+		getData(api_url + $current_page);
 		
         const response = await fetch('/.netlify/functions/api-call', {
 				method: 'POST',
@@ -20,14 +22,16 @@
 					url: api_url + $current_page
 				})
 			}).then(response => response.json())
-			data = response.results
-			console.log('data in mont', data)
-			total_pages = response.total_pages;
+			
+			data2 = response.results
+			console.log('data in mount', data2)
+			total_pages2 = response.total_pages;
 			
 	})
 
-		$:console.log('data', data)
-		$:console.log('total pages', total_pages)
+
+		$:console.log('data', data2)
+		$:console.log('total pages', total_pages2)
 
 	async function getData(API: string) {
 		const res = await fetch(API);
