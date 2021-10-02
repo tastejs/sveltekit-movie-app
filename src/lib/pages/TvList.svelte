@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TvCard from '$lib/components/TvCard.svelte';
 	import Skeleton from '$lib/utilities/Skeleton.svelte';
-	export let data:TvType[]=[]
+	export let data: TvType[] = [];
 </script>
 
 <section

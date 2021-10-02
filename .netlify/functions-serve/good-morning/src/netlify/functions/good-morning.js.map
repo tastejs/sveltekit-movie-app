@@ -1,8 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../GitHub/sveltekit-movie-app/netlify/functions/good-morning.js"],
-  "sourceRoot": "C:/Users/Wayne/AppData/Local/Temp/tmp-9912-l6KHomId1Jij",
-  "sourcesContent": ["exports.handler = async function () {\r\n    return {\r\n      statusCode: 200,\r\n      body: 'Ballocks'\r\n    };\r\n  };"],
-  "mappings": ";AAAA,QAAQ,UAAU,iBAAkB;AAChC,SAAO;AAAA,IACL,YAAY;AAAA,IACZ,MAAM;AAAA;AAAA;",
-  "names": []
-}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Spinner from '$lib/utilities/Spinner.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w500';
-	export let datum:PersonType;
+	export let datum: PersonType;
 </script>
 
 {#if datum.id}

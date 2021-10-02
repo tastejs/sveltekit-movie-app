@@ -4,3 +4,5 @@ node_modules
 /build
 /functions
 .env
+# Local Netlify folder
+.netlify

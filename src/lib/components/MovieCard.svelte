@@ -3,7 +3,7 @@
 	import ProgressBar from '$lib/utilities/ProgressBar.svelte';
 	import Spinner from '$lib/utilities/Spinner.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
-	export let datum:MovieType
+	export let datum: MovieType;
 </script>
 
 {#if datum.id}
@@ -22,7 +22,7 @@
 						{datum.title}
 					</h6>
 					<h6 class="xl:text-lg font-bold">
-						{datum.release_date ? datum.release_date.substring(0, 4): '-'}
+						{datum.release_date ? datum.release_date.substring(0, 4) : '-'}
 					</h6>
 				</div>
 				<div class="transform scale-44 origin-top-left absolute left-1 top-56 xl:top-80">

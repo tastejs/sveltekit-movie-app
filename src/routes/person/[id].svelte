@@ -18,7 +18,6 @@
 	$media_type = 'person';
 
 	export let person: PersonType;
-	
 </script>
 
 {#key $page.params.id}

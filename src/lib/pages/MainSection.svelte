@@ -4,7 +4,7 @@
 	import PersonList from '$lib/pages/PersonList.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte';
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import { current_page, media_type } from '$lib/stores/store';
 	export let api_url_start: string;
 	export let api_url_end: string;
@@ -16,24 +16,23 @@
 
 	onMount(async () => {
 		// getData(api_url + $current_page);
-		
-        const response = await fetch('/.netlify/functions/api-call', {
-				method: 'POST',
-				body: JSON.stringify({
-					url1:api_url_start,
-					url2: api_url_end + $current_page
-				})
-			}).then(response => response.json())
-			
-			data = response.res.results
-			// console.log('data in mount', data)
-			total_pages = response.res.total_pages;
-			
-	})
 
+		const response = await fetch('/.netlify/functions/api-call', {
+			method: 'POST',
+			body: JSON.stringify({
+				url1: api_url_start,
+				url2: api_url_end + $current_page
+			})
+		}).then((response) => response.json());
 
-		// $:console.log('data', data2)
-		// $:console.log('total pages', total_pages2)
+		data = response.res.results;
+		// console.log('data in mount', data)
+		total_pages = response.res.total_pages;
+	});
+
+	$: api_url = api_url_start + process.env.VITE_API_KEY + api_url_end;
+	// $:console.log('data', data2)
+	// $:console.log('total pages', total_pages2)
 
 	// async function getData(API: string) {
 	// 	const res = await fetch(API);
