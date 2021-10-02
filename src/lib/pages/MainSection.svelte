@@ -14,7 +14,7 @@
 	onMount(async () => {
 		getData(api_url + $current_page);
 		
-        const response = await fetch('/netlify/functions/api-call').then(
+        const response = await fetch('/.netlify/functions/api-call').then(
             response => response.json()
           )
 		console.log(response)
