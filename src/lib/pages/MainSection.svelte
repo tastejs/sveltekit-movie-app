@@ -14,10 +14,15 @@
 	onMount(async () => {
 		getData(api_url + $current_page);
 		
-        const response = await fetch('/.netlify/functions/api-call').then(
-            response => response.json()
-          )
-		console.log(response)
+        const response = await fetch('/.netlify/functions/api-call', {
+            method: 'POST',
+            body: JSON.stringify({
+              url: api_url + $current_page
+            })
+          }).then(response => response.json())
+		  console.log(response)
+          
+		
 	})
 
 	
