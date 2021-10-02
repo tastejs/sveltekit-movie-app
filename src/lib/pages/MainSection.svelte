@@ -21,6 +21,7 @@
 				})
 			}).then(response => response.json())
 			data = response.results
+			console.log('data in mont', data)
 			total_pages = response.total_pages;
 			
 	})
