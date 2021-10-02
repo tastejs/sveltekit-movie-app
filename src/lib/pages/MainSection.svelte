@@ -12,7 +12,7 @@
 	let total_pages = 0;
 
 	onMount(async () => {
-		getData(api_url + $current_page);
+		// getData(api_url + $current_page);
 		
         const response = await fetch('/.netlify/functions/api-call', {
             method: 'POST',
@@ -20,7 +20,10 @@
               url: api_url + $current_page
             })
           }).then(response => response.json())
-		  console.log(response)
+		  data=await response.results
+		  total_pages=response.total_pages
+		  console.log('data', data)
+		  console.log('total pages', total_pages)
           
 		
 	})
