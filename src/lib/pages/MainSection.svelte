@@ -23,9 +23,9 @@
 				})
 			}).then(response => response.json())
 			
-			data2 = response.results
+			data2 = response.res.results
 			console.log('data in mount', data2)
-			total_pages2 = response.total_pages;
+			total_pages2 = response.res.total_pages;
 			
 	})
 
