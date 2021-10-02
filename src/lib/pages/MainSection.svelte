@@ -22,13 +22,13 @@
           }).then(response => response.json())
 		  data=await response.results
 		  total_pages=response.total_pages
-		  console.log('data', data)
-		  console.log('total pages', total_pages)
+
           
 		
 	})
 
-	
+		$:console.log('data', data)
+		$:console.log('total pages', total_pages)
 	async function getData(API: string) {
 		const res = await fetch(API);
 		const res_json = await res.json();
