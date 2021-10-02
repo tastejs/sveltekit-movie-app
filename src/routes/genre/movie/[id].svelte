@@ -4,9 +4,10 @@
 	import { page } from '$app/stores';
 
 	$media_type = 'movie';
-	$: api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${$ApiKey}&with_genres=${$page.params.id}&page=`;
+	$: api_url_start = `https://api.themoviedb.org/3/discover/movie?api_key=`;
+	$: api_url_end = `&with_genres=${$page.params.id}&page=`;
 </script>
 
 {#key $page.params.id}
-	<MainSection {api_url} />
+	<MainSection {api_url_start} {api_url_end} />
 {/key}
