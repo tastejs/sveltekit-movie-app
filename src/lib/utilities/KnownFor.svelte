@@ -1,41 +1,28 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { ApiKey } from '$lib/stores/store';
-
-	export let personId: number;
+	export let knownFor
 
 	type TaggedMovie = MovieType & { media_type: 'movie' };
 	type TaggedTv = TvType & { media_type: 'tv' };
-
-	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
-	const KNOWN_FOR_API = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${$ApiKey}&language=en-US`;
-
-	let movies: (TaggedTv | TaggedMovie)[];
 	let films: TaggedMovie[] = [];
 	let tv: TaggedTv[] = [];
 
+	const IMAGE_API = 'https://image.tmdb.org/t/p/w300';
+	films = knownFor.filter(isMovie);
+		tv = knownFor.filter(isTv);
+
+		films.sort((a, b) => (a.release_date > b.release_date ? -1 : 1));
+		tv.sort((a, b) => (a.first_air_date > b.first_air_date ? -1 : 1));
+
+	
 	function isMovie(x: TaggedTv | TaggedMovie): x is TaggedMovie {
 		return x.media_type === 'movie';
 	}
 	function isTv(x: TaggedTv | TaggedMovie): x is TaggedTv {
 		return x.media_type === 'tv';
 	}
-
-	onMount(async () => {
-		movies = await fetch(KNOWN_FOR_API)
-			.then((x) => x.json())
-			.then((x) => x.cast);
-		// console.log(movies);
-
-		films = movies.filter(isMovie);
-		tv = movies.filter(isTv);
-
-		films.sort((a, b) => (a.release_date > b.release_date ? -1 : 1));
-		tv.sort((a, b) => (a.first_air_date > b.first_air_date ? -1 : 1));
-	});
 </script>
 
-{#if movies}
+
 	<section id="known-for" class="grid mx-auto">
 		{#if films}
 			<h3 class="flex xl:inline-block justify-center xl:justify-start xl:my-5 text-2xl font-bold">
@@ -98,4 +85,4 @@
 			</div>
 		{/if}
 	</section>
-{/if}
+

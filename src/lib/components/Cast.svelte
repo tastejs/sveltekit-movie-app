@@ -1,22 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { media_type, ApiKey } from '$lib/stores/store';
-
-	export let movie_id: string;
-
-	const PERSONS_API = `https://api.themoviedb.org/3/${$media_type}/${movie_id}/credits?api_key=${$ApiKey}&language=en-US`;
+	export let cast = []
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w200/';
-	let persons: PersonType[] = [];
-
-	onMount(async () => {
-		const res = await fetch(PERSONS_API);
-		const data: Data = await res.json();
-		persons = data.cast;
-		return persons;
-	});
 </script>
 
-{#if persons.length}
+{#if cast.length}
 	<section
 		id="people"
 		class="max-w-7xl mx-auto xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 xl:rounded-2xl"
@@ -29,7 +16,7 @@
 		<div
 			class="flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"
 		>
-			{#each persons as person}
+			{#each cast as person}
 				<div
 					class="w-28 flex-shrink-0 mb-2 rounded relative bg-skin-primary m-0.5 sm:mr-3 hover:bg-selected"
 				>

@@ -4,9 +4,4 @@
   
 [dev]
  command = "svelte-kit dev"
- framework = "svelte-kit"
- 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-  
+ framework = "svelte-kit" 

@@ -1,12 +1,33 @@
-<script lang="ts">
-	import MainSection from '$lib/pages/MainSection.svelte';
-	import { media_type, selected } from '$lib/stores/store';
-	$selected = null;
-
-	$: api_url_start = `https://api.themoviedb.org/3/trending/${$media_type}/week?api_key=`;
-	$: api_url_end = `&language=en-GB&page=`;
+<script context="module" lang="ts">
+	export async function load ({ fetch }) {
+		const res = await fetch('./api/getShow', {
+			headers: {
+      			'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				media: 'movie',
+				page: '1'
+			})
+		});
+		const datas = await res.json();
+		return {
+			props: {
+				datas
+			}
+		};
+	};
 </script>
 
-{#key $media_type}
-	<MainSection {api_url_start} {api_url_end} />
-{/key}
+<script lang="ts">
+	export let datas
+	let data = datas.res.results
+	let total_pages = datas.res.total_pages
+	import MainSection from '$lib/pages/MainSection.svelte';
+	import { selected } from '$lib/stores/store';
+	$selected = null;
+</script>
+
+
+	<MainSection {data} {total_pages} />
+

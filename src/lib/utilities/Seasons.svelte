@@ -2,16 +2,15 @@
 	export let tv_details: TvType;
 	export let movie_id: string;
 	const IMAGE_API = 'https://www.themoviedb.org/t/p/original';
-	// console.log('movie details', tv_details);
 </script>
 
 <section id="Seasons">
 	<div
-		class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 xl:rounded-2xl"
+		class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 pb-1 xl:rounded-2xl"
 	>
-		<h4 class="pb-8">Season Information</h4>
+		<h4 class="pb-2">Season Information</h4>
 		{#each tv_details.seasons as episode}
-			<div class="flex flex-col xl:flex-row pb-4">
+			<div class=" bg-skin-primary flex flex-col xl:flex-row m-4 p-2 rounded-lg">
 				<a
 					href={`/seasons/${movie_id}/${episode.season_number}`}
 					class="flex flex-col xl:flex-row text-skin-base xl:rounded-lg"
@@ -27,7 +26,6 @@
 					</div>
 					<div class=" justify-self-center ml-2 block xl:justify-start">
 						<h4>{episode.name}</h4>
-						<hr />
 						<h6>Air Date: {episode.air_date}</h6>
 						<h6>Overview:</h6>
 						<h6 class=" flex-1 pr-8 text-skin-muted mb-4">{episode.overview}</h6>

@@ -4,27 +4,21 @@
 	import Genre from '$lib/components/Genre.svelte';
 
 	function toggleMovie() {
-		if ($media_type !== 'movie') {
-			$media_type = 'movie';
-			$current_page = 1;
-			goto('/');
-		}
+		$media_type = 'movie';
+		$current_page = 1;
+		goto('/trending/movie');
 	}
 
 	function toggleTv() {
-		if ($media_type !== 'tv') {
-			$current_page = 1;
-			$media_type = 'tv';
-			goto('/');
-		}
+		$current_page = 1;
+		$media_type = 'tv';
+		goto('/trending/tv');
 	}
 
 	function togglePerson() {
-		if ($media_type !== 'person') {
-			$current_page = 1;
-			$media_type = 'person';
-			goto('/');
-		}
+		$current_page = 1;
+		$media_type = 'person';
+		goto('/trending/person');
 	}
 </script>
 
@@ -87,3 +81,8 @@
 		</div>
 	</div>
 {/key}
+<!-- <div class="pl-6 xl:pl-8 ">
+	<div class="group inline-block relative z-50">
+		<button><a href="/networks">Networks</a> </button>
+	</div>
+</div> -->

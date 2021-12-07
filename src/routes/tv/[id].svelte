@@ -1,39 +1,70 @@
 <script context="module" lang="ts">
-	import { get } from 'svelte/store';
-	import { media_type, ApiKey } from '$lib/stores/store';
+	import { media_type } from '$lib/stores/store';
 
-	export async function load({ page }) {
-		let tv_api_url = `https://api.themoviedb.org/3/tv/${page.params.id}?api_key=${get(
-			ApiKey
-		)}&language=en-US`;
-		let trailer_api_url = `https://api.themoviedb.org/3/tv/${page.params.id}/videos?api_key=${get(
-			ApiKey
-		)}&language=en-US`;
-		let tv_details: TvType = await fetch(tv_api_url).then((x) => x.json());
-		let trailer = await fetch(trailer_api_url).then((x) => x.json());
-		let trailer_id: number = trailer.results.length ? trailer.results[0].key : 999;
+	export const load = async ({ page , fetch }) => {
+
+		const res =await fetch('../api/getMovie', {
+			headers: {
+				'Content-Type' : 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				media: 'tv',
+				id: page.params.id
+			})
+		})
+		const datas = await res.json()
+		const tv_details = await datas.res
+
+		const trailer = await fetch ('../api/getTrailer', {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				media: 'tv',
+				id: page.params.id
+			})
+		})
+		const trailer_details = await trailer.json()
+		const trailer_id: number = await trailer_details.res.results.length ? trailer_details.res.results[0].key : 999
+		
+		const resp = await fetch('../../api/getCast', {
+		headers: {
+      			'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				media: 'tv',
+				id: page.params.id
+			})
+		});
+		const casts = await resp.json()
+		const cast = await casts.res.cast
 		return {
 			props: {
 				tv_details,
-				trailer_id
+				trailer_id,
+				cast
 			}
 		};
 	}
 </script>
 
 <script lang="ts">
-	import { page } from '$app/stores';
 	import TvMedia from '$lib/pages/TvMedia.svelte';
+	import { page } from '$app/stores';
 	import Spinner from '$lib/utilities/Spinner.svelte';
 	export let tv_details: TvType;
 	export let trailer_id: number;
+	export let cast
 
 	$media_type = 'tv';
-	let movie_id = $page.params.id;
+	let movie_id: string = $page.params.id;
 </script>
 
-{#if tv_details && trailer_id}
-	<TvMedia {tv_details} {trailer_id} {movie_id} />
-{:else}
-	<Spinner />
-{/if}
+
+	<TvMedia {tv_details} {trailer_id} {cast} {movie_id} />
+
+
+

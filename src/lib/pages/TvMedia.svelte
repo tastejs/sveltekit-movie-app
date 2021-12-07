@@ -9,6 +9,7 @@
 	export let tv_details: TvType;
 	export let trailer_id: number;
 	export let movie_id: string;
+	export let cast
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/';
 
@@ -93,7 +94,7 @@
 		</div>
 	</section>
 
-	<Cast {movie_id} />
+	<Cast {cast} />
 
 	{#if trailer_id !== 999}
 		<Modal bind:this={modal} {trailer_id} />

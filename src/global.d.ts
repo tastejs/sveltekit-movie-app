@@ -14,6 +14,13 @@ type Genre = {
 	name: string;
 };
 
+type Network = {
+	display_priority: number;
+    logo_path: string;
+    provider_name: string;
+    provider_id: number;
+}
+
 type Genres = {
 	[Key in MediaPlatform]: Genre[];
 };

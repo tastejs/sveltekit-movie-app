@@ -2,7 +2,7 @@
 	import KnownFor from '$lib/utilities/KnownFor.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w500/';
 	export let person: PersonType;
-	// console.log(person)
+	export let knownFor
 </script>
 
 <section id="person" class="xl:rounded-2xl mx-auto max-w-7xl xl:pb-20 xl:mt-5">
@@ -69,7 +69,7 @@
 		>
 			<div class="pt-8">
 				<h4 class="xl:text-2xl pl-3.5 xl:pl-0">Known For</h4>
-				<KnownFor personId={person.id} />
+				<KnownFor {knownFor} />
 			</div>
 		</div>
 	</div>
