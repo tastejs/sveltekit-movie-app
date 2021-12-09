@@ -4,20 +4,17 @@
 	import Genre from '$lib/components/Genre.svelte';
 
 	function toggleMovie() {
-		$media_type = 'movie';
 		$current_page = 1;
 		goto('/trending/movie');
 	}
 
 	function toggleTv() {
 		$current_page = 1;
-		$media_type = 'tv';
 		goto('/trending/tv');
 	}
 
 	function togglePerson() {
 		$current_page = 1;
-		$media_type = 'person';
 		goto('/trending/person');
 	}
 </script>
@@ -81,8 +78,3 @@
 		</div>
 	</div>
 {/key}
-<!-- <div class="pl-6 xl:pl-8 ">
-	<div class="group inline-block relative z-50">
-		<button><a href="/networks">Networks</a> </button>
-	</div>
-</div> -->

@@ -1,6 +1,9 @@
 <script context="module" lang="ts">
 	import { media_type } from '$lib/stores/store';
 	import { get } from 'svelte/store';
+	/**
+	 * @type {import('@sveltejs/kit').Load}
+	 */
 	export async function load({ fetch, page }) {
 		const res = await fetch('../api/getSearch', {
 			headers: {
@@ -27,12 +30,9 @@
 
 <script lang="ts">
 	export let data;
-	export let total_pages:number;
+	export let total_pages: number;
 
 	import MainSection from '$lib/pages/MainSection.svelte';
-
 </script>
 
-
-
-	<MainSection {data} {total_pages}/>
+<MainSection {data} {total_pages} />

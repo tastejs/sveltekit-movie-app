@@ -1,8 +1,11 @@
 <script context="module" lang="ts">
-	export async function load ({ fetch }) {
+	/**
+	 * @type {import('@sveltejs/kit').Load}
+	 */
+	export async function load({ fetch }) {
 		const res = await fetch('./api/getShow', {
 			headers: {
-      			'Content-Type': 'application/json'
+				'Content-Type': 'application/json'
 			},
 			method: 'POST',
 			body: JSON.stringify({
@@ -11,23 +14,23 @@
 			})
 		});
 		const datas = await res.json();
+		const data = await datas.res.results;
+		const total_pages = await datas.res.total_pages;
 		return {
 			props: {
-				datas
+				data,
+				total_pages
 			}
 		};
-	};
+	}
 </script>
 
 <script lang="ts">
-	export let datas
-	let data = datas.res.results
-	let total_pages = datas.res.total_pages
+	export let data: any[];
+	export let total_pages: number;
 	import MainSection from '$lib/pages/MainSection.svelte';
 	import { selected } from '$lib/stores/store';
 	$selected = null;
 </script>
 
-
-	<MainSection {data} {total_pages} />
-
+<MainSection {data} {total_pages} />

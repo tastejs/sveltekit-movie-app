@@ -1,14 +1,20 @@
 <script context="module" lang="ts">
 	import { media_type, current_page } from '$lib/stores/store';
 	import { get } from 'svelte/store';
+
+	/**
+	 * @type {import('@sveltejs/kit').Load}
+	 */
+
 	export async function load({ fetch, page }) {
+		media_type.set(page.params.media as MediaType);
 		const res = await fetch('../../api/getShow', {
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST',
 			body: JSON.stringify({
-				media: page.params.media,
+				media: get(media_type),
 				page: get(current_page)
 			})
 		});
@@ -26,15 +32,10 @@
 
 <script lang="ts">
 	export let data;
-	export let total_pages:number;
-
+	export let total_pages: number;
 	import MainSection from '$lib/pages/MainSection.svelte';
 	import { selected } from '$lib/stores/store';
-	import { page } from '$app/stores';
-	$media_type = $page.params.media as MediaType;
 	$selected = null;
 </script>
 
-
-	<MainSection {data} {total_pages} />
-
+<MainSection {data} {total_pages} />

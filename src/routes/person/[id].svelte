@@ -1,7 +1,10 @@
 <script context="module" lang="ts">
 	import { media_type } from '$lib/stores/store';
+	/**
+	 * @type {import('@sveltejs/kit').Load}
+	 */
 
-	export const load = async ({ page, fetch }) => {
+	export async function load({ fetch, page }) {
 		const res = await fetch('../api/getMovie', {
 			headers: {
 				'Content-Type': 'application/json'
@@ -15,7 +18,7 @@
 		const datas = await res.json();
 		const person = await datas.res;
 
-		const resp =await fetch('../api/getKnownFor', {
+		const resp = await fetch('../api/getKnownFor', {
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -23,9 +26,9 @@
 			body: JSON.stringify({
 				person: page.params.id
 			})
-		})
-		const data = await resp.json()
-		const knownFor = data.res.cast
+		});
+		const data = await resp.json();
+		const knownFor = data.res.cast;
 
 		return {
 			props: {
@@ -46,6 +49,4 @@
 	export let knownFor;
 </script>
 
-
-	<Person {person} {knownFor} />
-
+<Person {person} {knownFor} />
