@@ -2,34 +2,25 @@
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
+	import { tv_genres, movie_genres } from '$lib/stores/store';
 	export async function load({ fetch }) {
 		const resTv = await fetch('api/getTvGenres');
 		const resTv_json = await resTv.json();
-		const tv_genre: Genre[] = resTv_json.tv_genres;
+		tv_genres.set(resTv_json.tv_genres);
 
 		const resMovie = await fetch('api/getMovieGenres');
 		const resMovie_json = await resMovie.json();
-		const movie_genre: Genre[] = resMovie_json.movie_genres;
+		movie_genres.set(resMovie_json.movie_genres);
 
-		return {
-			props: {
-				tv_genre,
-				movie_genre
-			}
-		};
+		return {};
 	}
 </script>
 
 <script lang="ts">
-	import '../app.postcss';
-	export let tv_genre: Genre[];
-	export let movie_genre: Genre[];
+	import '../app.css';
 	import Header from '$lib/components/Header.svelte';
-	import { tv_genres, movie_genres } from '$lib/stores/store';
 	import { theme } from '$lib/stores/theme-store';
 	theme.init();
-	$tv_genres = tv_genre;
-	$movie_genres = movie_genre;
 </script>
 
 <svelte:head>

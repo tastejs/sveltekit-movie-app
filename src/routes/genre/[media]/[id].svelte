@@ -1,10 +1,11 @@
 <script context="module" lang="ts">
-	import { media_type } from '$lib/stores/store';
+	import { media_type, data } from '$lib/stores/store';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-
+	export const prerender = true;
 	export async function load({ fetch, page }) {
+		data.set(undefined);
 		const genres = page.params.id;
 		media_type.set(page.params.media);
 		const res = await fetch('../../api/getShowGenre', {
@@ -20,12 +21,11 @@
 		});
 
 		const datas = await res.json();
-		const data = await datas.res.results;
+		data.set(await datas.res.results);
 		const total_pages = await datas.res.total_pages;
 
 		return {
 			props: {
-				data,
 				total_pages,
 				genres
 			}
@@ -34,7 +34,6 @@
 </script>
 
 <script lang="ts">
-	export let data;
 	export let total_pages: number;
 	export let genres;
 
@@ -43,4 +42,4 @@
 	$selected = null;
 </script>
 
-<MainSection {data} {total_pages} {genres} />
+<MainSection {total_pages} {genres} />

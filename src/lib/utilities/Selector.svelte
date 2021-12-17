@@ -71,7 +71,7 @@
 				<span class="hidden xl:block mx-2">Genres</span>
 			</button>
 			<ul
-				class="rounded xl:absolute fixed left-0 hidden bg-skin-primary text-skin-base pt-4 group-hover:block"
+				class="rounded xl:absolute fixed left-0 hidden bg-skin-primary text-skin-base group-hover:block"
 			>
 				<Genre />
 			</ul>

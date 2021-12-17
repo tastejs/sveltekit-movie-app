@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import { media_type } from '$lib/stores/store';
+	import { media_type, data } from '$lib/stores/store';
 	import { get } from 'svelte/store';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
@@ -17,7 +17,7 @@
 			})
 		});
 		const datas = await res.json();
-		const data = await datas.res.results;
+		data.set(await datas.res.results);
 		const total_pages = await datas.res.total_pages;
 		return {
 			props: {
@@ -29,10 +29,9 @@
 </script>
 
 <script lang="ts">
-	export let data;
 	export let total_pages: number;
 
 	import MainSection from '$lib/pages/MainSection.svelte';
 </script>
 
-<MainSection {data} {total_pages} />
+<MainSection {total_pages} />

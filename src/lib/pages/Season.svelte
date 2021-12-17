@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {show_name} from '$lib/stores/store'
+	import { show_name } from '$lib/stores/store';
 	import SeasonTitle from '$lib/components/SeasonTitle.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w500/';
 	export let season_details: Season_type;
@@ -10,12 +10,12 @@
 
 <section id="season">
 	<div
-	class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 pb-1 xl:rounded-2xl"
+		class="max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 pb-1 xl:rounded-2xl"
 	>
 		{#if season_details.id}
-		<h4 class="pb-2">Season Information</h4>
+			<h4 class="pb-2">Season Information</h4>
 			{#each season_details.episodes as episode}
-			<div class=" bg-skin-primary flex flex-col xl:flex-row m-4 p-2 rounded-lg">
+				<div class=" bg-skin-primary flex flex-col xl:flex-row m-4 p-2 rounded-lg">
 					<a
 						href={`/episode/${tv_id}/${season_details.season_number}/${episode.episode_number}`}
 						class="flex flex-col xl:flex-row text-skin-base xl:rounded-lg"

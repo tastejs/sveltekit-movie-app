@@ -3,16 +3,14 @@
 	import TvList from '$lib/pages/TvList.svelte';
 	import PersonList from '$lib/pages/PersonList.svelte';
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte';
-	import { current_page, media_type } from '$lib/stores/store';
+	import { current_page, media_type, data } from '$lib/stores/store';
 	import { get } from 'svelte/store';
-
-	export let data = [];
 	export let total_pages = 1;
 	export let genres = undefined;
 
 	async function moreData() {
-		let res
-		if ((genres === undefined)) {
+		let res;
+		if (genres === undefined) {
 			res = await fetch('../api/getShow', {
 				headers: {
 					'Content-Type': 'application/json'
@@ -39,7 +37,7 @@
 
 		const datas = await res.json();
 		const res_results = datas.res.results;
-		data = [...data, ...res_results];
+		$data = [...$data, ...res_results];
 	}
 
 	function loadMorePages() {
@@ -52,11 +50,11 @@
 	<!-- <PageTitle /> -->
 
 	{#if $media_type === 'person'}
-		<PersonList {data} />
+		<PersonList />
 	{:else if $media_type === 'movie'}
-		<MovieList {data}/>
+		<MovieList />
 	{:else if $media_type === 'tv'}
-		<TvList {data} />
+		<TvList />
 	{/if}
 
 	{#if $current_page < total_pages}

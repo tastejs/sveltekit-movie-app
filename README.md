@@ -1,12 +1,12 @@
-# please note this app will not work unles you provide your won TMDB api key
+## please note this app will not work unles you provide your own TMDB api key
 
-# adding environment variables
+## adding environment variables
 
 in dev mode create a .env file similar to the example.
 You will need your own [TMDB api key ](https://www.themoviedb.org/faq/api)
 
 
-# create-svelte
+## create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
 

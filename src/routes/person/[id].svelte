@@ -41,8 +41,6 @@
 
 <script lang="ts">
 	import Person from '$lib/pages/Person.svelte';
-	import { page } from '$app/stores';
-
 	$media_type = 'person';
 
 	export let person: PersonType;
