@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	import { media_type, data } from '$lib/stores/store';
 	import { get } from 'svelte/store';
-	export const prerender = true;
+	// export const prerender = true;
 
 	/**
 	 * @type {import('@sveltejs/kit').Load}
