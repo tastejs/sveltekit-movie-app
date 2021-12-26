@@ -8,20 +8,22 @@
 		data.set(undefined);
 		const genres = page.params.id;
 		media_type.set(page.params.media);
-		const res = await fetch('../../api/getShowGenre', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: page.params.media,
-				page: '1',
-				genre: genres
+		const res = await (
+			await fetch('../../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'show_genres',
+					media: page.params.media,
+					genre: genres,
+					page: '1'
+				})
 			})
-		});
-		const datas = await res.json();
-		data.set(await datas.res.results);
-		const total_pages = await datas.res.total_pages;
+		).json();
+		data.set(await res.res.results);
+		const total_pages = await res.res.total_pages;
 		return {
 			props: {
 				total_pages,

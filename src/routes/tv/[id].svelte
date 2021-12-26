@@ -3,27 +3,30 @@
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-
 	export async function load({ fetch, page }) {
-		const res = await fetch('../api/getMovie', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: 'tv',
-				id: page.params.id
+		media_type.set('tv');
+		const res = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'show_detail',
+					media: 'tv',
+					id: page.params.id
+				})
 			})
-		});
-		const datas = await res.json();
-		const tv_details = await datas.res;
+		).json();
+		const tv_details = await res.res;
 
-		const trailer = await fetch('../api/getTrailer', {
+		const trailer = await fetch('../api/postData', {
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST',
 			body: JSON.stringify({
+				api_ref: 'trailer',
 				media: 'tv',
 				id: page.params.id
 			})
@@ -33,18 +36,20 @@
 			? trailer_details.res.results[0].key
 			: 999;
 
-		const resp = await fetch('../../api/getCast', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: 'tv',
-				id: page.params.id
+		const resp = await (
+			await fetch('../../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'cast',
+					media: 'tv',
+					id: page.params.id
+				})
 			})
-		});
-		const casts = await resp.json();
-		const cast = await casts.res.cast;
+		).json();
+		const cast = await resp.res.cast;
 		return {
 			props: {
 				tv_details,
@@ -62,8 +67,7 @@
 	export let trailer_id: number;
 	export let cast;
 
-	$media_type = 'tv';
-	let movie_id: string = $page.params.id;
+	let tv_id: string = $page.params.id;
 </script>
 
-<TvMedia {tv_details} {trailer_id} {cast} {movie_id} />
+<TvMedia {tv_details} {trailer_id} {cast} {tv_id} />

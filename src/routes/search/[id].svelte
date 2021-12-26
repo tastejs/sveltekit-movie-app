@@ -5,23 +5,24 @@
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ fetch, page }) {
-		const res = await fetch('../api/getSearch', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: get(media_type),
-				page: '1',
-				query: page.params.id
+		const res = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'search',
+					media: get(media_type),
+					query: page.params.id,
+					page: '1'
+				})
 			})
-		});
-		const datas = await res.json();
-		data.set(await datas.res.results);
-		const total_pages = await datas.res.total_pages;
+		).json();
+		data.set(await res.res.results);
+		const total_pages = await res.res.total_pages;
 		return {
 			props: {
-				data,
 				total_pages
 			}
 		};

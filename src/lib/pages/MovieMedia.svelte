@@ -8,7 +8,7 @@
 	export let movie_details: MovieType;
 	export let trailer_id: number;
 	// export let movie_id: string;
-	export let cast
+	export let cast;
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/';
 

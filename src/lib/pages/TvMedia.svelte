@@ -8,8 +8,8 @@
 
 	export let tv_details: TvType;
 	export let trailer_id: number;
-	export let movie_id: string;
-	export let cast
+	export let tv_id: string;
+	export let cast;
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/';
 
@@ -102,7 +102,7 @@
 
 	{#if $media_type === 'tv'}
 		{#key tv_details}
-			<Seasons {tv_details} {movie_id} />
+			<Seasons {tv_details} {tv_id} />
 		{/key}
 	{/if}
 {:else}

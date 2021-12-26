@@ -3,18 +3,20 @@
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ fetch, page }) {
-		const res = await fetch('../../api/getSeason', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				id: page.params.id,
-				season_number: page.params.season_number
+		const res = await (
+			await fetch('../../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'season',
+					id: page.params.id,
+					season_number: page.params.season_number
+				})
 			})
-		});
-		const datas = await res.json();
-		const season_details = await datas.res;
+		).json();
+		const season_details = await res.res;
 		return {
 			props: {
 				season_details

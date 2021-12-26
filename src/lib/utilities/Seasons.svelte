@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let tv_details: TvType;
-	export let movie_id: string;
+	export let tv_id: string;
 	const IMAGE_API = 'https://www.themoviedb.org/t/p/original';
 </script>
 
@@ -12,7 +12,7 @@
 		{#each tv_details.seasons as episode}
 			<div class=" bg-skin-primary flex flex-col xl:flex-row m-4 p-2 rounded-lg">
 				<a
-					href={`/seasons/${movie_id}/${episode.season_number}`}
+					href={`/seasons/${tv_id}/${episode.season_number}`}
 					class="flex flex-col xl:flex-row text-skin-base xl:rounded-lg"
 				>
 					<div

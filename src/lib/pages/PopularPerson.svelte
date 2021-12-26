@@ -1,13 +1,10 @@
 <script lang="ts">
 	import PersonList from '$lib/PersonList.svelte';
 	import { onMount } from 'svelte';
-	import { ApiKey, current_page } from '$lib/stores/store';
+	import { current_page } from '$lib/stores/store';
 	import InfiniteScroll from '$lib/utilities/InfiniteScroll.svelte';
 
 	$current_page = 1;
-
-	const PERSONS_API = `https://api.themoviedb.org/3/person/popular?api_key=${$ApiKey}&language=en-US&page=`;
-	let data = [];
 
 	let total_pages = 0;
 

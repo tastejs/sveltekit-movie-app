@@ -4,15 +4,15 @@
 	 */
 	import { tv_genres, movie_genres } from '$lib/stores/store';
 	export async function load({ fetch }) {
-		console.log('fetch from layout');
-		const resTv = await fetch('./api/getTvGenres');
-		const resTv_json = await resTv.json();
-		tv_genres.set(resTv_json.tv_genres);
-
-		const resMovie = await fetch('./api/getMovieGenres');
-		const resMovie_json = await resMovie.json();
-		movie_genres.set(resMovie_json.movie_genres);
-		return {};
+		try {
+			const resTv = await (await fetch('/api/getTvGenres')).json();
+			tv_genres.set(resTv.tv_genres);
+			const resMovie = await (await fetch('/api/getMovieGenres')).json();
+			movie_genres.set(resMovie.movie_genres);
+			return {};
+		} catch (e) {
+			console.log('error', e);
+		}
 	}
 </script>
 

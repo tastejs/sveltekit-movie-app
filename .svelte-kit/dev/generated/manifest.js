@@ -22,12 +22,6 @@ export const routes = [
 	// src/routes/NotFound.svelte
 	[/^\/NotFound\/?$/, [c[0], c[3]], [c[1]]],
 
-	,
-
-	,
-
-	,
-
 	// src/routes/trending/[media].svelte
 	[/^\/trending\/([^/]+?)\/?$/, [c[0], c[4]], [c[1]], (m) => ({ media: d(m[1])})],
 
@@ -48,26 +42,6 @@ export const routes = [
 
 	// src/routes/movie/[id].svelte
 	[/^\/movie\/([^/]+?)\/?$/, [c[0], c[10]], [c[1]], (m) => ({ id: d(m[1])})],
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
-
-	,
 
 	,
 

@@ -5,29 +5,34 @@
 	 */
 
 	export async function load({ fetch, page }) {
-		const res = await fetch('../api/getMovie', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: 'person',
-				id: page.params.id
+		const res = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'person',
+					media: 'person',
+					id: page.params.id
+				})
 			})
-		});
-		const datas = await res.json();
-		const person = await datas.res;
+		).json();
+		const person = await res.res;
 
-		const resp = await fetch('../api/getKnownFor', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				person: page.params.id
+		const resp = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'known_for',
+					person: page.params.id
+				})
 			})
-		});
-		const data = await resp.json();
+		).json();
+		const data = await resp;
 		const knownFor = data.res.cast;
 
 		return {

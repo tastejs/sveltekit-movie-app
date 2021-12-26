@@ -5,25 +5,28 @@
 	 */
 	export async function load({ fetch, page }) {
 		media_type.set('movie');
-		const res = await fetch('../api/getMovie', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: 'movie',
-				id: page.params.id
+		const res = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'show_detail',
+					media: 'movie',
+					id: page.params.id
+				})
 			})
-		});
-		const datas = await res.json();
-		const movie_details = await datas.res;
+		).json();
+		const movie_details = await res.res;
 
-		const trailer = await fetch('../api/getTrailer', {
+		const trailer = await fetch('../api/postData', {
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST',
 			body: JSON.stringify({
+				api_ref: 'trailer',
 				media: 'movie',
 				id: page.params.id
 			})
@@ -32,19 +35,22 @@
 		const trailer_id: number = (await trailer_details.res.results.length)
 			? trailer_details.res.results[0].key
 			: 999;
+		console.log('trailer_details', await trailer_id);
 
-		const resp = await fetch('../../api/getCast', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				media: 'movie',
-				id: page.params.id
+		const resp = await (
+			await fetch('../../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'cast',
+					id: page.params.id,
+					media: 'movie'
+				})
 			})
-		});
-		const casts = await resp.json();
-		const cast = await casts.res.cast;
+		).json();
+		const cast = await resp.res.cast;
 		return {
 			props: {
 				movie_details,
