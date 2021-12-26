@@ -19,11 +19,9 @@
 				genre: genres
 			})
 		});
-
 		const datas = await res.json();
 		data.set(await datas.res.results);
 		const total_pages = await datas.res.total_pages;
-
 		return {
 			props: {
 				total_pages,
@@ -36,7 +34,6 @@
 <script lang="ts">
 	export let total_pages: number;
 	export let genres;
-
 	import MainSection from '$lib/pages/MainSection.svelte';
 	import { selected } from '$lib/stores/store';
 	$selected = null;

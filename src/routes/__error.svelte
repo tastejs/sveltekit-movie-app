@@ -10,7 +10,7 @@
 </script>
 
 <script lang="ts">
-	import { dev } from '$app/env';
+	// import { dev } from '$app/env';
 	export let status: any;
 	export let error: { message: any; stack: any };
 	const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
@@ -26,7 +26,10 @@
 
 <p>{message}</p>
 
-{#if !dev && error.stack}
+{#if error.stack}
+	<!-- {#if !dev && error.stack} -->
+	<h2>This page does not exist</h2>
+
 	<pre>{error.stack}</pre>
 {/if}
 

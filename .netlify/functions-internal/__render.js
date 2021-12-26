@@ -55,8 +55,8 @@ function dataUriToBuffer(uri) {
     charset = "US-ASCII";
   }
   const encoding = base64 ? "base64" : "ascii";
-  const data = unescape(uri.substring(firstComma + 1));
-  const buffer = Buffer.from(data, encoding);
+  const data2 = unescape(uri.substring(firstComma + 1));
+  const buffer = Buffer.from(data2, encoding);
   buffer.type = type;
   buffer.typeFull = typeFull;
   buffer.charset = charset;
@@ -125,15 +125,15 @@ function getFormDataLength(form, boundary) {
   length += Buffer.byteLength(getFooter(boundary));
   return length;
 }
-async function consumeBody(data) {
-  if (data[INTERNALS$2].disturbed) {
-    throw new TypeError(`body used already for: ${data.url}`);
+async function consumeBody(data2) {
+  if (data2[INTERNALS$2].disturbed) {
+    throw new TypeError(`body used already for: ${data2.url}`);
   }
-  data[INTERNALS$2].disturbed = true;
-  if (data[INTERNALS$2].error) {
-    throw data[INTERNALS$2].error;
+  data2[INTERNALS$2].disturbed = true;
+  if (data2[INTERNALS$2].error) {
+    throw data2[INTERNALS$2].error;
   }
-  let { body } = data;
+  let { body } = data2;
   if (body === null) {
     return Buffer.alloc(0);
   }
@@ -150,8 +150,8 @@ async function consumeBody(data) {
   let accumBytes = 0;
   try {
     for await (const chunk of body) {
-      if (data.size > 0 && accumBytes + chunk.length > data.size) {
-        const error2 = new FetchError(`content size at ${data.url} over limit: ${data.size}`, "max-size");
+      if (data2.size > 0 && accumBytes + chunk.length > data2.size) {
+        const error2 = new FetchError(`content size at ${data2.url} over limit: ${data2.size}`, "max-size");
         body.destroy(error2);
         throw error2;
       }
@@ -159,7 +159,7 @@ async function consumeBody(data) {
       accum.push(chunk);
     }
   } catch (error2) {
-    const error_ = error2 instanceof FetchBaseError ? error2 : new FetchError(`Invalid response body while trying to fetch ${data.url}: ${error2.message}`, "system", error2);
+    const error_ = error2 instanceof FetchBaseError ? error2 : new FetchError(`Invalid response body while trying to fetch ${data2.url}: ${error2.message}`, "system", error2);
     throw error_;
   }
   if (body.readableEnded === true || body._readableState.ended === true) {
@@ -169,10 +169,10 @@ async function consumeBody(data) {
       }
       return Buffer.concat(accum, accumBytes);
     } catch (error2) {
-      throw new FetchError(`Could not create Buffer from response body for ${data.url}: ${error2.message}`, "system", error2);
+      throw new FetchError(`Could not create Buffer from response body for ${data2.url}: ${error2.message}`, "system", error2);
     }
   } else {
-    throw new FetchError(`Premature close of server response while trying to fetch ${data.url}`);
+    throw new FetchError(`Premature close of server response while trying to fetch ${data2.url}`);
   }
 }
 function fromRawHeaders(headers = []) {
@@ -199,8 +199,8 @@ async function fetch(url, options_) {
       throw new TypeError(`node-fetch cannot load ${url}. URL scheme "${options2.protocol.replace(/:$/, "")}" is not supported.`);
     }
     if (options2.protocol === "data:") {
-      const data = dataUriToBuffer$1(request.url);
-      const response2 = new Response(data, { headers: { "Content-Type": data.typeFull } });
+      const data2 = dataUriToBuffer$1(request.url);
+      const response2 = new Response(data2, { headers: { "Content-Type": data2.typeFull } });
       resolve2(response2);
       return;
     }
@@ -3323,13 +3323,13 @@ var init_install_fetch = __esm({
         }
         function convertReadableWritablePair(pair, context) {
           assertDictionary(pair, context);
-          const readable2 = pair === null || pair === void 0 ? void 0 : pair.readable;
-          assertRequiredField(readable2, "readable", "ReadableWritablePair");
-          assertReadableStream(readable2, `${context} has member 'readable' that`);
+          const readable = pair === null || pair === void 0 ? void 0 : pair.readable;
+          assertRequiredField(readable, "readable", "ReadableWritablePair");
+          assertReadableStream(readable, `${context} has member 'readable' that`);
           const writable3 = pair === null || pair === void 0 ? void 0 : pair.writable;
           assertRequiredField(writable3, "writable", "ReadableWritablePair");
           assertWritableStream(writable3, `${context} has member 'writable' that`);
-          return { readable: readable2, writable: writable3 };
+          return { readable, writable: writable3 };
         }
         class ReadableStream2 {
           constructor(rawUnderlyingSource = {}, rawStrategy = {}) {
@@ -3922,18 +3922,18 @@ var init_install_fetch = __esm({
           return promiseResolvedWith(void 0);
         }
         function TransformStreamDefaultSinkCloseAlgorithm(stream) {
-          const readable2 = stream._readable;
+          const readable = stream._readable;
           const controller = stream._transformStreamController;
           const flushPromise = controller._flushAlgorithm();
           TransformStreamDefaultControllerClearAlgorithms(controller);
           return transformPromiseWith(flushPromise, () => {
-            if (readable2._state === "errored") {
-              throw readable2._storedError;
+            if (readable._state === "errored") {
+              throw readable._storedError;
             }
-            ReadableStreamDefaultControllerClose(readable2._readableStreamController);
+            ReadableStreamDefaultControllerClose(readable._readableStreamController);
           }, (r) => {
             TransformStreamError(stream, r);
-            throw readable2._storedError;
+            throw readable._storedError;
           });
         }
         function TransformStreamDefaultSourcePullAlgorithm(stream) {
@@ -4053,13 +4053,13 @@ var init_install_fetch = __esm({
         return str;
       }
       async arrayBuffer() {
-        const data = new Uint8Array(this.size);
+        const data2 = new Uint8Array(this.size);
         let offset = 0;
         for await (const chunk of toIterator(this.#parts, false)) {
-          data.set(chunk, offset);
+          data2.set(chunk, offset);
           offset += chunk.length;
         }
-        return data.buffer;
+        return data2.buffer;
       }
       stream() {
         const it = toIterator(this.#parts, true);
@@ -4696,14 +4696,14 @@ var init_shims = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/getMovieGenres-3625ddfd.js
-var getMovieGenres_3625ddfd_exports = {};
-__export(getMovieGenres_3625ddfd_exports, {
+// .svelte-kit/output/server/chunks/getMovieGenres-daf20458.js
+var getMovieGenres_daf20458_exports = {};
+__export(getMovieGenres_daf20458_exports, {
   get: () => get
 });
 var api, GENRES_MOVIE_API, get;
-var init_getMovieGenres_3625ddfd = __esm({
-  ".svelte-kit/output/server/chunks/getMovieGenres-3625ddfd.js"() {
+var init_getMovieGenres_daf20458 = __esm({
+  ".svelte-kit/output/server/chunks/getMovieGenres-daf20458.js"() {
     init_shims();
     api = "61e588d14c9ac42a437e560cc3d65659";
     GENRES_MOVIE_API = `https://api.themoviedb.org/3/genre/movie/list?api_key=${api}&language-en-GB`;
@@ -4722,24 +4722,101 @@ var init_getMovieGenres_3625ddfd = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/getTvGenres-912a2a2a.js
+var getTvGenres_912a2a2a_exports = {};
+__export(getTvGenres_912a2a2a_exports, {
+  get: () => get2
+});
+var api2, GENRES_TV_API, get2;
+var init_getTvGenres_912a2a2a = __esm({
+  ".svelte-kit/output/server/chunks/getTvGenres-912a2a2a.js"() {
+    init_shims();
+    api2 = "61e588d14c9ac42a437e560cc3d65659";
+    GENRES_TV_API = `https://api.themoviedb.org/3/genre/tv/list?api_key=${api2}&language-en-GB`;
+    get2 = async () => {
+      try {
+        const response = await fetch(GENRES_TV_API);
+        const response_json = await response.json();
+        const tv_genres2 = response_json.genres;
+        return {
+          body: JSON.stringify({ tv_genres: tv_genres2 })
+        };
+      } catch (e) {
+        console.log("error", e);
+      }
+    };
+  }
+});
+
+// .svelte-kit/output/server/chunks/getShow-f81111d3.js
+var getShow_f81111d3_exports = {};
+__export(getShow_f81111d3_exports, {
+  post: () => post
+});
+var api3, post;
+var init_getShow_f81111d3 = __esm({
+  ".svelte-kit/output/server/chunks/getShow-f81111d3.js"() {
+    init_shims();
+    api3 = "61e588d14c9ac42a437e560cc3d65659";
+    post = async (request) => {
+      try {
+        const api_url = `https://api.themoviedb.org/3/trending/${request.body["media"]}/week?api_key=${api3}&language=en-GB&page=${request.body["page"]}`;
+        const res_mov = await fetch(api_url);
+        const res = await res_mov.json();
+        return {
+          body: JSON.stringify({ res })
+        };
+      } catch (e) {
+        console.log("error", e);
+      }
+    };
+  }
+});
+
+// .svelte-kit/output/server/chunks/getMovieGenres-3625ddfd.js
+var getMovieGenres_3625ddfd_exports = {};
+__export(getMovieGenres_3625ddfd_exports, {
+  get: () => get3
+});
+var api4, GENRES_MOVIE_API2, get3;
+var init_getMovieGenres_3625ddfd = __esm({
+  ".svelte-kit/output/server/chunks/getMovieGenres-3625ddfd.js"() {
+    init_shims();
+    api4 = "61e588d14c9ac42a437e560cc3d65659";
+    GENRES_MOVIE_API2 = `https://api.themoviedb.org/3/genre/movie/list?api_key=${api4}&language-en-GB`;
+    get3 = async () => {
+      try {
+        const response = await fetch(GENRES_MOVIE_API2);
+        const response_json = await response.json();
+        const movie_genres2 = response_json.genres;
+        return {
+          body: JSON.stringify({ movie_genres: movie_genres2 })
+        };
+      } catch (e) {
+        console.log("error", e);
+      }
+    };
+  }
+});
+
 // .svelte-kit/output/server/chunks/getTvNetworks-3869faf2.js
 var getTvNetworks_3869faf2_exports = {};
 __export(getTvNetworks_3869faf2_exports, {
-  get: () => get2
+  get: () => get4
 });
-var api2, TV_NETWORKS_API, get2;
+var api5, TV_NETWORKS_API, get4;
 var init_getTvNetworks_3869faf2 = __esm({
   ".svelte-kit/output/server/chunks/getTvNetworks-3869faf2.js"() {
     init_shims();
-    api2 = "61e588d14c9ac42a437e560cc3d65659";
-    TV_NETWORKS_API = `https://api.themoviedb.org/3/watch/providers/tv?api_key=${api2}&language=en-US`;
-    get2 = async () => {
+    api5 = "61e588d14c9ac42a437e560cc3d65659";
+    TV_NETWORKS_API = `https://api.themoviedb.org/3/watch/providers/tv?api_key=${api5}&language=en-US`;
+    get4 = async () => {
       try {
         const response = await fetch(TV_NETWORKS_API);
         const response_json = await response.json();
-        const tv_network2 = response_json.results;
+        const tv_network = response_json.results;
         return {
-          body: JSON.stringify({ tv_network: tv_network2 })
+          body: JSON.stringify({ tv_network })
         };
       } catch (e) {
         console.log("error", e);
@@ -4751,16 +4828,16 @@ var init_getTvNetworks_3869faf2 = __esm({
 // .svelte-kit/output/server/chunks/getShowGenre-bece8541.js
 var getShowGenre_bece8541_exports = {};
 __export(getShowGenre_bece8541_exports, {
-  post: () => post
+  post: () => post2
 });
-var api3, post;
+var api6, post2;
 var init_getShowGenre_bece8541 = __esm({
   ".svelte-kit/output/server/chunks/getShowGenre-bece8541.js"() {
     init_shims();
-    api3 = "61e588d14c9ac42a437e560cc3d65659";
-    post = async (request) => {
+    api6 = "61e588d14c9ac42a437e560cc3d65659";
+    post2 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/discover/${request.body["media"]}?api_key=${api3}&with_genres=${request.body["genre"]}&page=${request.body["page"]}`;
+        const api_url = `https://api.themoviedb.org/3/discover/${request.body["media"]}?api_key=${api6}&with_genres=${request.body["genre"]}&page=${request.body["page"]}`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4776,16 +4853,16 @@ var init_getShowGenre_bece8541 = __esm({
 // .svelte-kit/output/server/chunks/getKnownFor-737a4ce8.js
 var getKnownFor_737a4ce8_exports = {};
 __export(getKnownFor_737a4ce8_exports, {
-  post: () => post2
+  post: () => post3
 });
-var api4, post2;
+var api7, post3;
 var init_getKnownFor_737a4ce8 = __esm({
   ".svelte-kit/output/server/chunks/getKnownFor-737a4ce8.js"() {
     init_shims();
-    api4 = "61e588d14c9ac42a437e560cc3d65659";
-    post2 = async (request) => {
+    api7 = "61e588d14c9ac42a437e560cc3d65659";
+    post3 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/person/${request.body["person"]}/combined_credits?api_key=${api4}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/person/${request.body["person"]}/combined_credits?api_key=${api7}&language=en-US`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4801,17 +4878,17 @@ var init_getKnownFor_737a4ce8 = __esm({
 // .svelte-kit/output/server/chunks/getTvGenres-8924ea77.js
 var getTvGenres_8924ea77_exports = {};
 __export(getTvGenres_8924ea77_exports, {
-  get: () => get3
+  get: () => get5
 });
-var api5, GENRES_TV_API, get3;
+var api8, GENRES_TV_API2, get5;
 var init_getTvGenres_8924ea77 = __esm({
   ".svelte-kit/output/server/chunks/getTvGenres-8924ea77.js"() {
     init_shims();
-    api5 = "61e588d14c9ac42a437e560cc3d65659";
-    GENRES_TV_API = `https://api.themoviedb.org/3/genre/tv/list?api_key=${api5}&language-en-GB`;
-    get3 = async () => {
+    api8 = "61e588d14c9ac42a437e560cc3d65659";
+    GENRES_TV_API2 = `https://api.themoviedb.org/3/genre/tv/list?api_key=${api8}&language-en-GB`;
+    get5 = async () => {
       try {
-        const response = await fetch(GENRES_TV_API);
+        const response = await fetch(GENRES_TV_API2);
         const response_json = await response.json();
         const tv_genres2 = response_json.genres;
         return {
@@ -4827,16 +4904,16 @@ var init_getTvGenres_8924ea77 = __esm({
 // .svelte-kit/output/server/chunks/getEpisode-3741fea8.js
 var getEpisode_3741fea8_exports = {};
 __export(getEpisode_3741fea8_exports, {
-  post: () => post3
+  post: () => post4
 });
-var api6, post3;
+var api9, post4;
 var init_getEpisode_3741fea8 = __esm({
   ".svelte-kit/output/server/chunks/getEpisode-3741fea8.js"() {
     init_shims();
-    api6 = "61e588d14c9ac42a437e560cc3d65659";
-    post3 = async (request) => {
+    api9 = "61e588d14c9ac42a437e560cc3d65659";
+    post4 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/tv/${request.body["id"]}/season/${request.body["season_number"]}/episode/${request.body["episode_number"]}?api_key=${api6}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/tv/${request.body["id"]}/season/${request.body["season_number"]}/episode/${request.body["episode_number"]}?api_key=${api9}&language=en-US`;
         const res_api = await fetch(api_url);
         const res = await res_api.json();
         return {
@@ -4852,16 +4929,16 @@ var init_getEpisode_3741fea8 = __esm({
 // .svelte-kit/output/server/chunks/getTrailer-b36b5a94.js
 var getTrailer_b36b5a94_exports = {};
 __export(getTrailer_b36b5a94_exports, {
-  post: () => post4
+  post: () => post5
 });
-var api7, post4;
+var api10, post5;
 var init_getTrailer_b36b5a94 = __esm({
   ".svelte-kit/output/server/chunks/getTrailer-b36b5a94.js"() {
     init_shims();
-    api7 = "61e588d14c9ac42a437e560cc3d65659";
-    post4 = async (request) => {
+    api10 = "61e588d14c9ac42a437e560cc3d65659";
+    post5 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/videos?api_key=${api7}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/videos?api_key=${api10}&language=en-US`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4877,16 +4954,16 @@ var init_getTrailer_b36b5a94 = __esm({
 // .svelte-kit/output/server/chunks/getPerson-73622a35.js
 var getPerson_73622a35_exports = {};
 __export(getPerson_73622a35_exports, {
-  post: () => post5
+  post: () => post6
 });
-var api8, post5;
+var api11, post6;
 var init_getPerson_73622a35 = __esm({
   ".svelte-kit/output/server/chunks/getPerson-73622a35.js"() {
     init_shims();
-    api8 = "61e588d14c9ac42a437e560cc3d65659";
-    post5 = async (request) => {
+    api11 = "61e588d14c9ac42a437e560cc3d65659";
+    post6 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/credits?api_key=${api8}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/credits?api_key=${api11}&language=en-US`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4902,16 +4979,16 @@ var init_getPerson_73622a35 = __esm({
 // .svelte-kit/output/server/chunks/getSearch-b70547a7.js
 var getSearch_b70547a7_exports = {};
 __export(getSearch_b70547a7_exports, {
-  post: () => post6
+  post: () => post7
 });
-var api9, post6;
+var api12, post7;
 var init_getSearch_b70547a7 = __esm({
   ".svelte-kit/output/server/chunks/getSearch-b70547a7.js"() {
     init_shims();
-    api9 = "61e588d14c9ac42a437e560cc3d65659";
-    post6 = async (request) => {
+    api12 = "61e588d14c9ac42a437e560cc3d65659";
+    post7 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/search/${request.body["media"]}?api_key=${api9}&language=en-US&page=${request.body["page"]}&include_adult=false&query=${request.body["query"]}`;
+        const api_url = `https://api.themoviedb.org/3/search/${request.body["media"]}?api_key=${api12}&language=en-US&page=${request.body["page"]}&include_adult=false&query=${request.body["query"]}`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4927,16 +5004,16 @@ var init_getSearch_b70547a7 = __esm({
 // .svelte-kit/output/server/chunks/getSeason-d3cb4046.js
 var getSeason_d3cb4046_exports = {};
 __export(getSeason_d3cb4046_exports, {
-  post: () => post7
+  post: () => post8
 });
-var api10, post7;
+var api13, post8;
 var init_getSeason_d3cb4046 = __esm({
   ".svelte-kit/output/server/chunks/getSeason-d3cb4046.js"() {
     init_shims();
-    api10 = "61e588d14c9ac42a437e560cc3d65659";
-    post7 = async (request) => {
+    api13 = "61e588d14c9ac42a437e560cc3d65659";
+    post8 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/tv/${request.body["id"]}/season/${request.body["season_number"]}?api_key=${api10}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/tv/${request.body["id"]}/season/${request.body["season_number"]}?api_key=${api13}&language=en-US`;
         const res_api = await fetch(api_url);
         const res = await res_api.json();
         return {
@@ -4949,19 +5026,28 @@ var init_getSeason_d3cb4046 = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/apiCalls-537263b8.js
+var apiCalls_537263b8_exports = {};
+__markAsModule(apiCalls_537263b8_exports);
+var init_apiCalls_537263b8 = __esm({
+  ".svelte-kit/output/server/chunks/apiCalls-537263b8.js"() {
+    init_shims();
+  }
+});
+
 // .svelte-kit/output/server/chunks/getMovie-dfbada3a.js
 var getMovie_dfbada3a_exports = {};
 __export(getMovie_dfbada3a_exports, {
-  post: () => post8
+  post: () => post9
 });
-var api11, post8;
+var api14, post9;
 var init_getMovie_dfbada3a = __esm({
   ".svelte-kit/output/server/chunks/getMovie-dfbada3a.js"() {
     init_shims();
-    api11 = "61e588d14c9ac42a437e560cc3d65659";
-    post8 = async (request) => {
+    api14 = "61e588d14c9ac42a437e560cc3d65659";
+    post9 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}?api_key=${api11}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}?api_key=${api14}&language=en-US`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -4977,16 +5063,16 @@ var init_getMovie_dfbada3a = __esm({
 // .svelte-kit/output/server/chunks/getCast-7cf0533a.js
 var getCast_7cf0533a_exports = {};
 __export(getCast_7cf0533a_exports, {
-  post: () => post9
+  post: () => post10
 });
-var api12, post9;
+var api15, post10;
 var init_getCast_7cf0533a = __esm({
   ".svelte-kit/output/server/chunks/getCast-7cf0533a.js"() {
     init_shims();
-    api12 = "61e588d14c9ac42a437e560cc3d65659";
-    post9 = async (request) => {
+    api15 = "61e588d14c9ac42a437e560cc3d65659";
+    post10 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/credits?api_key=${api12}&language=en-US`;
+        const api_url = `https://api.themoviedb.org/3/${request.body["media"]}/${request.body["id"]}/credits?api_key=${api15}&language=en-US`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -5002,16 +5088,16 @@ var init_getCast_7cf0533a = __esm({
 // .svelte-kit/output/server/chunks/getShow-6a79cddc.js
 var getShow_6a79cddc_exports = {};
 __export(getShow_6a79cddc_exports, {
-  post: () => post10
+  post: () => post11
 });
-var api13, post10;
+var api16, post11;
 var init_getShow_6a79cddc = __esm({
   ".svelte-kit/output/server/chunks/getShow-6a79cddc.js"() {
     init_shims();
-    api13 = "61e588d14c9ac42a437e560cc3d65659";
-    post10 = async (request) => {
+    api16 = "61e588d14c9ac42a437e560cc3d65659";
+    post11 = async (request) => {
       try {
-        const api_url = `https://api.themoviedb.org/3/trending/${request.body["media"]}/week?api_key=${api13}&language=en-GB&page=${request.body["page"]}`;
+        const api_url = `https://api.themoviedb.org/3/trending/${request.body["media"]}/week?api_key=${api16}&language=en-GB&page=${request.body["page"]}`;
         const res_mov = await fetch(api_url);
         const res = await res_mov.json();
         return {
@@ -5024,12 +5110,7 @@ var init_getShow_6a79cddc = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/store-f8b67767.js
-function readable(value, start) {
-  return {
-    subscribe: writable(value, start).subscribe
-  };
-}
+// .svelte-kit/output/server/chunks/store-cc224516.js
 function writable(value, start = noop) {
   let stop;
   const subscribers = new Set();
@@ -5071,29 +5152,27 @@ function writable(value, start = noop) {
   }
   return { set, update, subscribe: subscribe2 };
 }
-var subscriber_queue, current_page, media_type, tv_genres, tv_network, movie_genres, selected, show_name, season_count, show_id;
-var init_store_f8b67767 = __esm({
-  ".svelte-kit/output/server/chunks/store-f8b67767.js"() {
+var subscriber_queue, current_page, media_type, selected, show_name, season_count, show_id, data, tv_genres, movie_genres;
+var init_store_cc224516 = __esm({
+  ".svelte-kit/output/server/chunks/store-cc224516.js"() {
     init_shims();
-    init_app_3d85ebcf();
+    init_app_14a936dc();
     subscriber_queue = [];
     current_page = writable(1);
     media_type = writable("movie");
-    tv_genres = writable({});
-    tv_network = writable({});
-    movie_genres = writable({});
     selected = writable(null);
     show_name = writable("");
     season_count = writable(0);
     show_id = writable(0);
-    readable("61e588d14c9ac42a437e560cc3d65659", () => {
-    });
+    data = writable([]);
+    tv_genres = writable([]);
+    movie_genres = writable([]);
   }
 });
 
-// .svelte-kit/output/server/chunks/__layout-9a9c760a.js
-var layout_9a9c760a_exports = {};
-__export(layout_9a9c760a_exports, {
+// .svelte-kit/output/server/chunks/__layout-938abee5.js
+var layout_938abee5_exports = {};
+__export(layout_938abee5_exports, {
   default: () => _layout,
   load: () => load
 });
@@ -5114,12 +5193,21 @@ function _theme() {
     }
   };
 }
-var Search, Genre, Selector, theme, ToggleDarkMode, Header, load, _layout;
-var init_layout_9a9c760a = __esm({
-  ".svelte-kit/output/server/chunks/__layout-9a9c760a.js"() {
+async function load({ fetch: fetch2 }) {
+  const resTv = await fetch2("./api/getTvGenres");
+  const resTv_json = await resTv.json();
+  tv_genres.set(resTv_json.tv_genres);
+  const resMovie = await fetch2("./api/getMovieGenres");
+  const resMovie_json = await resMovie.json();
+  movie_genres.set(resMovie_json.movie_genres);
+  return {};
+}
+var Search, Genre, Selector, theme, ToggleDarkMode, Header, _layout;
+var init_layout_938abee5 = __esm({
+  ".svelte-kit/output/server/chunks/__layout-938abee5.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
+    init_app_14a936dc();
+    init_store_cc224516();
     Search = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let searchTerm;
       return `<section id="${"search"}"><form class="${"flex justify-end items-center pr-0.5"}" label="${"search form"}"><input label="${"search"}" class="${"placeholder-gray-500 bg-transparent w-24 xl:w-48 h-7 rounded-full text-l px-2 text-skin-muted placeholder-text-skin-base::placeholder border-2 border-skin-border"}" type="${"text"}" placeholder="${"Search..."}"${add_attribute("value", searchTerm, 0)}></form></section>`;
@@ -5137,36 +5225,32 @@ var init_layout_9a9c760a = __esm({
       $$unsubscribe_selected();
       $$unsubscribe_media_type();
       $$unsubscribe_tv_genres();
-      return `<div class="${"bg-skin-primary w-full xl:w-96"}"><p class="${"py-0.5 justify-center bg-skin-bg"}"></p>
-	<h4 class="${"uppercase items-center flex justify-center text-skin-base"}"><span class="${"mr-2"}"><i class="${"fa fa-video-camera"}" aria-hidden="${"true"}"></i></span>Movies
-	</h4>
-	<p class="${"py-0.5 justify-center bg-skin-inverted"}"></p>
-	<ul class="${"flex flex-wrap justify-center"}">${each($movie_genres, (genre, i) => `<li class="${"flex"}"><button${add_attribute("aria-label", genre.name, 0)} class="${[
+      return `<div class="${"bg-skin-primary w-full"}"><div class="${"flex flex-row p-1"}"><div class="${"p-1 m-1 flex flex-col bg-skin-secondary"}"><h6 class="${"uppercase text-skin-base"}"><span class="${"mr-2"}"><i class="${"fa fa-video-camera"}" aria-hidden="${"true"}"></i></span>Movies
+			</h6>
+			<div class="${"py-0.5 justify-center bg-skin-inverted"}"></div>
+			<ul class="${"text-sm flex flex-col justify-center"}">${each($movie_genres, (genre, i) => `<li class="${"flex"}"><button${add_attribute("aria-label", genre.name, 0)} class="${[
         "hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap",
         $selected === genre.id && $media_type === "movie" ? "bg-selected" : ""
       ].join(" ").trim()}">${escape(genre.name)}</button>
-				${i !== $movie_genres.length - 1 ? `<span class="${"mx-2"}">|</span>` : ``}
-			</li>`)}</ul>
-	<p class="${"py-0.5 justify-center bg-skin-bg"}"></p>
-	<h4 class="${"uppercase items-center flex justify-center text-skin-base"}"><span class="${"mr-2"}"><i class="${"fa fa-tv"}" aria-hidden="${"true"}"></i></span>Tv
-	</h4>
-	<p class="${"py-0.5 justify-center text-skin-base"}"></p>
-	<ul class="${"flex flex-wrap justify-center"}">${each($tv_genres, (genre, j) => `<li class="${"flex"}"><button class="${[
+					</li>`)}</ul></div>
+		<div class="${"p-1 m-1 flex flex-col bg-skin-secondary"}"><h6 class="${"uppercase flex text-skin-base"}"><span class="${"mr-2"}"><i class="${"fa fa-tv"}" aria-hidden="${"true"}"></i></span>Tv
+			</h6>
+			<p class="${"py-0.5 justify-center text-skin-base"}"></p>
+			<ul class="${"text-sm flex flex-col justify-center"}">${each($tv_genres, (genre, j) => `<li class="${"flex"}"><button class="${[
         "hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap",
         $selected === genre.id && $media_type === "tv" ? "bg-selected" : ""
       ].join(" ").trim()}">${escape(genre.name)}</button>
-				${j !== $tv_genres.length - 1 ? `<span class="${"mx-2"}">|</span>` : ``}
-			</li>`)}</ul></div>`;
+					</li>`)}</ul></div></div></div>`;
     });
     Selector = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $media_type, $$unsubscribe_media_type;
       let $$unsubscribe_current_page;
+      let $media_type, $$unsubscribe_media_type;
       let $$unsubscribe_selected;
-      $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
       $$unsubscribe_current_page = subscribe(current_page, (value) => value);
+      $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
       $$unsubscribe_selected = subscribe(selected, (value) => value);
-      $$unsubscribe_media_type();
       $$unsubscribe_current_page();
+      $$unsubscribe_media_type();
       $$unsubscribe_selected();
       return `<div class="${"pl-6 xl:pl-8 "}"><div class="${"group inline-block relative z-50"}"><button aria-label="${"Movies"}" class="${[
         "text-skin-base font-semibold py-2 rounded inline-flex items-center hover:text-skin-selected",
@@ -5187,15 +5271,14 @@ var init_layout_9a9c760a = __esm({
 			<span class="${"hidden xl:block mx-2"}">People</span></button></div></div>
 <div class="${"pl-6 xl:pl-8 "}"><div class="${"group inline-block relative z-50"}"><button aria-label="${"Genres"}" class="${"text-skin-base font-semibold py-2 rounded inline-flex items-center hover:text-skin-selected"}"><span><i class="${"fa fa-tag"}" aria-hidden="${"true"}"></i></span>
 				<span class="${"hidden xl:block mx-2"}">Genres</span></button>
-			<ul class="${"rounded xl:absolute fixed left-0 hidden bg-skin-primary text-skin-base pt-4 group-hover:block"}">${validate_component(Genre, "Genre").$$render($$result, {}, {}, {})}</ul></div></div>
-`;
+			<ul class="${"rounded xl:absolute fixed left-0 hidden bg-skin-primary text-skin-base group-hover:block"}">${validate_component(Genre, "Genre").$$render($$result, {}, {}, {})}</ul></div></div>`;
     });
     theme = _theme();
     ToggleDarkMode = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $theme, $$unsubscribe_theme;
       $$unsubscribe_theme = subscribe(theme, (value) => $theme = value);
       $$unsubscribe_theme();
-      return `<button class="${"text-skin-base"}"><div class="${"text-skin-base mr-2 flex text-lg px-3 py-2 rounded-lg border border-transparent focus:outline-none"}" aria-label="${"Toggle Light and Dark mode"}">${$theme === "dark" ? `<img class="${"h-8 w-8"}" src="${"/icons8-sun-48.png"}" alt="${"profile"}">` : `<div class="${"h-6 w-6"}"><img src="${"/icons8-moon-60.png"}" alt="${"light mode"}"></div>`}</div></button>`;
+      return `<button class="${"text-skin-base"}"><div class="${"text-skin-base mr-2 flex text-lg px-3 py-2 rounded-lg border border-transparent focus:outline-none"}" aria-label="${"Toggle Light and Dark mode"}">${$theme === "dark" ? `<img class="${"h-8 w-8"}" src="${"/sun_light_mode_day-512.webp"}" alt="${"profile"}">` : `<div class="${"h-6 w-6"}"><img src="${"/icons8-moon-60.png"}" alt="${"light mode"}"></div>`}</div></button>`;
     });
     Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $$unsubscribe_current_page;
@@ -5209,45 +5292,10 @@ var init_layout_9a9c760a = __esm({
 		${validate_component(ToggleDarkMode, "ToggleDarkMode").$$render($$result, {}, {}, {})}
 		${validate_component(Search, "Search").$$render($$result, {}, {}, {})}</div></header>`;
     });
-    load = async ({ fetch: fetch2 }) => {
-      const resTv = await fetch2("api/getTvGenres");
-      const resTv_json = await resTv.json();
-      const tv_genre = resTv_json.tv_genres;
-      const resMovie = await fetch2("api/getMovieGenres");
-      const resMovie_json = await resMovie.json();
-      const movie_genre = resMovie_json.movie_genres;
-      const tvNetworks = await fetch2("api/getTvNetworks");
-      const resTvNetworks_json = await tvNetworks.json();
-      const tv_networks = resTvNetworks_json.tv_network;
-      return {
-        props: { tv_genre, movie_genre, tv_networks }
-      };
-    };
     _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $tv_network, $$unsubscribe_tv_network;
-      let $movie_genres, $$unsubscribe_movie_genres;
-      let $tv_genres, $$unsubscribe_tv_genres;
       let $theme, $$unsubscribe_theme;
-      $$unsubscribe_tv_network = subscribe(tv_network, (value) => $tv_network = value);
-      $$unsubscribe_movie_genres = subscribe(movie_genres, (value) => $movie_genres = value);
-      $$unsubscribe_tv_genres = subscribe(tv_genres, (value) => $tv_genres = value);
       $$unsubscribe_theme = subscribe(theme, (value) => $theme = value);
-      let { tv_genre } = $$props;
-      let { movie_genre } = $$props;
-      let { tv_networks } = $$props;
       theme.init();
-      set_store_value(tv_genres, $tv_genres = tv_genre, $tv_genres);
-      set_store_value(movie_genres, $movie_genres = movie_genre, $movie_genres);
-      set_store_value(tv_network, $tv_network = tv_networks, $tv_network);
-      if ($$props.tv_genre === void 0 && $$bindings.tv_genre && tv_genre !== void 0)
-        $$bindings.tv_genre(tv_genre);
-      if ($$props.movie_genre === void 0 && $$bindings.movie_genre && movie_genre !== void 0)
-        $$bindings.movie_genre(movie_genre);
-      if ($$props.tv_networks === void 0 && $$bindings.tv_networks && tv_networks !== void 0)
-        $$bindings.tv_networks(tv_networks);
-      $$unsubscribe_tv_network();
-      $$unsubscribe_movie_genres();
-      $$unsubscribe_tv_genres();
       $$unsubscribe_theme();
       return `${$$result.head += `<link rel="${"preconnect"}" href="${"https://fonts.gstatic.com"}" data-svelte="svelte-wejjgj"><link rel="${"stylesheet"}" href="${"https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,600;0,700;1,400&display=swap"}" data-svelte="svelte-wejjgj"><link rel="${"stylesheet"}" href="${"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}" data-svelte="svelte-wejjgj">${$$result.title = `<title>TMDB on Sveltekit</title>`, ""}<meta name="${"description"}" content="${"TMDB movie & tv database"}" data-svelte="svelte-wejjgj"><meta name="${"keywords"}" content="${"HTML, CSS, JavaScript, svelte"}" data-svelte="svelte-wejjgj"><meta name="${"author"}" content="${"Wayne Morgan"}" data-svelte="svelte-wejjgj">`, ""}
 
@@ -5257,9 +5305,9 @@ var init_layout_9a9c760a = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/__error-747195c4.js
-var error_747195c4_exports = {};
-__export(error_747195c4_exports, {
+// .svelte-kit/output/server/chunks/__error-7ac6427a.js
+var error_7ac6427a_exports = {};
+__export(error_7ac6427a_exports, {
   default: () => _error,
   load: () => load2
 });
@@ -5267,10 +5315,10 @@ function load2({ error: error2, status }) {
   return { props: { error: error2, status } };
 }
 var css, _error;
-var init_error_747195c4 = __esm({
-  ".svelte-kit/output/server/chunks/__error-747195c4.js"() {
+var init_error_7ac6427a = __esm({
+  ".svelte-kit/output/server/chunks/__error-7ac6427a.js"() {
     init_shims();
-    init_app_3d85ebcf();
+    init_app_14a936dc();
     css = {
       code: "h1.svelte-be3lyz,p.svelte-be3lyz{margin:0 auto}h1.svelte-be3lyz{font-size:2.8em;font-weight:700;margin:0 0 .5em}p.svelte-be3lyz{margin:1em auto}@media(min-width:480px){h1.svelte-be3lyz{font-size:4em}}",
       map: null
@@ -5292,17 +5340,20 @@ var init_error_747195c4 = __esm({
 
 <p class="${"svelte-be3lyz"}">${escape(message)}</p>
 
-${error2.stack ? `<pre>${escape(error2.stack)}</pre>` : ``}`;
+${error2.stack ? `
+	<h2>This page does not exist</h2>
+
+	<pre>${escape(error2.stack)}</pre>` : ``}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/Spinner-d0149d04.js
-var ProgressBar, css2, Spinner;
-var init_Spinner_d0149d04 = __esm({
-  ".svelte-kit/output/server/chunks/Spinner-d0149d04.js"() {
+// .svelte-kit/output/server/chunks/ProgressBar-607c37c9.js
+var ProgressBar;
+var init_ProgressBar_607c37c9 = __esm({
+  ".svelte-kit/output/server/chunks/ProgressBar-607c37c9.js"() {
     init_shims();
-    init_app_3d85ebcf();
+    init_app_14a936dc();
     ProgressBar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { progress } = $$props;
       let progress_percent;
@@ -5313,28 +5364,17 @@ var init_Spinner_d0149d04 = __esm({
       return `<section id="${"progress"}" class="${"bg-gray-900 block rounded-full align-center relative w-24 h-24"}"><div class="${"box"}"><div class="${"percent"}"><canvas class="${"w-24 h-24"}" width="${"98"}" height="${"98"}"${add_attribute("this", canvas, 0)}></canvas>
 			<div class="${"absolute top-0 left-0 w-full h-full flex justify-center items-center"}"><h2 class="${"text-gray-200 text-3xl"}">${escape(progress_percent)}<span class="${"text-xl align-top"}">%</span></h2></div></div></div></section>`;
     });
-    css2 = {
-      code: "div.svelte-11hc8a6{-webkit-animation:svelte-11hc8a6-wave .8s ease-in-out infinite alternate;animation:svelte-11hc8a6-wave .8s ease-in-out infinite alternate}div.svelte-11hc8a6:first-of-type{-webkit-animation-delay:-.4s;animation-delay:-.4s}div.svelte-11hc8a6:nth-of-type(2){-webkit-animation-delay:-.2s;animation-delay:-.2s}@-webkit-keyframes svelte-11hc8a6-wave{0%{transform:translateY(-100%)}to{transform:translateY(100%)}}@keyframes svelte-11hc8a6-wave{0%{transform:translateY(-100%)}to{transform:translateY(100%)}}",
-      map: null
-    };
-    Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css2);
-      return `<section id="${"spinner"}" class="${"w-full h-full m-auto"}"><section class="${"flex absolute items-center h-8 top-1/2 left-1/2 transform -translate-x-1/2 "}"><div class="${"inline-flex flex-nowrap flex-row items-center justify-between mx-auto w-12 svelte-11hc8a6"}"><div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div>
-			<div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div>
-			<div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div></div></section>
-</section>`;
-    });
   }
 });
 
-// .svelte-kit/output/server/chunks/MainSection-866f73c3.js
+// .svelte-kit/output/server/chunks/MainSection-8f5559a2.js
 var IMAGE_API$2, MovieCard, Skeleton, MovieList, IMAGE_API$1, TvCard, TvList, IMAGE_API, PersonCard, PersonList, InfiniteScroll, MainSection;
-var init_MainSection_866f73c3 = __esm({
-  ".svelte-kit/output/server/chunks/MainSection-866f73c3.js"() {
+var init_MainSection_8f5559a2 = __esm({
+  ".svelte-kit/output/server/chunks/MainSection-8f5559a2.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_Spinner_d0149d04();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_ProgressBar_607c37c9();
     IMAGE_API$2 = "https://image.tmdb.org/t/p/w300";
     MovieCard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $media_type, $$unsubscribe_media_type;
@@ -5343,12 +5383,12 @@ var init_MainSection_866f73c3 = __esm({
       if ($$props.datum === void 0 && $$bindings.datum && datum !== void 0)
         $$bindings.datum(datum);
       $$unsubscribe_media_type();
-      return `${datum.id ? `<section id="${"movie-card"}" class="${"group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg"}"><div class="${"relative preserve-3d w-full duration-700 group-hover:rotate-y-180"}"><div class="${"backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-muted "}"${add_attribute("src", datum.poster_path ? IMAGE_API$2 + datum.poster_path : "/default.jpg", 0)}${add_attribute("alt", datum.title, 0)}>
-				<div class="${"p-2 xl:ml-4"}"><h6 class="${"text-sm xl:text-lg text-skin-base w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.title)}</h6>
-					<h6 class="${"xl:text-lg font-bold"}">${escape(datum.release_date ? datum.release_date.substring(0, 4) : "-")}</h6></div>
-				<div class="${"transform scale-44 origin-top-left absolute left-1 top-56 xl:top-80"}">${validate_component(ProgressBar, "ProgressBar").$$render($$result, { progress: datum.vote_average }, {}, {})}</div></div>
-			<a class="${"w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"}"${add_attribute("href", `/${$media_type}/${datum.id}`, 0)}><h6 class="${"mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded"}">Overview</h6>
-				<p class="${"md:text-base mt-1"}">${escape(datum.overview)}</p></a></div></section>` : `${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
+      return `<section id="${"movie-card"}" class="${"group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg"}"><div class="${"relative preserve-3d w-full duration-700 group-hover:rotate-y-180"}"><div class="${"backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-muted "}"${add_attribute("src", datum.poster_path ? IMAGE_API$2 + datum.poster_path : "/default.jpg", 0)}${add_attribute("alt", datum.title, 0)}>
+			<div class="${"p-2 xl:ml-4"}"><h6 class="${"text-sm xl:text-lg text-skin-base w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.title)}</h6>
+				<h6 class="${"xl:text-lg font-bold"}">${escape(datum.release_date ? datum.release_date.substring(0, 4) : "-")}</h6></div>
+			<div class="${"transform scale-44 origin-top-left absolute left-1 top-56 xl:top-80"}">${validate_component(ProgressBar, "ProgressBar").$$render($$result, { progress: datum.vote_average }, {}, {})}</div></div>
+		<a class="${"w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"}"${add_attribute("href", `/${$media_type}/${datum.id}`, 0)}><h6 class="${"mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded"}">Overview</h6>
+			<p class="${"md:text-base mt-1"}">${escape(datum.overview)}</p></a></div></section>`;
     });
     Skeleton = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${each(Array(20), (_) => `<section id="${"movie-card"}" class="${"w-44 xl:h-108 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg"}"><div class="${"top-0 right-0 text-textDark bg-skin-bg xl:rounded-lg"}"><div class="${"w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg bg-skin-muted"}"></div>
@@ -5358,10 +5398,10 @@ var init_MainSection_866f73c3 = __esm({
 	</section>`)}`;
     });
     MovieList = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { data = [] } = $$props;
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      return `<section id="${"movie-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl mx-auto xl:mt-2 xl:rounded-2xl"}">${data.length > 0 ? `${each(data, (datum) => `${validate_component(MovieCard, "MovieCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
+      let $data, $$unsubscribe_data;
+      $$unsubscribe_data = subscribe(data, (value) => $data = value);
+      $$unsubscribe_data();
+      return `<section id="${"movie-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl mx-auto xl:mt-2 xl:rounded-2xl"}">${$data ? `${each($data, (datum) => `${validate_component(MovieCard, "MovieCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
     });
     IMAGE_API$1 = "https://image.tmdb.org/t/p/w300";
     TvCard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -5375,34 +5415,32 @@ var init_MainSection_866f73c3 = __esm({
         $$bindings.datum(datum);
       $$unsubscribe_show_name();
       $$unsubscribe_media_type();
-      return `${datum.id ? `<section id="${"tv-card"}" class="${"group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg"}"><div class="${"relative preserve-3d w-full duration-700 group-hover:rotate-y-180"}"><div class="${"backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-muted "}"${add_attribute("src", datum.poster_path ? IMAGE_API$1 + datum.poster_path : "/default.jpg", 0)}${add_attribute("alt", datum.name, 0)}>
-				<div class="${"p-2 xl:ml-4"}"><h6 class="${"text-sm xl:text-lg text-skin-base w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.name)}</h6>
-					<h6 class="${"xl:text-lg font-bold"}">${escape(datum.first_air_date ? datum.first_air_date.substring(0, 4) : "-")}</h6></div>
-				<div class="${"transform scale-44 origin-top-left absolute left-1 top-56 xl:top-80"}">${validate_component(ProgressBar, "ProgressBar").$$render($$result, { progress: datum.vote_average }, {}, {})}</div></div>
-			<a class="${"w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"}"${add_attribute("href", `/${$media_type}/${datum.id}`, 0)}><h6 class="${"mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded"}">Overview</h6>
-				<p class="${"md:text-base mt-1"}">${escape(datum.overview)}</p></a></div></section>` : `${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
+      return `<section id="${"tv-card"}" class="${"group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg"}"><div class="${"relative preserve-3d w-full duration-700 group-hover:rotate-y-180"}"><div class="${"backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-muted "}"${add_attribute("src", datum.poster_path ? IMAGE_API$1 + datum.poster_path : "/default.jpg", 0)}${add_attribute("alt", datum.name, 0)}>
+			<div class="${"p-2 xl:ml-4"}"><h6 class="${"text-sm xl:text-lg text-skin-base w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.name ? datum.name : " ")}</h6>
+				<h6 class="${"xl:text-lg font-bold"}">${escape(datum.first_air_date ? datum.first_air_date.substring(0, 4) : "-")}</h6></div>
+			<div class="${"transform scale-44 origin-top-left absolute left-1 top-56 xl:top-80"}">${validate_component(ProgressBar, "ProgressBar").$$render($$result, { progress: datum.vote_average }, {}, {})}</div></div>
+		<a class="${"w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"}"${add_attribute("href", `/${$media_type}/${datum.id}`, 0)}><h6 class="${"mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded"}">Overview</h6>
+			<p class="${"md:text-base mt-1"}">${escape(datum.overview)}</p></a></div></section>`;
     });
     TvList = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { data = [] } = $$props;
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      return `<section id="${"movie-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl mx-auto xl:mt-2 xl:rounded-2xl"}">${data.length > 0 ? `${each(data, (datum) => `${validate_component(TvCard, "TvCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
+      let $data, $$unsubscribe_data;
+      $$unsubscribe_data = subscribe(data, (value) => $data = value);
+      $$unsubscribe_data();
+      return `<section id="${"movie-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl mx-auto xl:mt-2 xl:rounded-2xl"}">${$data ? `${each($data, (datum) => `${validate_component(TvCard, "TvCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
     });
     IMAGE_API = "https://image.tmdb.org/t/p/w500";
     PersonCard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { datum } = $$props;
       if ($$props.datum === void 0 && $$bindings.datum && datum !== void 0)
         $$bindings.datum(datum);
-      return `${datum.id ? `<section id="${"main"}" class="${"h-full"}"><section id="${"person-card"}" class="${"w-44 xl:h-108 xl:w-60 my-0.5 xl:my-2 bg-skin-primary xl:rounded-lg"}"><a${add_attribute("href", `/person/${datum.id}`, 0)} class="${"top-0 right-0 text-skin-base xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-base"}"${add_attribute("src", datum.profile_path === null ? "/person.svg" : IMAGE_API + datum.profile_path, 0)}${add_attribute("alt", datum.name, 0)}>
-				<div class="${"p-2 h-18 w-44 xl:w-60 bg-skin-bg"}"><h6 class="${"text-sm xl:text-lg text-textDark w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.name)}</h6></div></a></section></section>
-
-	` : `${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
+      return `<section id="${"person-card"}" class="${"w-44 xl:h-108 xl:w-60 my-0.5 xl:my-2 bg-skin-bg xl:rounded-lg"}"><a${add_attribute("href", `/person/${datum.id}`, 0)} class="${"top-0 right-0 text-skin-base xl:rounded-lg"}"><img class="${"oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg text-skin-base"}"${add_attribute("src", datum.profile_path === null ? "/person.svg" : IMAGE_API + datum.profile_path, 0)}${add_attribute("alt", datum.name, 0)}>
+		<div class="${"p-2 h-18 w-44 xl:w-60 bg-skin-bg"}"><h6 class="${"text-sm xl:text-lg text-textDark w-40 xl:w-52 whitespace-nowrap overflow-hidden overflow-ellipsis"}">${escape(datum.name)}</h6></div></a></section>`;
     });
     PersonList = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { data = [] } = $$props;
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      return `<section id="${"movie-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl xl:mt-2 mx-auto xl:rounded-2xl"}">${data.length > 0 ? `${each(data, (datum) => `${validate_component(PersonCard, "PersonCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
+      let $data, $$unsubscribe_data;
+      $$unsubscribe_data = subscribe(data, (value) => $data = value);
+      $$unsubscribe_data();
+      return `<section id="${"person-list"}" class="${"bg-skin-tertiary flex flex-wrap justify-around max-w-7xl xl:mt-2 mx-auto xl:rounded-2xl"}">${$data ? `${each($data, (datum) => `${validate_component(PersonCard, "PersonCard").$$render($$result, { datum }, {}, {})}`)}` : `${validate_component(Skeleton, "Skeleton").$$render($$result, {}, {}, {})}`}</section>`;
     });
     InfiniteScroll = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       createEventDispatcher();
@@ -5413,80 +5451,78 @@ var init_MainSection_866f73c3 = __esm({
     });
     MainSection = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $current_page, $$unsubscribe_current_page;
+      let $$unsubscribe_data;
       let $media_type, $$unsubscribe_media_type;
       $$unsubscribe_current_page = subscribe(current_page, (value) => $current_page = value);
+      $$unsubscribe_data = subscribe(data, (value) => value);
       $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
-      let { data = [] } = $$props;
       let { total_pages = 1 } = $$props;
       let { genres = void 0 } = $$props;
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
       if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
         $$bindings.total_pages(total_pages);
       if ($$props.genres === void 0 && $$bindings.genres && genres !== void 0)
         $$bindings.genres(genres);
       $$unsubscribe_current_page();
+      $$unsubscribe_data();
       $$unsubscribe_media_type();
       return `<section id="${"main"}" class="${"h-full"}">
 
-	${$media_type === "person" ? `${validate_component(PersonList, "PersonList").$$render($$result, { data }, {}, {})}` : `${$media_type === "movie" ? `${validate_component(MovieList, "MovieList").$$render($$result, { data }, {}, {})}` : `${$media_type === "tv" ? `${validate_component(TvList, "TvList").$$render($$result, { data }, {}, {})}` : ``}`}`}
+	${$media_type === "person" ? `${validate_component(PersonList, "PersonList").$$render($$result, {}, {}, {})}` : `${$media_type === "movie" ? `${validate_component(MovieList, "MovieList").$$render($$result, {}, {}, {})}` : `${$media_type === "tv" ? `${validate_component(TvList, "TvList").$$render($$result, {}, {}, {})}` : ``}`}`}
 
 	${$current_page < total_pages ? `${validate_component(InfiniteScroll, "InfiniteScroll").$$render($$result, {}, {}, {})}` : ``}</section>`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/index-e924169f.js
-var index_e924169f_exports = {};
-__export(index_e924169f_exports, {
+// .svelte-kit/output/server/chunks/index-6445fb8c.js
+var index_6445fb8c_exports = {};
+__export(index_6445fb8c_exports, {
   default: () => Routes,
   load: () => load3
 });
 async function load3({ fetch: fetch2 }) {
+  data.set(void 0);
   const res = await fetch2("./api/getShow", {
     headers: { "Content-Type": "application/json" },
     method: "POST",
     body: JSON.stringify({ media: "movie", page: "1" })
   });
   const datas = await res.json();
-  return { props: { datas } };
+  data.set(await datas.res.results);
+  const total_pages = await datas.res.total_pages;
+  return { props: { total_pages } };
 }
 var Routes;
-var init_index_e924169f = __esm({
-  ".svelte-kit/output/server/chunks/index-e924169f.js"() {
+var init_index_6445fb8c = __esm({
+  ".svelte-kit/output/server/chunks/index-6445fb8c.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_Spinner_d0149d04();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_MainSection_8f5559a2();
+    init_ProgressBar_607c37c9();
     Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $selected, $$unsubscribe_selected;
-      let $$unsubscribe_media_type;
       $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
-      $$unsubscribe_media_type = subscribe(media_type, (value) => value);
-      let { datas } = $$props;
-      let data = datas.res.results;
-      let total_pages = datas.res.total_pages;
+      let { total_pages } = $$props;
       set_store_value(selected, $selected = null, $selected);
-      if ($$props.datas === void 0 && $$bindings.datas && datas !== void 0)
-        $$bindings.datas(datas);
+      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
+        $$bindings.total_pages(total_pages);
       $$unsubscribe_selected();
-      $$unsubscribe_media_type();
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages }, {}, {})}`;
+      return `${validate_component(MainSection, "MainSection").$$render($$result, { total_pages }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/NotFound-b849d5e8.js
-var NotFound_b849d5e8_exports = {};
-__export(NotFound_b849d5e8_exports, {
+// .svelte-kit/output/server/chunks/NotFound-9fe683d6.js
+var NotFound_9fe683d6_exports = {};
+__export(NotFound_9fe683d6_exports, {
   default: () => NotFound
 });
 var NotFound;
-var init_NotFound_b849d5e8 = __esm({
-  ".svelte-kit/output/server/chunks/NotFound-b849d5e8.js"() {
+var init_NotFound_9fe683d6 = __esm({
+  ".svelte-kit/output/server/chunks/NotFound-9fe683d6.js"() {
     init_shims();
-    init_app_3d85ebcf();
+    init_app_14a936dc();
     NotFound = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `<h1>Not Found</h1>
 <p>This route doesn&#39;t exist.</p>`;
@@ -5494,33 +5530,114 @@ var init_NotFound_b849d5e8 = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/networks-ae2e9ad7.js
-var networks_ae2e9ad7_exports = {};
-__export(networks_ae2e9ad7_exports, {
-  default: () => Networks
+// .svelte-kit/output/server/chunks/[media]-0dee69ba.js
+var media_0dee69ba_exports = {};
+__export(media_0dee69ba_exports, {
+  default: () => U5Bmediau5D,
+  load: () => load4
 });
-var Networks;
-var init_networks_ae2e9ad7 = __esm({
-  ".svelte-kit/output/server/chunks/networks-ae2e9ad7.js"() {
+async function load4({ fetch: fetch2, page: page2 }) {
+  data.set(void 0);
+  media_type.set(page2.params.media);
+  const res = await fetch2("../../api/getShow", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: page2.params.media, page: "1" })
+  });
+  const datas = await res.json();
+  data.set(await datas.res.results);
+  const total_pages = await datas.res.total_pages;
+  return { props: { total_pages } };
+}
+var U5Bmediau5D;
+var init_media_0dee69ba = __esm({
+  ".svelte-kit/output/server/chunks/[media]-0dee69ba.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    Networks = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $tv_network, $$unsubscribe_tv_network;
-      $$unsubscribe_tv_network = subscribe(tv_network, (value) => $tv_network = value);
-      $$unsubscribe_tv_network();
-      return `<div class="${"flex flex-wrap"}">${each($tv_network, (network) => `<a class="${"bg-secondary justify-center border-border rounded-full border-2 no-underline font-semibold px-1 py-0.5 m-0.5 whitespace-nowrap hover:bg-selected hover:cursor-pointer"}"${add_attribute("href", `/network/${network.provider_id}`, 0)}>${escape(network.provider_name)}
-		</a>`)}</div>`;
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_MainSection_8f5559a2();
+    init_ProgressBar_607c37c9();
+    U5Bmediau5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let $selected, $$unsubscribe_selected;
+      $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
+      let { total_pages } = $$props;
+      set_store_value(selected, $selected = null, $selected);
+      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
+        $$bindings.total_pages(total_pages);
+      $$unsubscribe_selected();
+      return `${validate_component(MainSection, "MainSection").$$render($$result, { total_pages }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/stores-544eaed2.js
-var getStores, page;
-var init_stores_544eaed2 = __esm({
-  ".svelte-kit/output/server/chunks/stores-544eaed2.js"() {
+// .svelte-kit/output/server/chunks/[episode_number]-47200495.js
+var episode_number_47200495_exports = {};
+__export(episode_number_47200495_exports, {
+  default: () => U5Bepisode_numberu5D,
+  load: () => load5
+});
+async function load5({ fetch: fetch2, page: page2 }) {
+  const res = await fetch2("../../../api/getEpisode", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({
+      id: page2.params.id,
+      season_number: page2.params.season_number,
+      episode_number: page2.params.episode_number
+    })
+  });
+  const datas = await res.json();
+  const episode_details = await datas.res;
+  return { props: { episode_details } };
+}
+var IMAGE_API2, Episode, U5Bepisode_numberu5D;
+var init_episode_number_47200495 = __esm({
+  ".svelte-kit/output/server/chunks/[episode_number]-47200495.js"() {
     init_shims();
-    init_app_3d85ebcf();
+    init_app_14a936dc();
+    IMAGE_API2 = "https://image.tmdb.org/t/p/original";
+    Episode = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { episode_details } = $$props;
+      if ($$props.episode_details === void 0 && $$bindings.episode_details && episode_details !== void 0)
+        $$bindings.episode_details(episode_details);
+      return `
+
+<section id="${"episode"}"><div class="${"max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-0 pt-1 pb-1 xl:rounded-2xl"}">${episode_details.id ? `<h4 class="${"pl-4"}">Episode Information</h4>
+			<div class="${"bg-skin-primary flex flex-col xl:flex-row m-4 p-2 rounded-lg"}"><div class="${"flex flex-col xl:flex-row text-skin-base xl:rounded-lg"}"><img class="${"xl:h-44 items-start"}"${add_attribute("src", episode_details.still_path ? IMAGE_API2 + episode_details.still_path : "/default.jpg", 0)} alt="${"episode"}"></div>
+
+				<div class="${"ml-2 block"}"><h4>Season: ${escape(episode_details.season_number)} Episode: ${escape(episode_details.episode_number)}</h4>
+					<h4>Episode Name: ${escape(episode_details.name)}</h4>
+					<h6>Air Date: ${escape(episode_details.air_date)}</h6>
+					<h6>Overview:</h6>
+					<h6 class="${"flex-1 pr-8 text-skin-muted mb-4"}">${escape(episode_details.overview)}</h6></div></div>
+
+			${episode_details.guest_stars.length ? `<div><h3>Guest Stars</h3>
+					<div class="${"text-skin-base flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"}">${each(episode_details.guest_stars, (guest_star) => `<div class="${"w-40 h-72 flex-shrink-0 rounded mb-2 relative bg-secondary m-0.5 sm:mr-3 hover:bg-selected"}"><a class="${"rounded w-28"}"${add_attribute("href", `/person/${guest_star.id}`, 0)}><img class="${"flex xl:w-40 xl: h-60 items-start"}"${add_attribute("src", guest_star.profile_path ? IMAGE_API2 + guest_star.profile_path : "/default.jpg", 0)} alt="${"episode"}"></a>
+								<p>Character ${escape(guest_star.character)}</p>
+								<p>Name ${escape(guest_star.name)}</p>
+							</div>`)}</div></div>` : ``}
+
+			${episode_details.crew.length ? `<div><h3>Crew</h3>
+					<div class="${"text-skin-base flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"}">${each(episode_details.crew, (crew_member) => `<div class="${"w-40 h-72 flex-shrink-0 rounded mb-2 relative bg-secondary m-0.5 sm:mr-3 hover:bg-selected"}"><a class="${"rounded w-28"}"${add_attribute("href", `/person/${crew_member.id}`, 0)}><img class="${"flex xl:w-40 xl: h-60 items-start"}"${add_attribute("src", crew_member.profile_path ? IMAGE_API2 + crew_member.profile_path : "/default.jpg", 0)} alt="${"episode"}"></a>
+								<p>${escape(crew_member.job)}</p>
+								<p>${escape(crew_member.name)}</p>
+							</div>`)}</div></div>` : ``}` : ``}</div></section>`;
+    });
+    U5Bepisode_numberu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { episode_details } = $$props;
+      if ($$props.episode_details === void 0 && $$bindings.episode_details && episode_details !== void 0)
+        $$bindings.episode_details(episode_details);
+      return `${validate_component(Episode, "Episode").$$render($$result, { episode_details }, {}, {})}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/stores-bd543f9c.js
+var getStores, page;
+var init_stores_bd543f9c = __esm({
+  ".svelte-kit/output/server/chunks/stores-bd543f9c.js"() {
+    init_shims();
+    init_app_14a936dc();
     getStores = () => {
       const stores = getContext("__svelte__");
       return {
@@ -5548,149 +5665,9 @@ var init_stores_544eaed2 = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/[media]-a81ee0de.js
-var media_a81ee0de_exports = {};
-__export(media_a81ee0de_exports, {
-  default: () => U5Bmediau5D,
-  load: () => load4
-});
-async function load4({ fetch: fetch2, page: page2 }) {
-  const res = await fetch2("../../api/getShow", {
-    headers: { "Content-Type": "application/json" },
-    method: "POST",
-    body: JSON.stringify({
-      media: page2.params.media,
-      page: get_store_value(current_page)
-    })
-  });
-  const datas = await res.json();
-  const data = await datas.res.results;
-  const total_pages = await datas.res.total_pages;
-  return { props: { data, total_pages } };
-}
-var U5Bmediau5D;
-var init_media_a81ee0de = __esm({
-  ".svelte-kit/output/server/chunks/[media]-a81ee0de.js"() {
-    init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_stores_544eaed2();
-    init_Spinner_d0149d04();
-    U5Bmediau5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $selected, $$unsubscribe_selected;
-      let $page, $$unsubscribe_page;
-      let $media_type, $$unsubscribe_media_type;
-      $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
-      $$unsubscribe_page = subscribe(page, (value) => $page = value);
-      $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
-      let { data } = $$props;
-      let { total_pages } = $$props;
-      set_store_value(media_type, $media_type = $page.params.media, $media_type);
-      set_store_value(selected, $selected = null, $selected);
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
-        $$bindings.total_pages(total_pages);
-      $$unsubscribe_selected();
-      $$unsubscribe_page();
-      $$unsubscribe_media_type();
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages }, {}, {})}`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/[episode_number]-d506294b.js
-var episode_number_d506294b_exports = {};
-__export(episode_number_d506294b_exports, {
-  default: () => U5Bepisode_numberu5D,
-  load: () => load5
-});
-async function load5({ fetch: fetch2, page: page2 }) {
-  const res = await fetch2("../../../api/getEpisode", {
-    headers: { "Content-Type": "application/json" },
-    method: "POST",
-    body: JSON.stringify({
-      id: page2.params.id,
-      season_number: page2.params.season_number,
-      episode_number: page2.params.episode_number
-    })
-  });
-  const datas = await res.json();
-  const episode_details = await datas.res;
-  return { props: { episode_details } };
-}
-var IMAGE_API2, Episode, U5Bepisode_numberu5D;
-var init_episode_number_d506294b = __esm({
-  ".svelte-kit/output/server/chunks/[episode_number]-d506294b.js"() {
-    init_shims();
-    init_app_3d85ebcf();
-    init_stores_544eaed2();
-    IMAGE_API2 = "https://image.tmdb.org/t/p/original";
-    Episode = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { episode_details } = $$props;
-      if ($$props.episode_details === void 0 && $$bindings.episode_details && episode_details !== void 0)
-        $$bindings.episode_details(episode_details);
-      return `
-
-<section id="${"episode"}"><div class="${"max-w-7xl mx-auto text-skin-base xl:mt-5 xl:mb-10 bg-skin-secondary xl:pl-5 pt-1 xl:rounded-2xl"}">${episode_details.id ? `<h4 class="${"pb-8"}">Episode Information</h4>
-			<div class="${"flex"}" pt-3><div class="${"flex flex-col xl:flex-row pb-4"}"><div class="${"flex mx-auto max-h-full max-w-full xl:m-0 xl:flex-none xl:w-80 xl:h-44 xl:items-start"}"><img class="${"flex xl:w-80 xl:h-44 items-start"}"${add_attribute("src", episode_details.still_path ? IMAGE_API2 + episode_details.still_path : "/default.jpg", 0)} alt="${"episode"}"></div>
-
-					<div class="${"ml-2 block"}"><h4>Season: ${escape(episode_details.season_number)} Episode: ${escape(episode_details.episode_number)}</h4>
-						<h4>Episode Name: ${escape(episode_details.name)}</h4>
-						<hr>
-						<h6>Air Date: ${escape(episode_details.air_date)}</h6>
-						<h6>Overview:</h6>
-						<h6 class="${"flex-1 pr-8 text-skin-muted mb-4"}">${escape(episode_details.overview)}</h6></div></div></div>
-
-			${episode_details.guest_stars.length ? `<div><h3>Guest Stars</h3>
-					<div class="${"text-skin-base flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"}">${each(episode_details.guest_stars, (guest_star) => `<div class="${"w-40 h-72 flex-shrink-0 rounded mb-2 relative bg-secondary m-0.5 sm:mr-3 hover:bg-selected"}"><a class="${"rounded w-28"}"${add_attribute("href", `/person/${guest_star.id}`, 0)}><img class="${"flex xl:w-40 xl: h-60 items-start"}"${add_attribute("src", guest_star.profile_path ? IMAGE_API2 + guest_star.profile_path : "/default.jpg", 0)} alt="${"episode"}"></a>
-								<p>Character ${escape(guest_star.character)}</p>
-								<p>Name ${escape(guest_star.name)}</p>
-							</div>`)}</div></div>` : ``}
-
-			${episode_details.crew.length ? `<div><h3>Crew</h3>
-					<div class="${"text-skin-base flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"}">${each(episode_details.crew, (crew_member) => `<div class="${"w-40 h-72 flex-shrink-0 rounded mb-2 relative bg-secondary m-0.5 sm:mr-3 hover:bg-selected"}"><a class="${"rounded w-28"}"${add_attribute("href", `/person/${crew_member.id}`, 0)}><img class="${"flex xl:w-40 xl: h-60 items-start"}"${add_attribute("src", crew_member.profile_path ? IMAGE_API2 + crew_member.profile_path : "/default.jpg", 0)} alt="${"episode"}"></a>
-								<p>${escape(crew_member.job)}</p>
-								<p>${escape(crew_member.name)}</p>
-							</div>`)}</div></div>` : ``}` : ``}</div></section>
-
-
-
-
-`;
-    });
-    U5Bepisode_numberu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $$unsubscribe_page;
-      $$unsubscribe_page = subscribe(page, (value) => value);
-      let { episode_details } = $$props;
-      if ($$props.episode_details === void 0 && $$bindings.episode_details && episode_details !== void 0)
-        $$bindings.episode_details(episode_details);
-      $$unsubscribe_page();
-      return `${validate_component(Episode, "Episode").$$render($$result, { episode_details }, {}, {})}`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/[id]-90071bec.js
-var id_90071bec_exports = {};
-__export(id_90071bec_exports, {
-  default: () => U5Bidu5D
-});
-var U5Bidu5D;
-var init_id_90071bec = __esm({
-  ".svelte-kit/output/server/chunks/[id]-90071bec.js"() {
-    init_shims();
-    init_app_3d85ebcf();
-    U5Bidu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return ``;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/[season_number]-5bfe966f.js
-var season_number_5bfe966f_exports = {};
-__export(season_number_5bfe966f_exports, {
+// .svelte-kit/output/server/chunks/[season_number]-873eb4f0.js
+var season_number_873eb4f0_exports = {};
+__export(season_number_873eb4f0_exports, {
   default: () => U5Bseason_numberu5D,
   load: () => load6
 });
@@ -5708,12 +5685,11 @@ async function load6({ fetch: fetch2, page: page2 }) {
   return { props: { season_details } };
 }
 var IMAGE_API3, Season, U5Bseason_numberu5D;
-var init_season_number_5bfe966f = __esm({
-  ".svelte-kit/output/server/chunks/[season_number]-5bfe966f.js"() {
+var init_season_number_873eb4f0 = __esm({
+  ".svelte-kit/output/server/chunks/[season_number]-873eb4f0.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_stores_544eaed2();
+    init_app_14a936dc();
+    init_stores_bd543f9c();
     IMAGE_API3 = "https://image.tmdb.org/t/p/w500/";
     Season = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { season_details } = $$props;
@@ -5747,10 +5723,10 @@ var init_season_number_5bfe966f = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/[id]-25ddb610.js
-var id_25ddb610_exports = {};
-__export(id_25ddb610_exports, {
-  default: () => U5Bidu5D2,
+// .svelte-kit/output/server/chunks/[id]-8c40f23a.js
+var id_8c40f23a_exports = {};
+__export(id_8c40f23a_exports, {
+  default: () => U5Bidu5D,
   load: () => load7
 });
 function isMovie(x) {
@@ -5759,13 +5735,29 @@ function isMovie(x) {
 function isTv(x) {
   return x.media_type === "tv";
 }
-var IMAGE_API$12, KnownFor, IMAGE_API4, Person, load7, U5Bidu5D2;
-var init_id_25ddb610 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-25ddb610.js"() {
+async function load7({ fetch: fetch2, page: page2 }) {
+  const res = await fetch2("../api/getMovie", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "person", id: page2.params.id })
+  });
+  const datas = await res.json();
+  const person = await datas.res;
+  const resp = await fetch2("../api/getKnownFor", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ person: page2.params.id })
+  });
+  const data2 = await resp.json();
+  const knownFor = data2.res.cast;
+  return { props: { person, knownFor } };
+}
+var IMAGE_API$12, KnownFor, IMAGE_API4, Person, U5Bidu5D;
+var init_id_8c40f23a = __esm({
+  ".svelte-kit/output/server/chunks/[id]-8c40f23a.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_stores_544eaed2();
+    init_app_14a936dc();
+    init_store_cc224516();
     IMAGE_API$12 = "https://image.tmdb.org/t/p/w300";
     KnownFor = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { knownFor } = $$props;
@@ -5820,28 +5812,9 @@ var init_id_25ddb610 = __esm({
 		<div class="${"bg-skin-tertiary rounded-2xl text-skin-base xl:col-start-2 xl:col-end-6 xl:row-start-2 xl:row-end-3 xl:bg-primary xl:ml-5 xl:p-3.5"}"><div class="${"pt-8"}"><h4 class="${"xl:text-2xl pl-3.5 xl:pl-0"}">Known For</h4>
 				${validate_component(KnownFor, "KnownFor").$$render($$result, { knownFor }, {}, {})}</div></div></div></section>`;
     });
-    load7 = async ({ page: page2, fetch: fetch2 }) => {
-      const res = await fetch2("../api/getMovie", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "person", id: page2.params.id })
-      });
-      const datas = await res.json();
-      const person = await datas.res;
-      const resp = await fetch2("../api/getKnownFor", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ person: page2.params.id })
-      });
-      const data = await resp.json();
-      const knownFor = data.res.cast;
-      return { props: { person, knownFor } };
-    };
-    U5Bidu5D2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+    U5Bidu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $media_type, $$unsubscribe_media_type;
-      let $$unsubscribe_page;
       $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
-      $$unsubscribe_page = subscribe(page, (value) => value);
       set_store_value(media_type, $media_type = "person", $media_type);
       let { person } = $$props;
       let { knownFor } = $$props;
@@ -5850,18 +5823,15 @@ var init_id_25ddb610 = __esm({
       if ($$props.knownFor === void 0 && $$bindings.knownFor && knownFor !== void 0)
         $$bindings.knownFor(knownFor);
       $$unsubscribe_media_type();
-      $$unsubscribe_page();
-      return `
-	
-	${validate_component(Person, "Person").$$render($$result, { person, knownFor }, {}, {})}`;
+      return `${validate_component(Person, "Person").$$render($$result, { person, knownFor }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/[id]-8719dbcf.js
-var id_8719dbcf_exports = {};
-__export(id_8719dbcf_exports, {
-  default: () => U5Bidu5D3,
+// .svelte-kit/output/server/chunks/[id]-6969a75f.js
+var id_6969a75f_exports = {};
+__export(id_6969a75f_exports, {
+  default: () => U5Bidu5D2,
   load: () => load8
 });
 async function load8({ fetch: fetch2, page: page2 }) {
@@ -5875,178 +5845,94 @@ async function load8({ fetch: fetch2, page: page2 }) {
     })
   });
   const datas = await res.json();
-  const data = await datas.res.results;
+  data.set(await datas.res.results);
   const total_pages = await datas.res.total_pages;
   return { props: { data, total_pages } };
 }
-var U5Bidu5D3;
-var init_id_8719dbcf = __esm({
-  ".svelte-kit/output/server/chunks/[id]-8719dbcf.js"() {
+var U5Bidu5D2;
+var init_id_6969a75f = __esm({
+  ".svelte-kit/output/server/chunks/[id]-6969a75f.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_Spinner_d0149d04();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_MainSection_8f5559a2();
+    init_ProgressBar_607c37c9();
+    U5Bidu5D2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { total_pages } = $$props;
+      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
+        $$bindings.total_pages(total_pages);
+      return `${validate_component(MainSection, "MainSection").$$render($$result, { total_pages }, {}, {})}`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/[id]-d1cca444.js
+var id_d1cca444_exports = {};
+__export(id_d1cca444_exports, {
+  default: () => U5Bidu5D3,
+  load: () => load9,
+  prerender: () => prerender
+});
+async function load9({ fetch: fetch2, page: page2 }) {
+  data.set(void 0);
+  const genres = page2.params.id;
+  media_type.set(page2.params.media);
+  const res = await fetch2("../../api/getShowGenre", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({
+      media: page2.params.media,
+      page: "1",
+      genre: genres
+    })
+  });
+  const datas = await res.json();
+  data.set(await datas.res.results);
+  const total_pages = await datas.res.total_pages;
+  return { props: { total_pages, genres } };
+}
+var prerender, U5Bidu5D3;
+var init_id_d1cca444 = __esm({
+  ".svelte-kit/output/server/chunks/[id]-d1cca444.js"() {
+    init_shims();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_MainSection_8f5559a2();
+    init_ProgressBar_607c37c9();
+    prerender = true;
     U5Bidu5D3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { data } = $$props;
-      let { total_pages } = $$props;
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
-        $$bindings.total_pages(total_pages);
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages }, {}, {})}`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/[id]-f5f0ab76.js
-var id_f5f0ab76_exports = {};
-__export(id_f5f0ab76_exports, {
-  default: () => U5Bidu5D4,
-  load: () => load9
-});
-var load9, U5Bidu5D4;
-var init_id_f5f0ab76 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-f5f0ab76.js"() {
-    init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_Spinner_d0149d04();
-    media_type.set("movie");
-    load9 = async ({ fetch: fetch2, page: page2 }) => {
-      const genres = page2.params.id;
-      const res = await fetch2("../../api/getShowGenre", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "movie", page: "1", genre: genres })
-      });
-      const datas = await res.json();
-      const data = await datas.res.results;
-      const total_pages = await datas.res.total_pages;
-      return { props: { data, total_pages, genres } };
-    };
-    U5Bidu5D4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $selected, $$unsubscribe_selected;
       $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
-      let { data } = $$props;
       let { total_pages } = $$props;
       let { genres } = $$props;
       set_store_value(selected, $selected = null, $selected);
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
       if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
         $$bindings.total_pages(total_pages);
       if ($$props.genres === void 0 && $$bindings.genres && genres !== void 0)
         $$bindings.genres(genres);
       $$unsubscribe_selected();
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages, genres }, {}, {})}`;
+      return `${validate_component(MainSection, "MainSection").$$render($$result, { total_pages, genres }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/[id]-249790d4.js
-var id_249790d4_exports = {};
-__export(id_249790d4_exports, {
-  default: () => U5Bidu5D5,
-  load: () => load10
-});
-var load10, U5Bidu5D5;
-var init_id_249790d4 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-249790d4.js"() {
+// .svelte-kit/output/server/chunks/Cast-31f4e4f3.js
+var css2, Spinner, Modal, IMAGE_API5, Cast;
+var init_Cast_31f4e4f3 = __esm({
+  ".svelte-kit/output/server/chunks/Cast-31f4e4f3.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_Spinner_d0149d04();
-    media_type.set("tv");
-    load10 = async ({ fetch: fetch2, page: page2 }) => {
-      const genres = page2.params.id;
-      const res = await fetch2("../../api/getShowGenre", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "tv", page: "1", genre: genres })
-      });
-      const datas = await res.json();
-      const data = await datas.res.results;
-      const total_pages = await datas.res.total_pages;
-      return { props: { data, total_pages, genres } };
+    init_app_14a936dc();
+    css2 = {
+      code: "div.svelte-11hc8a6{-webkit-animation:svelte-11hc8a6-wave .8s ease-in-out infinite alternate;animation:svelte-11hc8a6-wave .8s ease-in-out infinite alternate}div.svelte-11hc8a6:first-of-type{-webkit-animation-delay:-.4s;animation-delay:-.4s}div.svelte-11hc8a6:nth-of-type(2){-webkit-animation-delay:-.2s;animation-delay:-.2s}@-webkit-keyframes svelte-11hc8a6-wave{0%{transform:translateY(-100%)}to{transform:translateY(100%)}}@keyframes svelte-11hc8a6-wave{0%{transform:translateY(-100%)}to{transform:translateY(100%)}}",
+      map: null
     };
-    U5Bidu5D5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $selected, $$unsubscribe_selected;
-      $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
-      let { data } = $$props;
-      let { total_pages } = $$props;
-      let { genres } = $$props;
-      set_store_value(selected, $selected = null, $selected);
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
-        $$bindings.total_pages(total_pages);
-      if ($$props.genres === void 0 && $$bindings.genres && genres !== void 0)
-        $$bindings.genres(genres);
-      $$unsubscribe_selected();
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages, genres }, {}, {})}`;
+    Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      $$result.css.add(css2);
+      return `<section id="${"spinner"}" class="${"w-full h-full m-auto"}"><section class="${"flex absolute items-center h-8 top-1/2 left-1/2 transform -translate-x-1/2 "}"><div class="${"inline-flex flex-nowrap flex-row items-center justify-between mx-auto w-12 svelte-11hc8a6"}"><div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div>
+			<div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div>
+			<div class="${"w-3 h-3 rounded-full bg-primary -translate-x-1/2 -translate-y-full svelte-11hc8a6"}"></div></div></section>
+</section>`;
     });
-  }
-});
-
-// .svelte-kit/output/server/chunks/[id]-8e5400b3.js
-var id_8e5400b3_exports = {};
-__export(id_8e5400b3_exports, {
-  default: () => U5Bidu5D6,
-  load: () => load11
-});
-var load11, U5Bidu5D6;
-var init_id_8e5400b3 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-8e5400b3.js"() {
-    init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_MainSection_866f73c3();
-    init_Spinner_d0149d04();
-    load11 = async ({ fetch: fetch2, page: page2 }) => {
-      const genres = page2.params.id;
-      media_type.set(page2.params.media);
-      const res = await fetch2("../../api/getShowGenre", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({
-          media: page2.params.media,
-          page: "1",
-          genre: genres
-        })
-      });
-      const datas = await res.json();
-      const data = await datas.res.results;
-      const total_pages = await datas.res.total_pages;
-      return { props: { data, total_pages, genres } };
-    };
-    U5Bidu5D6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $selected, $$unsubscribe_selected;
-      $$unsubscribe_selected = subscribe(selected, (value) => $selected = value);
-      let { data } = $$props;
-      let { total_pages } = $$props;
-      let { genres } = $$props;
-      set_store_value(selected, $selected = null, $selected);
-      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
-        $$bindings.data(data);
-      if ($$props.total_pages === void 0 && $$bindings.total_pages && total_pages !== void 0)
-        $$bindings.total_pages(total_pages);
-      if ($$props.genres === void 0 && $$bindings.genres && genres !== void 0)
-        $$bindings.genres(genres);
-      $$unsubscribe_selected();
-      return `${validate_component(MainSection, "MainSection").$$render($$result, { data, total_pages, genres }, {}, {})}`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/Cast-f72476dd.js
-var Modal, IMAGE_API5, Cast;
-var init_Cast_f72476dd = __esm({
-  ".svelte-kit/output/server/chunks/Cast-f72476dd.js"() {
-    init_shims();
-    init_app_3d85ebcf();
     Modal = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { trailer_id } = $$props;
       let shown = false;
@@ -6082,20 +5968,47 @@ var init_Cast_f72476dd = __esm({
   }
 });
 
-// .svelte-kit/output/server/chunks/[id]-69ae2200.js
-var id_69ae2200_exports = {};
-__export(id_69ae2200_exports, {
-  default: () => U5Bidu5D7,
-  load: () => load12
+// .svelte-kit/output/server/chunks/[id]-de8563ca.js
+var id_de8563ca_exports = {};
+__export(id_de8563ca_exports, {
+  default: () => U5Bidu5D4,
+  load: () => load10
 });
-var IMAGE_API6, MovieMedia, load12, U5Bidu5D7;
-var init_id_69ae2200 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-69ae2200.js"() {
+async function load10({ fetch: fetch2, page: page2 }) {
+  media_type.set("movie");
+  const res = await fetch2("../api/getMovie", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "movie", id: page2.params.id })
+  });
+  const datas = await res.json();
+  const movie_details = await datas.res;
+  const trailer = await fetch2("../api/getTrailer", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "movie", id: page2.params.id })
+  });
+  const trailer_details = await trailer.json();
+  const trailer_id = await trailer_details.res.results.length ? trailer_details.res.results[0].key : 999;
+  const resp = await fetch2("../../api/getCast", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "movie", id: page2.params.id })
+  });
+  const casts = await resp.json();
+  const cast = await casts.res.cast;
+  return {
+    props: { movie_details, trailer_id, cast }
+  };
+}
+var IMAGE_API6, MovieMedia, U5Bidu5D4;
+var init_id_de8563ca = __esm({
+  ".svelte-kit/output/server/chunks/[id]-de8563ca.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_Spinner_d0149d04();
-    init_Cast_f72476dd();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_ProgressBar_607c37c9();
+    init_Cast_31f4e4f3();
     IMAGE_API6 = "https://image.tmdb.org/t/p/";
     MovieMedia = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $media_type, $$unsubscribe_media_type;
@@ -6143,66 +6056,60 @@ var init_id_69ae2200 = __esm({
       $$unsubscribe_media_type();
       return $$rendered;
     });
-    load12 = async ({ page: page2, fetch: fetch2 }) => {
-      const res = await fetch2("../api/getMovie", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "movie", id: page2.params.id })
-      });
-      const datas = await res.json();
-      const movie_details = await datas.res;
-      const trailer = await fetch2("../api/getTrailer", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "movie", id: page2.params.id })
-      });
-      const trailer_details = await trailer.json();
-      const trailer_id = await trailer_details.res.results.length ? trailer_details.res.results[0].key : 999;
-      const resp = await fetch2("../../api/getCast", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "movie", id: page2.params.id })
-      });
-      const casts = await resp.json();
-      const cast = await casts.res.cast;
-      return {
-        props: { movie_details, trailer_id, cast }
-      };
-    };
-    U5Bidu5D7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let $media_type, $$unsubscribe_media_type;
-      $$unsubscribe_media_type = subscribe(media_type, (value) => $media_type = value);
+    U5Bidu5D4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { movie_details } = $$props;
       let { trailer_id } = $$props;
       let { cast } = $$props;
-      set_store_value(media_type, $media_type = "movie", $media_type);
       if ($$props.movie_details === void 0 && $$bindings.movie_details && movie_details !== void 0)
         $$bindings.movie_details(movie_details);
       if ($$props.trailer_id === void 0 && $$bindings.trailer_id && trailer_id !== void 0)
         $$bindings.trailer_id(trailer_id);
       if ($$props.cast === void 0 && $$bindings.cast && cast !== void 0)
         $$bindings.cast(cast);
-      $$unsubscribe_media_type();
-      return `${movie_details && trailer_id ? `${validate_component(MovieMedia, "MovieMedia").$$render($$result, { movie_details, trailer_id, cast }, {}, {})}` : `${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
+      return `${validate_component(MovieMedia, "MovieMedia").$$render($$result, { movie_details, trailer_id, cast }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/[id]-0af00fc5.js
-var id_0af00fc5_exports = {};
-__export(id_0af00fc5_exports, {
-  default: () => U5Bidu5D8,
-  load: () => load13
+// .svelte-kit/output/server/chunks/[id]-a8c2d94e.js
+var id_a8c2d94e_exports = {};
+__export(id_a8c2d94e_exports, {
+  default: () => U5Bidu5D5,
+  load: () => load11
 });
-var IMAGE_API$13, Seasons, IMAGE_API7, TvMedia, load13, U5Bidu5D8;
-var init_id_0af00fc5 = __esm({
-  ".svelte-kit/output/server/chunks/[id]-0af00fc5.js"() {
+async function load11({ fetch: fetch2, page: page2 }) {
+  const res = await fetch2("../api/getMovie", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "tv", id: page2.params.id })
+  });
+  const datas = await res.json();
+  const tv_details = await datas.res;
+  const trailer = await fetch2("../api/getTrailer", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "tv", id: page2.params.id })
+  });
+  const trailer_details = await trailer.json();
+  const trailer_id = await trailer_details.res.results.length ? trailer_details.res.results[0].key : 999;
+  const resp = await fetch2("../../api/getCast", {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ media: "tv", id: page2.params.id })
+  });
+  const casts = await resp.json();
+  const cast = await casts.res.cast;
+  return { props: { tv_details, trailer_id, cast } };
+}
+var IMAGE_API$13, Seasons, IMAGE_API7, TvMedia, U5Bidu5D5;
+var init_id_a8c2d94e = __esm({
+  ".svelte-kit/output/server/chunks/[id]-a8c2d94e.js"() {
     init_shims();
-    init_app_3d85ebcf();
-    init_store_f8b67767();
-    init_Spinner_d0149d04();
-    init_Cast_f72476dd();
-    init_stores_544eaed2();
+    init_app_14a936dc();
+    init_store_cc224516();
+    init_ProgressBar_607c37c9();
+    init_Cast_31f4e4f3();
+    init_stores_bd543f9c();
     IMAGE_API$13 = "https://www.themoviedb.org/t/p/original";
     Seasons = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { tv_details } = $$props;
@@ -6285,31 +6192,7 @@ var init_id_0af00fc5 = __esm({
       $$unsubscribe_media_type();
       return $$rendered;
     });
-    load13 = async ({ page: page2, fetch: fetch2 }) => {
-      const res = await fetch2("../api/getMovie", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "tv", id: page2.params.id })
-      });
-      const datas = await res.json();
-      const tv_details = await datas.res;
-      const trailer = await fetch2("../api/getTrailer", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "tv", id: page2.params.id })
-      });
-      const trailer_details = await trailer.json();
-      const trailer_id = await trailer_details.res.results.length ? trailer_details.res.results[0].key : 999;
-      const resp = await fetch2("../../api/getCast", {
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ media: "tv", id: page2.params.id })
-      });
-      const casts = await resp.json();
-      const cast = await casts.res.cast;
-      return { props: { tv_details, trailer_id, cast } };
-    };
-    U5Bidu5D8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+    U5Bidu5D5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $page, $$unsubscribe_page;
       let $media_type, $$unsubscribe_media_type;
       $$unsubscribe_page = subscribe(page, (value) => $page = value);
@@ -6327,12 +6210,12 @@ var init_id_0af00fc5 = __esm({
         $$bindings.cast(cast);
       $$unsubscribe_page();
       $$unsubscribe_media_type();
-      return `${tv_details && trailer_id ? `${validate_component(TvMedia, "TvMedia").$$render($$result, { tv_details, trailer_id, cast, movie_id }, {}, {})}` : `${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
+      return `${validate_component(TvMedia, "TvMedia").$$render($$result, { tv_details, trailer_id, cast, movie_id }, {}, {})}`;
     });
   }
 });
 
-// .svelte-kit/output/server/chunks/app-3d85ebcf.js
+// .svelte-kit/output/server/chunks/app-14a936dc.js
 function get_single_valued_header(headers, key) {
   const value = headers[key];
   if (Array.isArray(value)) {
@@ -6861,9 +6744,9 @@ async function render_response({
     body: options2.template({ head, body })
   };
 }
-function try_serialize(data, fail) {
+function try_serialize(data2, fail) {
   try {
-    return devalue(data);
+    return devalue(data2);
   } catch (err) {
     if (fail)
       fail(coalesce_to_error(err));
@@ -7395,19 +7278,19 @@ function parse_body(raw, headers) {
   }
 }
 function get_urlencoded(text) {
-  const { data, append } = read_only_form_data();
+  const { data: data2, append } = read_only_form_data();
   text.replace(/\+/g, " ").split("&").forEach((str) => {
     const [key, value] = str.split("=");
     append(decodeURIComponent(key), decodeURIComponent(value));
   });
-  return data;
+  return data2;
 }
 function get_multipart(text, boundary) {
   const parts = text.split(`--${boundary}`);
   if (parts[0] !== "" || parts[parts.length - 1].trim() !== "--") {
     throw new Error("Malformed form data");
   }
-  const { data, append } = read_only_form_data();
+  const { data: data2, append } = read_only_form_data();
   parts.slice(1, -1).forEach((part) => {
     const match = /\s*([\s\S]+?)\r\n\r\n([\s\S]*)\s*/.exec(part);
     if (!match) {
@@ -7442,7 +7325,7 @@ function get_multipart(text, boundary) {
       throw new Error("Malformed form data");
     append(key, body);
   });
-  return data;
+  return data2;
 }
 async function respond(incoming, options2, state = {}) {
   if (incoming.path !== "/" && options2.trailing_slash !== "ignore") {
@@ -7664,9 +7547,9 @@ function init(settings = default_settings) {
     amp: false,
     dev: false,
     entry: {
-      file: assets + "/_app/start-cf9fc43c.js",
+      file: assets + "/_app/start-ae56e48a.js",
       css: [assets + "/_app/assets/start-464e9d0a.css"],
-      js: [assets + "/_app/start-cf9fc43c.js", assets + "/_app/chunks/vendor-8fe9a59e.js", assets + "/_app/chunks/singletons-12a22614.js"]
+      js: [assets + "/_app/start-ae56e48a.js", assets + "/_app/chunks/vendor-fc6286ba.js", assets + "/_app/chunks/singletons-12a22614.js"]
     },
     fetched: void 0,
     floc: false,
@@ -7704,14 +7587,14 @@ async function load_component(file) {
   };
 }
 function render(request, {
-  prerender
+  prerender: prerender2
 } = {}) {
   const host = request.headers["host"];
-  return respond({ ...request, host }, options, { prerender });
+  return respond({ ...request, host }, options, { prerender: prerender2 });
 }
 var __accessCheck, __privateGet, __privateAdd, __privateSet, _map, absolute, scheme, chars, unsafeChars, reserved, escaped$1, objectProtoOwnPropertyNames, subscriber_queue2, escape_json_string_in_html_dict, escape_html_attr_dict, s$1, s, ReadOnlyFormData, current_component, escaped, missing_component, on_destroy, css3, Root, base, assets, user_hooks, template, options, default_settings, d, empty, manifest, get_hooks, module_lookup, metadata_lookup;
-var init_app_3d85ebcf = __esm({
-  ".svelte-kit/output/server/chunks/app-3d85ebcf.js"() {
+var init_app_14a936dc = __esm({
+  ".svelte-kit/output/server/chunks/app-14a936dc.js"() {
     init_shims();
     __accessCheck = (obj, member, msg) => {
       if (!member.has(obj))
@@ -7880,7 +7763,7 @@ ${``}`;
     d = (s2) => s2.replace(/%23/g, "#").replace(/%3[Bb]/g, ";").replace(/%2[Cc]/g, ",").replace(/%2[Ff]/g, "/").replace(/%3[Ff]/g, "?").replace(/%3[Aa]/g, ":").replace(/%40/g, "@").replace(/%26/g, "&").replace(/%3[Dd]/g, "=").replace(/%2[Bb]/g, "+").replace(/%24/g, "$");
     empty = () => ({});
     manifest = {
-      assets: [{ "file": "default.jpg", "size": 30844, "type": "image/jpeg" }, { "file": "favicon.ico", "size": 1150, "type": "image/vnd.microsoft.icon" }, { "file": "icons8-moon-60.png", "size": 1338, "type": "image/png" }, { "file": "icons8-sun-24.png", "size": 423, "type": "image/png" }, { "file": "icons8-sun-48.png", "size": 2286, "type": "image/png" }, { "file": "icons8-sun.svg", "size": 973, "type": "image/svg+xml" }, { "file": "person.svg", "size": 2693, "type": "image/svg+xml" }, { "file": "robots.txt", "size": 67, "type": "text/plain" }],
+      assets: [{ "file": "default.jpg", "size": 30844, "type": "image/jpeg" }, { "file": "favicon.ico", "size": 1150, "type": "image/vnd.microsoft.icon" }, { "file": "icons8-moon-60.png", "size": 1338, "type": "image/png" }, { "file": "icons8-sun-24.png", "size": 423, "type": "image/png" }, { "file": "icons8-sun-48.png", "size": 2286, "type": "image/png" }, { "file": "icons8-sun.svg", "size": 973, "type": "image/svg+xml" }, { "file": "person.svg", "size": 2693, "type": "image/svg+xml" }, { "file": "robots.txt", "size": 67, "type": "text/plain" }, { "file": "sun_light_mode_day-512.webp", "size": 8424, "type": "image/webp" }],
       layout: "src/routes/__layout.svelte",
       error: "src/routes/__error.svelte",
       routes: [
@@ -7899,11 +7782,22 @@ ${``}`;
           b: ["src/routes/__error.svelte"]
         },
         {
-          type: "page",
-          pattern: /^\/networks\/?$/,
+          type: "endpoint",
+          pattern: /^\/trending\/api\/getMovieGenres\/?$/,
           params: empty,
-          a: ["src/routes/__layout.svelte", "src/routes/networks.svelte"],
-          b: ["src/routes/__error.svelte"]
+          load: () => Promise.resolve().then(() => (init_getMovieGenres_daf20458(), getMovieGenres_daf20458_exports))
+        },
+        {
+          type: "endpoint",
+          pattern: /^\/trending\/api\/getTvGenres\/?$/,
+          params: empty,
+          load: () => Promise.resolve().then(() => (init_getTvGenres_912a2a2a(), getTvGenres_912a2a2a_exports))
+        },
+        {
+          type: "endpoint",
+          pattern: /^\/trending\/api\/getShow\/?$/,
+          params: empty,
+          load: () => Promise.resolve().then(() => (init_getShow_f81111d3(), getShow_f81111d3_exports))
         },
         {
           type: "page",
@@ -7917,13 +7811,6 @@ ${``}`;
           pattern: /^\/episode\/([^/]+?)\/([^/]+?)\/([^/]+?)\/?$/,
           params: (m) => ({ id: d(m[1]), season_number: d(m[2]), episode_number: d(m[3]) }),
           a: ["src/routes/__layout.svelte", "src/routes/episode/[id]/[season_number]/[episode_number].svelte"],
-          b: ["src/routes/__error.svelte"]
-        },
-        {
-          type: "page",
-          pattern: /^\/network\/([^/]+?)\/?$/,
-          params: (m) => ({ id: d(m[1]) }),
-          a: ["src/routes/__layout.svelte", "src/routes/network/[id].svelte"],
           b: ["src/routes/__error.svelte"]
         },
         {
@@ -7945,20 +7832,6 @@ ${``}`;
           pattern: /^\/search\/([^/]+?)\/?$/,
           params: (m) => ({ id: d(m[1]) }),
           a: ["src/routes/__layout.svelte", "src/routes/search/[id].svelte"],
-          b: ["src/routes/__error.svelte"]
-        },
-        {
-          type: "page",
-          pattern: /^\/genre\/movies\/([^/]+?)\/?$/,
-          params: (m) => ({ id: d(m[1]) }),
-          a: ["src/routes/__layout.svelte", "src/routes/genre/movies/[id].svelte"],
-          b: ["src/routes/__error.svelte"]
-        },
-        {
-          type: "page",
-          pattern: /^\/genre\/tvs\/([^/]+?)\/?$/,
-          params: (m) => ({ id: d(m[1]) }),
-          a: ["src/routes/__layout.svelte", "src/routes/genre/tvs/[id].svelte"],
           b: ["src/routes/__error.svelte"]
         },
         {
@@ -8037,6 +7910,12 @@ ${``}`;
         },
         {
           type: "endpoint",
+          pattern: /^\/api\/apiCalls\/?$/,
+          params: empty,
+          load: () => Promise.resolve().then(() => (init_apiCalls_537263b8(), apiCalls_537263b8_exports))
+        },
+        {
+          type: "endpoint",
           pattern: /^\/api\/getMovie\/?$/,
           params: empty,
           load: () => Promise.resolve().then(() => (init_getMovie_dfbada3a(), getMovie_dfbada3a_exports))
@@ -8069,24 +7948,20 @@ ${``}`;
       externalFetch: hooks.externalFetch || fetch
     });
     module_lookup = {
-      "src/routes/__layout.svelte": () => Promise.resolve().then(() => (init_layout_9a9c760a(), layout_9a9c760a_exports)),
-      "src/routes/__error.svelte": () => Promise.resolve().then(() => (init_error_747195c4(), error_747195c4_exports)),
-      "src/routes/index.svelte": () => Promise.resolve().then(() => (init_index_e924169f(), index_e924169f_exports)),
-      "src/routes/NotFound.svelte": () => Promise.resolve().then(() => (init_NotFound_b849d5e8(), NotFound_b849d5e8_exports)),
-      "src/routes/networks.svelte": () => Promise.resolve().then(() => (init_networks_ae2e9ad7(), networks_ae2e9ad7_exports)),
-      "src/routes/trending/[media].svelte": () => Promise.resolve().then(() => (init_media_a81ee0de(), media_a81ee0de_exports)),
-      "src/routes/episode/[id]/[season_number]/[episode_number].svelte": () => Promise.resolve().then(() => (init_episode_number_d506294b(), episode_number_d506294b_exports)),
-      "src/routes/network/[id].svelte": () => Promise.resolve().then(() => (init_id_90071bec(), id_90071bec_exports)),
-      "src/routes/seasons/[id]/[season_number].svelte": () => Promise.resolve().then(() => (init_season_number_5bfe966f(), season_number_5bfe966f_exports)),
-      "src/routes/person/[id].svelte": () => Promise.resolve().then(() => (init_id_25ddb610(), id_25ddb610_exports)),
-      "src/routes/search/[id].svelte": () => Promise.resolve().then(() => (init_id_8719dbcf(), id_8719dbcf_exports)),
-      "src/routes/genre/movies/[id].svelte": () => Promise.resolve().then(() => (init_id_f5f0ab76(), id_f5f0ab76_exports)),
-      "src/routes/genre/tvs/[id].svelte": () => Promise.resolve().then(() => (init_id_249790d4(), id_249790d4_exports)),
-      "src/routes/genre/[media]/[id].svelte": () => Promise.resolve().then(() => (init_id_8e5400b3(), id_8e5400b3_exports)),
-      "src/routes/movie/[id].svelte": () => Promise.resolve().then(() => (init_id_69ae2200(), id_69ae2200_exports)),
-      "src/routes/tv/[id].svelte": () => Promise.resolve().then(() => (init_id_0af00fc5(), id_0af00fc5_exports))
+      "src/routes/__layout.svelte": () => Promise.resolve().then(() => (init_layout_938abee5(), layout_938abee5_exports)),
+      "src/routes/__error.svelte": () => Promise.resolve().then(() => (init_error_7ac6427a(), error_7ac6427a_exports)),
+      "src/routes/index.svelte": () => Promise.resolve().then(() => (init_index_6445fb8c(), index_6445fb8c_exports)),
+      "src/routes/NotFound.svelte": () => Promise.resolve().then(() => (init_NotFound_9fe683d6(), NotFound_9fe683d6_exports)),
+      "src/routes/trending/[media].svelte": () => Promise.resolve().then(() => (init_media_0dee69ba(), media_0dee69ba_exports)),
+      "src/routes/episode/[id]/[season_number]/[episode_number].svelte": () => Promise.resolve().then(() => (init_episode_number_47200495(), episode_number_47200495_exports)),
+      "src/routes/seasons/[id]/[season_number].svelte": () => Promise.resolve().then(() => (init_season_number_873eb4f0(), season_number_873eb4f0_exports)),
+      "src/routes/person/[id].svelte": () => Promise.resolve().then(() => (init_id_8c40f23a(), id_8c40f23a_exports)),
+      "src/routes/search/[id].svelte": () => Promise.resolve().then(() => (init_id_6969a75f(), id_6969a75f_exports)),
+      "src/routes/genre/[media]/[id].svelte": () => Promise.resolve().then(() => (init_id_d1cca444(), id_d1cca444_exports)),
+      "src/routes/movie/[id].svelte": () => Promise.resolve().then(() => (init_id_de8563ca(), id_de8563ca_exports)),
+      "src/routes/tv/[id].svelte": () => Promise.resolve().then(() => (init_id_a8c2d94e(), id_a8c2d94e_exports))
     };
-    metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-3bc69fef.js", "css": ["assets/pages/__layout.svelte-b3ef45f7.css"], "js": ["pages/__layout.svelte-3bc69fef.js", "chunks/vendor-8fe9a59e.js", "chunks/singletons-12a22614.js", "chunks/store-fe56146d.js"], "styles": [] }, "src/routes/__error.svelte": { "entry": "pages/__error.svelte-30b92fab.js", "css": ["assets/pages/__error.svelte-8a5069d9.css"], "js": ["pages/__error.svelte-30b92fab.js", "chunks/vendor-8fe9a59e.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-d1d98e22.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/index.svelte-d1d98e22.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js"], "styles": [] }, "src/routes/NotFound.svelte": { "entry": "pages/NotFound.svelte-308d3a3a.js", "css": [], "js": ["pages/NotFound.svelte-308d3a3a.js", "chunks/vendor-8fe9a59e.js"], "styles": [] }, "src/routes/networks.svelte": { "entry": "pages/networks.svelte-a94a5e35.js", "css": [], "js": ["pages/networks.svelte-a94a5e35.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js"], "styles": [] }, "src/routes/trending/[media].svelte": { "entry": "pages/trending/[media].svelte-eb70afa9.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/trending/[media].svelte-eb70afa9.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js", "chunks/stores-d4b77a7d.js"], "styles": [] }, "src/routes/episode/[id]/[season_number]/[episode_number].svelte": { "entry": "pages/episode/[id]/[season_number]/[episode_number].svelte-c4e20313.js", "css": [], "js": ["pages/episode/[id]/[season_number]/[episode_number].svelte-c4e20313.js", "chunks/vendor-8fe9a59e.js", "chunks/stores-d4b77a7d.js"], "styles": [] }, "src/routes/network/[id].svelte": { "entry": "pages/network/[id].svelte-e94db069.js", "css": [], "js": ["pages/network/[id].svelte-e94db069.js", "chunks/vendor-8fe9a59e.js"], "styles": [] }, "src/routes/seasons/[id]/[season_number].svelte": { "entry": "pages/seasons/[id]/[season_number].svelte-4671cc20.js", "css": [], "js": ["pages/seasons/[id]/[season_number].svelte-4671cc20.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/stores-d4b77a7d.js"], "styles": [] }, "src/routes/person/[id].svelte": { "entry": "pages/person/[id].svelte-a709a494.js", "css": [], "js": ["pages/person/[id].svelte-a709a494.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/stores-d4b77a7d.js"], "styles": [] }, "src/routes/search/[id].svelte": { "entry": "pages/search/[id].svelte-605216c1.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/search/[id].svelte-605216c1.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js"], "styles": [] }, "src/routes/genre/movies/[id].svelte": { "entry": "pages/genre/movies/[id].svelte-bc0b35ae.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/genre/movies/[id].svelte-bc0b35ae.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js"], "styles": [] }, "src/routes/genre/tvs/[id].svelte": { "entry": "pages/genre/tvs/[id].svelte-af522c2a.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/genre/tvs/[id].svelte-af522c2a.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js"], "styles": [] }, "src/routes/genre/[media]/[id].svelte": { "entry": "pages/genre/[media]/[id].svelte-66e6b537.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/genre/[media]/[id].svelte-66e6b537.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/MainSection-d39b3699.js", "chunks/Spinner-629d5ba5.js"], "styles": [] }, "src/routes/movie/[id].svelte": { "entry": "pages/movie/[id].svelte-4799b6d0.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/movie/[id].svelte-4799b6d0.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/Spinner-629d5ba5.js", "chunks/Cast-ca792f96.js"], "styles": [] }, "src/routes/tv/[id].svelte": { "entry": "pages/tv/[id].svelte-ad4faad6.js", "css": ["assets/Spinner-11011231.css"], "js": ["pages/tv/[id].svelte-ad4faad6.js", "chunks/vendor-8fe9a59e.js", "chunks/store-fe56146d.js", "chunks/Spinner-629d5ba5.js", "chunks/Cast-ca792f96.js", "chunks/stores-d4b77a7d.js"], "styles": [] } };
+    metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-f4eb42df.js", "css": ["assets/pages/__layout.svelte-d7d8cb99.css"], "js": ["pages/__layout.svelte-f4eb42df.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/singletons-12a22614.js"], "styles": [] }, "src/routes/__error.svelte": { "entry": "pages/__error.svelte-1cf9c0b1.js", "css": ["assets/pages/__error.svelte-8a5069d9.css"], "js": ["pages/__error.svelte-1cf9c0b1.js", "chunks/vendor-fc6286ba.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-0b7a5c7b.js", "css": [], "js": ["pages/index.svelte-0b7a5c7b.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/MainSection-8e495d87.js", "chunks/ProgressBar-f61e37f1.js"], "styles": [] }, "src/routes/NotFound.svelte": { "entry": "pages/NotFound.svelte-9659fd5f.js", "css": [], "js": ["pages/NotFound.svelte-9659fd5f.js", "chunks/vendor-fc6286ba.js"], "styles": [] }, "src/routes/trending/[media].svelte": { "entry": "pages/trending/[media].svelte-40e542c5.js", "css": [], "js": ["pages/trending/[media].svelte-40e542c5.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/MainSection-8e495d87.js", "chunks/ProgressBar-f61e37f1.js"], "styles": [] }, "src/routes/episode/[id]/[season_number]/[episode_number].svelte": { "entry": "pages/episode/[id]/[season_number]/[episode_number].svelte-a1e7498f.js", "css": [], "js": ["pages/episode/[id]/[season_number]/[episode_number].svelte-a1e7498f.js", "chunks/vendor-fc6286ba.js"], "styles": [] }, "src/routes/seasons/[id]/[season_number].svelte": { "entry": "pages/seasons/[id]/[season_number].svelte-7534c8b0.js", "css": [], "js": ["pages/seasons/[id]/[season_number].svelte-7534c8b0.js", "chunks/vendor-fc6286ba.js", "chunks/stores-462c50b9.js"], "styles": [] }, "src/routes/person/[id].svelte": { "entry": "pages/person/[id].svelte-c20e0cad.js", "css": [], "js": ["pages/person/[id].svelte-c20e0cad.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js"], "styles": [] }, "src/routes/search/[id].svelte": { "entry": "pages/search/[id].svelte-63c2cd3f.js", "css": [], "js": ["pages/search/[id].svelte-63c2cd3f.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/MainSection-8e495d87.js", "chunks/ProgressBar-f61e37f1.js"], "styles": [] }, "src/routes/genre/[media]/[id].svelte": { "entry": "pages/genre/[media]/[id].svelte-5293c531.js", "css": [], "js": ["pages/genre/[media]/[id].svelte-5293c531.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/MainSection-8e495d87.js", "chunks/ProgressBar-f61e37f1.js"], "styles": [] }, "src/routes/movie/[id].svelte": { "entry": "pages/movie/[id].svelte-cb05cc7d.js", "css": ["assets/Cast-cd25fbf7.css"], "js": ["pages/movie/[id].svelte-cb05cc7d.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/ProgressBar-f61e37f1.js", "chunks/Cast-6bfa9e9c.js"], "styles": [] }, "src/routes/tv/[id].svelte": { "entry": "pages/tv/[id].svelte-6c7edfff.js", "css": ["assets/Cast-cd25fbf7.css"], "js": ["pages/tv/[id].svelte-6c7edfff.js", "chunks/vendor-fc6286ba.js", "chunks/store-07881416.js", "chunks/ProgressBar-f61e37f1.js", "chunks/Cast-6bfa9e9c.js", "chunks/stores-462c50b9.js"], "styles": [] } };
   }
 });
 
@@ -8098,7 +7973,7 @@ init_shims();
 
 // .svelte-kit/output/server/app.js
 init_shims();
-init_app_3d85ebcf();
+init_app_14a936dc();
 
 // .svelte-kit/netlify/entry.js
 init();

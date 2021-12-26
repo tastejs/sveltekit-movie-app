@@ -1,8 +1,5 @@
 <script context="module" lang="ts">
 	import { media_type, data } from '$lib/stores/store';
-	import { get } from 'svelte/store';
-	// export const prerender = true;
-
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
@@ -15,7 +12,7 @@
 			},
 			method: 'POST',
 			body: JSON.stringify({
-				media: get(media_type),
+				media: page.params.media,
 				page: '1'
 			})
 		});

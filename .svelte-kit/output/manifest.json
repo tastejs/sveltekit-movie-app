@@ -1,10 +1,10 @@
 {
   ".svelte-kit/build/runtime/internal/start.js": {
-    "file": "start-cf9fc43c.js",
+    "file": "start-ae56e48a.js",
     "src": ".svelte-kit/build/runtime/internal/start.js",
     "isEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
+      "_vendor-fc6286ba.js",
       "_singletons-12a22614.js"
     ],
     "dynamicImports": [
@@ -12,15 +12,11 @@
       "src/routes/__error.svelte",
       "src/routes/index.svelte",
       "src/routes/NotFound.svelte",
-      "src/routes/networks.svelte",
       "src/routes/trending/[media].svelte",
       "src/routes/episode/[id]/[season_number]/[episode_number].svelte",
-      "src/routes/network/[id].svelte",
       "src/routes/seasons/[id]/[season_number].svelte",
       "src/routes/person/[id].svelte",
       "src/routes/search/[id].svelte",
-      "src/routes/genre/movies/[id].svelte",
-      "src/routes/genre/tvs/[id].svelte",
       "src/routes/genre/[media]/[id].svelte",
       "src/routes/movie/[id].svelte",
       "src/routes/tv/[id].svelte"
@@ -30,228 +26,181 @@
     ]
   },
   "src/routes/__layout.svelte": {
-    "file": "pages/__layout.svelte-3bc69fef.js",
+    "file": "pages/__layout.svelte-f4eb42df.js",
     "src": "src/routes/__layout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_singletons-12a22614.js",
-      "_store-fe56146d.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_singletons-12a22614.js"
     ],
     "css": [
-      "assets/pages/__layout.svelte-b3ef45f7.css"
+      "assets/pages/__layout.svelte-d7d8cb99.css"
     ]
   },
   "src/routes/__error.svelte": {
-    "file": "pages/__error.svelte-30b92fab.js",
+    "file": "pages/__error.svelte-1cf9c0b1.js",
     "src": "src/routes/__error.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js"
+      "_vendor-fc6286ba.js"
     ],
     "css": [
       "assets/pages/__error.svelte-8a5069d9.css"
     ]
   },
   "src/routes/index.svelte": {
-    "file": "pages/index.svelte-d1d98e22.js",
+    "file": "pages/index.svelte-0b7a5c7b.js",
     "src": "src/routes/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_Spinner-629d5ba5.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_MainSection-8e495d87.js",
+      "_ProgressBar-f61e37f1.js"
     ]
   },
   "src/routes/NotFound.svelte": {
-    "file": "pages/NotFound.svelte-308d3a3a.js",
+    "file": "pages/NotFound.svelte-9659fd5f.js",
     "src": "src/routes/NotFound.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js"
-    ]
-  },
-  "src/routes/networks.svelte": {
-    "file": "pages/networks.svelte-a94a5e35.js",
-    "src": "src/routes/networks.svelte",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js"
+      "_vendor-fc6286ba.js"
     ]
   },
   "src/routes/trending/[media].svelte": {
-    "file": "pages/trending/[media].svelte-eb70afa9.js",
+    "file": "pages/trending/[media].svelte-40e542c5.js",
     "src": "src/routes/trending/[media].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_stores-d4b77a7d.js",
-      "_Spinner-629d5ba5.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_MainSection-8e495d87.js",
+      "_ProgressBar-f61e37f1.js"
     ]
   },
   "src/routes/episode/[id]/[season_number]/[episode_number].svelte": {
-    "file": "pages/episode/[id]/[season_number]/[episode_number].svelte-c4e20313.js",
+    "file": "pages/episode/[id]/[season_number]/[episode_number].svelte-a1e7498f.js",
     "src": "src/routes/episode/[id]/[season_number]/[episode_number].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_stores-d4b77a7d.js"
-    ]
-  },
-  "src/routes/network/[id].svelte": {
-    "file": "pages/network/[id].svelte-e94db069.js",
-    "src": "src/routes/network/[id].svelte",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_vendor-8fe9a59e.js"
+      "_vendor-fc6286ba.js"
     ]
   },
   "src/routes/seasons/[id]/[season_number].svelte": {
-    "file": "pages/seasons/[id]/[season_number].svelte-4671cc20.js",
+    "file": "pages/seasons/[id]/[season_number].svelte-7534c8b0.js",
     "src": "src/routes/seasons/[id]/[season_number].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_stores-d4b77a7d.js"
+      "_vendor-fc6286ba.js",
+      "_stores-462c50b9.js"
     ]
   },
   "src/routes/person/[id].svelte": {
-    "file": "pages/person/[id].svelte-a709a494.js",
+    "file": "pages/person/[id].svelte-c20e0cad.js",
     "src": "src/routes/person/[id].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_stores-d4b77a7d.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js"
     ]
   },
   "src/routes/search/[id].svelte": {
-    "file": "pages/search/[id].svelte-605216c1.js",
+    "file": "pages/search/[id].svelte-63c2cd3f.js",
     "src": "src/routes/search/[id].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_Spinner-629d5ba5.js"
-    ]
-  },
-  "src/routes/genre/movies/[id].svelte": {
-    "file": "pages/genre/movies/[id].svelte-bc0b35ae.js",
-    "src": "src/routes/genre/movies/[id].svelte",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_Spinner-629d5ba5.js"
-    ]
-  },
-  "src/routes/genre/tvs/[id].svelte": {
-    "file": "pages/genre/tvs/[id].svelte-af522c2a.js",
-    "src": "src/routes/genre/tvs/[id].svelte",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_Spinner-629d5ba5.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_MainSection-8e495d87.js",
+      "_ProgressBar-f61e37f1.js"
     ]
   },
   "src/routes/genre/[media]/[id].svelte": {
-    "file": "pages/genre/[media]/[id].svelte-66e6b537.js",
+    "file": "pages/genre/[media]/[id].svelte-5293c531.js",
     "src": "src/routes/genre/[media]/[id].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_MainSection-d39b3699.js",
-      "_Spinner-629d5ba5.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_MainSection-8e495d87.js",
+      "_ProgressBar-f61e37f1.js"
     ]
   },
   "src/routes/movie/[id].svelte": {
-    "file": "pages/movie/[id].svelte-4799b6d0.js",
+    "file": "pages/movie/[id].svelte-cb05cc7d.js",
     "src": "src/routes/movie/[id].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_Spinner-629d5ba5.js",
-      "_Cast-ca792f96.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_ProgressBar-f61e37f1.js",
+      "_Cast-6bfa9e9c.js"
     ]
   },
   "src/routes/tv/[id].svelte": {
-    "file": "pages/tv/[id].svelte-ad4faad6.js",
+    "file": "pages/tv/[id].svelte-6c7edfff.js",
     "src": "src/routes/tv/[id].svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_Spinner-629d5ba5.js",
-      "_Cast-ca792f96.js",
-      "_stores-d4b77a7d.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_ProgressBar-f61e37f1.js",
+      "_Cast-6bfa9e9c.js",
+      "_stores-462c50b9.js"
     ]
   },
-  "_vendor-8fe9a59e.js": {
-    "file": "chunks/vendor-8fe9a59e.js"
+  "_vendor-fc6286ba.js": {
+    "file": "chunks/vendor-fc6286ba.js"
   },
   "_singletons-12a22614.js": {
     "file": "chunks/singletons-12a22614.js"
   },
-  "_store-fe56146d.js": {
-    "file": "chunks/store-fe56146d.js",
+  "_store-07881416.js": {
+    "file": "chunks/store-07881416.js",
     "imports": [
-      "_vendor-8fe9a59e.js"
+      "_vendor-fc6286ba.js"
     ]
   },
-  "_MainSection-d39b3699.js": {
-    "file": "chunks/MainSection-d39b3699.js",
+  "_MainSection-8e495d87.js": {
+    "file": "chunks/MainSection-8e495d87.js",
     "imports": [
-      "_vendor-8fe9a59e.js",
-      "_store-fe56146d.js",
-      "_Spinner-629d5ba5.js"
+      "_vendor-fc6286ba.js",
+      "_store-07881416.js",
+      "_ProgressBar-f61e37f1.js"
     ]
   },
-  "_Spinner-629d5ba5.js": {
-    "file": "chunks/Spinner-629d5ba5.js",
+  "_ProgressBar-f61e37f1.js": {
+    "file": "chunks/ProgressBar-f61e37f1.js",
     "imports": [
-      "_vendor-8fe9a59e.js"
+      "_vendor-fc6286ba.js"
+    ]
+  },
+  "_stores-462c50b9.js": {
+    "file": "chunks/stores-462c50b9.js",
+    "imports": [
+      "_vendor-fc6286ba.js"
+    ]
+  },
+  "_Cast-6bfa9e9c.js": {
+    "file": "chunks/Cast-6bfa9e9c.js",
+    "imports": [
+      "_vendor-fc6286ba.js"
     ],
     "css": [
-      "assets/Spinner-11011231.css"
-    ]
-  },
-  "_stores-d4b77a7d.js": {
-    "file": "chunks/stores-d4b77a7d.js",
-    "imports": [
-      "_vendor-8fe9a59e.js"
-    ]
-  },
-  "_Cast-ca792f96.js": {
-    "file": "chunks/Cast-ca792f96.js",
-    "imports": [
-      "_vendor-8fe9a59e.js"
+      "assets/Cast-cd25fbf7.css"
     ]
   }
 }

@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	// export const prerender = true;
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	import { data } from '$lib/stores/store';
+	// import { post } from './api/apiCalls';
 	export async function load({ fetch }) {
 		data.set(undefined);
 		const res = await fetch('./api/getShow', {
