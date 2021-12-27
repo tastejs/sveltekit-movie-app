@@ -1,10 +1,11 @@
 <script context="module" lang="ts">
-	import { media_type, data } from '$lib/stores/store';
+	import { media_type, data, current_page } from '$lib/stores/store';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ fetch, page }) {
 		data.set(undefined);
+		current_page.set(1);
 		media_type.set(page.params.media as MediaType);
 		const res = await (
 			await fetch('../../api/postData', {

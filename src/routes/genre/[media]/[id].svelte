@@ -1,10 +1,11 @@
 <script context="module" lang="ts">
-	import { media_type, data } from '$lib/stores/store';
+	import { media_type, data, current_page } from '$lib/stores/store';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export const prerender = true;
 	export async function load({ fetch, page }) {
+		current_page.set(1);
 		data.set(undefined);
 		const genres = page.params.id;
 		media_type.set(page.params.media);
