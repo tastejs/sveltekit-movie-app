@@ -7,7 +7,7 @@ const urls = {
     episode: 'tv/${request.body["id"]}/season/${request.body["season_number"]}/episode/${request.body["episode_number"]}?api_key=${api}&language=en-US',
     known_for: 'person/${request.body["person"]}/combined_credits?api_key=${api}&language=en-US',
     show_detail: '${request.body["media"]}/${request.body["id"]}?api_key=${api}&language=en-US',
-    person: '${request.body["media"]}/${request.body["id"]}/credits?api_key=${api}&language=en-US',
+    person: '${request.body["media"]}/${request.body["id"]}?api_key=${api}&language=en-US',
     search: 'search/${request.body["media"]}?api_key=${api}&language=en-US&page=${request.body["page"]}&include_adult=false&query=${request.body["query"]}',
     season: 'tv/${request.body["id"]}/season/${request.body["season_number"]}?api_key=${api}&language=en-US',
     show: 'trending/${request.body["media"]}/week?api_key=${api}&language=en-GB&page=${request.body["page"]}',
