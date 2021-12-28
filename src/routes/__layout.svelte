@@ -39,9 +39,13 @@
 	<meta name="author" content="Wayne Morgan" />
 </svelte:head>
 
-<main class:$theme class="bg-skin-bg min-h-screen">
+<main class:$theme class=" ">
+	<div
+		class=" w-full -z-50 fixed top-0  bg-gradient-to-r from-skin-bg to-skin-border min-h-screen"
+	/>
+
 	<Header />
-	<section class="max-w-7xl mx-auto">
+	<section class=" mt-[52px] max-w-7xl mx-auto">
 		<slot />
 	</section>
 </main>

@@ -20,22 +20,20 @@
 		).json();
 		const movie_details = await res.res;
 
-		const trailer = await fetch('../api/postData', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				api_ref: 'trailer',
-				media: 'movie',
-				id: page.params.id
+		const trailer = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'trailer',
+					media: 'movie',
+					id: page.params.id
+				})
 			})
-		});
-		const trailer_details = await trailer.json();
-		const trailer_id: number = (await trailer_details.res.results.length)
-			? trailer_details.res.results[0].key
-			: 999;
-		console.log('trailer_details', await trailer_id);
+		).json();
+		const trailer_details = trailer.res.results;
 
 		const resp = await (
 			await fetch('../../api/postData', {
@@ -54,7 +52,7 @@
 		return {
 			props: {
 				movie_details,
-				trailer_id,
+				trailer_details,
 				cast
 			}
 		};
@@ -64,8 +62,8 @@
 <script lang="ts">
 	import MovieMedia from '$lib/pages/MovieMedia.svelte';
 	export let movie_details: MovieType;
-	export let trailer_id: number;
-	export let cast;
+	export let trailer_details: Trailer_type[];
+	export let cast: CastType[];
 </script>
 
-<MovieMedia {movie_details} {trailer_id} {cast} />
+<MovieMedia {movie_details} {trailer_details} {cast} />

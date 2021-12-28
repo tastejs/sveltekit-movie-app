@@ -16,9 +16,9 @@ type Genre = {
 
 type Network = {
 	display_priority: number;
-    logo_path: string;
-    provider_name: string;
-    provider_id: number;
+	logo_path: string;
+	provider_name: string;
+	provider_id: number;
 }
 
 type Genres = {
@@ -187,7 +187,7 @@ type Episodes = {
 	vote_count: ?number;
 };
 
-type Crew = {
+type CrewType = {
 	department: ?string;
 	job: ?string;
 	credit_id: ?string;
@@ -201,7 +201,7 @@ type Crew = {
 	profile_path: string | null;
 };
 
-type Guest_stars = {
+type GuestType = {
 	credit_id: ?string;
 	order: ?number;
 	character: ?string;
@@ -214,3 +214,53 @@ type Guest_stars = {
 	popularity: ?number;
 	profile_path: ?(string | null);
 };
+
+type Trailer_type = {
+	iso_639_1: string;
+	iso_3166_1: string;
+	name: string;
+	key: string;
+	site: string;
+	size: number;
+	type: string;
+	official: boolean;
+	published_at: string;
+	id: string;
+}
+
+type CastType = {
+	credit_id: string;
+	original_name: string;
+	id: number;
+	genre_ids: Array<number>;
+	character: string;
+	name: string;
+	poster_path: string | null;
+	vote_count: number;
+	vote_average: number;
+	popularity: number;
+	episode_count: number;
+	original_language: string;
+	first_air_date: string;
+	backdrop_path: string | null;
+	overview: string;
+	origin_country: Array<string>;
+}
+type KnownForType = {
+	credit_id: string;
+	original_name: string;
+	id: number;
+	genre_ids: Array<number>;
+	character: string;
+	name: string;
+	poster_path: string | null;
+	vote_count: number;
+	vote_average: number;
+	popularity: number;
+	episode_count: number;
+	original_language: string;
+	first_air_date: string;
+	backdrop_path: string | null;
+	overview: string;
+	origin_country: Array<string>;
+}

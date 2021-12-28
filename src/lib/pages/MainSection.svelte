@@ -6,11 +6,11 @@
 	import { current_page, media_type, data } from '$lib/stores/store';
 	import { get } from 'svelte/store';
 	export let total_pages = 1;
-	export let genres = undefined;
+	export let genres: number = undefined;
 	export let searching = undefined;
 
 	async function moreData() {
-		let res;
+		let res: Response;
 		if (searching) {
 			res = await fetch('../api/postData', {
 				headers: {

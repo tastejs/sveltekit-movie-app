@@ -99,7 +99,7 @@ class Router {
 			}, 200);
 		});
 
-		/** @param {MouseEvent|TouchEvent} event */
+		/** @param {Event} event */
 		const trigger_prefetch = (event) => {
 			const a = find_anchor(event);
 			if (a && a.href && a.hasAttribute('sveltekit:prefetch')) {
@@ -114,12 +114,17 @@ class Router {
 		const handle_mousemove = (event) => {
 			clearTimeout(mousemove_timeout);
 			mousemove_timeout = setTimeout(() => {
-				trigger_prefetch(event);
+				// event.composedPath(), which is used in find_anchor, will be empty if the event is read in a timeout
+				// add a layer of indirection to address that
+				event.target?.dispatchEvent(
+					new CustomEvent('sveltekit:trigger_prefetch', { bubbles: true })
+				);
 			}, 20);
 		};
 
 		addEventListener('touchstart', trigger_prefetch);
 		addEventListener('mousemove', handle_mousemove);
+		addEventListener('sveltekit:trigger_prefetch', trigger_prefetch);
 
 		/** @param {MouseEvent} event */
 		addEventListener('click', (event) => {
@@ -647,9 +652,7 @@ class Renderer {
 			}
 		}
 
-		if (navigation_result.reload) {
-			location.reload();
-		} else if (this.started) {
+		if (this.started) {
 			this.current = navigation_result.state;
 
 			this.root.$set(navigation_result.props);

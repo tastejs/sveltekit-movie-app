@@ -4,16 +4,16 @@
 
 @layer base {
 	.light {
-		-color-text-base: #000000;
-		--color-text-muted: #303030;
+		--color-text-base: #eae2e2;
+		--color-text-muted: #ffcf91;
 		--color-text-inverted: #ffffff;
 		--color-text-muted-inverted: #d7d7d7;
-		--color-text-selected: #ff2a48;
-		--color-bg: #91dafe;
-		--color-primary: #aed6f1;
-		--color-secondary: #54bbed;
-		--color-tertiary: #82bbee;
-		--color-border: #616161;
+		--color-text-selected: #f19f36;
+		--color-bg: #938e94;
+		--color-primary: #5d5c61;
+		--color-secondary: #7395ae;
+		--color-tertiary: #557a95;
+		--color-border: #b0a295;
 	}
 
 	.dark {
@@ -26,7 +26,7 @@
 		--color-primary: #021973;
 		--color-secondary: #0b327d;
 		--color-tertiary: #1c1c1c;
-		--color-border: #ffff00;
+		--color-border: #1d536d;
 	}
 
 	@font-face {

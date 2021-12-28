@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
 	import { media_type, data, current_page } from '$lib/stores/store';
-	/**
+	/***
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-	export const prerender = true;
+	export const prerender: boolean = true;
 	export async function load({ fetch, page }) {
 		current_page.set(1);
 		data.set(undefined);
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 	export let total_pages: number;
-	export let genres;
+	export let genres: number;
 	import MainSection from '$lib/pages/MainSection.svelte';
 	import { selected } from '$lib/stores/store';
 	$selected = null;

@@ -1,4 +1,6 @@
 import { get, writable } from 'svelte/store';
+import type { Readable } from 'svelte/store';
+
 import { browser } from '$app/env';
 
 function _theme() {
@@ -6,9 +8,9 @@ function _theme() {
 
 	return {
 		subscribe,
-		update: (theme) => get(theme),
-		get: (theme) => get(theme),
-		set: (theme) => {
+		update: (theme: Readable<string>) => get(theme),
+		get: (theme: Readable<string>) => get(theme),
+		set: (theme: string) => {
 			if (!browser) return; // ignore during SSR
 			const currentTheme = document.querySelector('html').classList.contains('dark')
 				? 'dark'

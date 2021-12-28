@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { show_name } from '$lib/stores/store';
-	import SeasonTitle from '$lib/components/SeasonTitle.svelte';
+	// import { show_name } from '$lib/stores/store';
+	// import SeasonTitle from '$lib/components/SeasonTitle.svelte';
 	const IMAGE_API = 'https://image.tmdb.org/t/p/w500/';
 	export let season_details: Season_type;
 	export let tv_id: string;

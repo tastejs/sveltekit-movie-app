@@ -20,22 +20,20 @@
 		).json();
 		const tv_details = await res.res;
 
-		const trailer = await fetch('../api/postData', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify({
-				api_ref: 'trailer',
-				media: 'tv',
-				id: page.params.id
+		const trailer = await (
+			await fetch('../api/postData', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					api_ref: 'trailer',
+					media: 'tv',
+					id: page.params.id
+				})
 			})
-		});
-		const trailer_details = await trailer.json();
-		const trailer_id: number = (await trailer_details.res.results.length)
-			? trailer_details.res.results[0].key
-			: 999;
-
+		).json();
+		const trailer_details = trailer.res.results;
 		const resp = await (
 			await fetch('../../api/postData', {
 				headers: {
@@ -53,7 +51,7 @@
 		return {
 			props: {
 				tv_details,
-				trailer_id,
+				trailer_details,
 				cast
 			}
 		};
@@ -64,10 +62,10 @@
 	import TvMedia from '$lib/pages/TvMedia.svelte';
 	import { page } from '$app/stores';
 	export let tv_details: TvType;
-	export let trailer_id: number;
-	export let cast;
+	export let trailer_details: Trailer_type[];
+	export let cast: CastType[];
 
 	let tv_id: string = $page.params.id;
 </script>
 
-<TvMedia {tv_details} {trailer_id} {cast} {tv_id} />
+<TvMedia {tv_details} {trailer_details} {cast} {tv_id} />

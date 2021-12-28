@@ -49,7 +49,7 @@
 	$media_type = 'person';
 
 	export let person: PersonType;
-	export let knownFor;
+	export let knownFor: KnownForType;
 </script>
 
 <Person {person} {knownFor} />

@@ -18,7 +18,6 @@ const urls = {
 export async function post(request: { body: { [x: string]: string } }): Promise<{ body: string; }> {
     try {
         const fetch_url = base + [eval('`' + urls[request.body["api_ref"]] + '`')]
-        console.log('FETCH', request.body["api_ref"], fetch_url)
         const res = await (await fetch(fetch_url)).json()
         return {
             body: JSON.stringify({ res })

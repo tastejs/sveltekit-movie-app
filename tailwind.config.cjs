@@ -1,7 +1,6 @@
 const plugin = require('tailwindcss/plugin');
 const config = {
-	mode: 'jit',
-	purge: ['./src/**/*.{html,js,svelte,ts}'],
+	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
 			borderColor: {
@@ -31,6 +30,15 @@ const config = {
 					selected: 'var(--color-selected)'
 				}
 			},
+			gradientColorStops: {
+				skin: {
+					primary: 'var(--color-primary)',
+					secondary: 'var(--color-secondary)',
+					tertiary: 'var(--color-tertiary)',
+					bg: 'var(--color-bg)',
+					border: 'var(--color-border)'
+				}
+			},
 			fontFamily: {
 				body: ['Raleway']
 			},
@@ -56,12 +64,6 @@ const config = {
 			gridTemplateRows: {
 				auto: 'repeat(auto-fill, minmax(0,auto))'
 			}
-		}
-	},
-	variants: {
-		extend: {
-			backgroundColor: ['active'],
-			transform: ['group-hover']
 		}
 	},
 	plugins: [

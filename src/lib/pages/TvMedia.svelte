@@ -3,13 +3,21 @@
 	import Spinner from '$lib/utilities/Spinner.svelte';
 	import Modal from '$lib/utilities/Modal.svelte';
 	import Cast from '$lib/components/Cast.svelte';
-	import { media_type, season_count, show_id, show_name } from '$lib/stores/store';
+	import {
+		media_type,
+		trailer_key,
+		season_count,
+		show_id,
+		show_name,
+		video_site
+	} from '$lib/stores/store';
 	import Seasons from '$lib/utilities/Seasons.svelte';
+	import { tooltip } from '$lib/utilities/tooltip';
 
 	export let tv_details: TvType;
-	export let trailer_id: number;
+	export let trailer_details: Trailer_type[];
 	export let tv_id: string;
-	export let cast;
+	export let cast: CastType[];
 
 	const IMAGE_API = 'https://image.tmdb.org/t/p/';
 
@@ -18,10 +26,16 @@
 	$show_id = tv_details.id;
 
 	let modal: { show: () => any };
+	function showModal(trailer: string, site: string): void {
+		console.log('function trailer id', trailer);
+		$trailer_key = trailer;
+		$video_site = site;
+		modal.show();
+	}
 	window.scrollTo({ top: -1000, behavior: 'smooth' });
 </script>
 
-{#if tv_details.id && trailer_id}
+{#if tv_details.id && trailer_details}
 	<section
 		id="media"
 		class="text-skin-inverted xl:mt-5 bg-no-repeat bg-right-top bg-contain xl:bg-cover xl:rounded-2xl"
@@ -45,10 +59,17 @@
 					<div class="mt-6 xl:mt-0 w-full mb-6 flex flex-wrap">
 						<h4 class="w-full xl:text-4xl">
 							{tv_details.name}
-							<span class="text-lg xl:text-4xl text-skin-inverted">
+							<span class="ml-1 text-lg xl:text-4xl text-skin-inverted">
 								{tv_details ? tv_details.first_air_date.substring(0, 4) : ''}
 							</span>
 						</h4>
+						{#if tv_details.vote_average}
+							<div
+								class="bg-transparent inline-flex align-center justify-center transform -translate-x-5 scale-60"
+							>
+								<ProgressBar progress={tv_details.vote_average} />
+							</div>
+						{/if}
 						<div class="xl:flex">
 							<div class="pl-0">
 								{'first_air_date' in tv_details ? tv_details.first_air_date : 'No Date Available'}
@@ -62,22 +83,25 @@
 							</div>
 						</div>
 					</div>
-					<div class="mb-5 w-full h-16 flex items-center justify-start">
-						{#if tv_details.vote_average}
-							<div
-								class="bg-transparent inline-flex align-center justify-center transform -translate-x-5 scale-60"
-							>
-								<ProgressBar progress={tv_details.vote_average} />
-							</div>
-						{/if}
-						{#if trailer_id !== 999}
-							<div
-								class="transform -translate-x-10 flex pl-5 cursor-pointer hover:opacity-80"
-								on:click={() => modal.show()}
-							>
-								<i class="flex items-center fa fa-play fa-2x" aria-hidden="true" />
-								<p class="flex justify-center ml-4 text-2xl items-center">Play Trailer</p>
-							</div>
+					<div
+						class="mb-1 w-full h-48 flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"
+					>
+						{#if trailer_details.length > 0}
+							{#each trailer_details as trailer}
+								<div class="w-56 flex-shrink-0 pl-2 cursor-pointer hover:opacity-80">
+									<button
+										on:click={() => showModal(trailer.key, trailer.site)}
+										title={trailer.name}
+										use:tooltip
+									>
+										<img
+											src={`https://img.youtube.com/vi/${trailer.key}/0.jpg`}
+											alt="movie poster"
+										/>
+									</button>
+								</div>
+							{/each}
+							<!-- <p class="flex justify-center ml-4 text-2xl items-center">Play Trailers</p> -->
 						{:else}
 							<div class="flex pl-5">
 								<p class="flex justify-center ml-4">No Trailer Available</p>
@@ -96,9 +120,7 @@
 
 	<Cast {cast} />
 
-	{#if trailer_id !== 999}
-		<Modal bind:this={modal} {trailer_id} />
-	{/if}
+	<Modal bind:this={modal} />
 
 	{#if $media_type === 'tv'}
 		{#key tv_details}

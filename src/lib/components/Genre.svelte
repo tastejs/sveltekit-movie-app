@@ -11,11 +11,11 @@
 			</h6>
 			<div class="py-0.5 justify-center bg-skin-inverted" />
 			<ul class=" text-sm flex flex-col justify-center">
-				{#each $movie_genres as genre, i}
+				{#each $movie_genres as genre}
 					<li class="flex">
 						<button
 							aria-label={genre.name}
-							class="hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
+							class="hover:bg-skin-primary p-1 block text-skin-base hover:text-skin-selected whitespace-nowrap"
 							class:bg-selected={$selected === genre.id && $media_type === 'movie'}
 							on:click|preventDefault={() => {
 								$selected = genre.id;
@@ -34,10 +34,10 @@
 			</h6>
 			<p class="py-0.5 justify-center text-skin-base" />
 			<ul class="text-sm flex flex-col justify-center">
-				{#each $tv_genres as genre, j}
+				{#each $tv_genres as genre}
 					<li class="flex">
 						<button
-							class=" hover:bg-skin-bg p-1 block text-skin-base whitespace-nowrap"
+							class="hover:bg-skin-primary p-1 block text-skin-base hover:text-skin-selected whitespace-nowrap"
 							class:bg-selected={$selected === genre.id && $media_type === 'tv'}
 							on:click|preventDefault={() => {
 								$selected = genre.id;

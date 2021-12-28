@@ -6,7 +6,6 @@
 	export async function load({ fetch }) {
 		data.set(undefined);
 		current_page.set(1);
-
 		const res = await (
 			await fetch('/api/postData', {
 				headers: {
