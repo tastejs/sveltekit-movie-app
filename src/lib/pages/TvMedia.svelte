@@ -38,28 +38,30 @@
 {#if tv_details.id && trailer_details}
 	<section
 		id="media"
-		class="text-skin-inverted xl:mt-5 bg-no-repeat bg-right-top bg-contain xl:bg-cover xl:rounded-2xl"
+		class="text-skin-inverted md:mt-5 bg-no-repeat bg-right-top bg-contain md:bg-cover md:rounded-2xl"
 		style="background-image: url({IMAGE_API}original/{tv_details.backdrop_path})"
 	>
 		<div
-			class="bg-gradient-to-r xl:rounded-2xl"
+			class="bg-gradient-to-r md:rounded-2xl"
 			style="background-image: linear-gradient(to right, rgb(5, 69, 112) 150px, rgba(37, 137, 204, 0.84) 100%)"
 		>
-			<div class="grid max-w-7xl xl:grid-cols-4 px-10 py-8 mx-auto xl:rounded-2xl">
+			<div
+				class="grid max-w-7xl md:grid-cols-[20rem_minmax(0,_1fr)_minmax(0,_1fr)_minmax(0,_1fr)] px-10 py-8 mx-auto md:rounded-2xl"
+			>
 				<div class="col-start-1 col-end-2 ">
 					<img
-						class="h-96 w-64 xl:h-120 xl:w-80 overflow-hidden rounded-2xl mx-auto"
+						class="h-96 w-64 md:h-120 md:w-80 overflow-hidden rounded-2xl mx-auto"
 						src={tv_details.poster_path
 							? IMAGE_API + 'w500' + tv_details.poster_path
 							: '/default.jpg'}
 						alt="movie poster"
 					/>
 				</div>
-				<div class="xl:col-start-2 xl:col-end-5 flex flex-wrap content-start xl:pl-10">
-					<div class="mt-6 xl:mt-0 w-full mb-6 flex flex-wrap">
-						<h4 class="w-full xl:text-4xl">
+				<div class="md:col-start-2 md:col-end-5 flex flex-wrap content-start md:pl-10">
+					<div class="mt-6 md:mt-0 w-full mb-6 flex flex-wrap">
+						<h4 class="w-full md:text-4xl">
 							{tv_details.name}
-							<span class="ml-1 text-lg xl:text-4xl text-skin-inverted">
+							<span class="ml-1 text-lg md:text-4xl text-skin-inverted">
 								{tv_details ? tv_details.first_air_date.substring(0, 4) : ''}
 							</span>
 						</h4>
@@ -70,10 +72,10 @@
 								<ProgressBar progress={tv_details.vote_average} />
 							</div>
 						{/if}
-						<div class="xl:flex">
+						<div class="md:flex">
 							<div class="pl-0">
 								{'first_air_date' in tv_details ? tv_details.first_air_date : 'No Date Available'}
-								<span class="hidden xl:px-2 xl:inline">&#x2022;</span>
+								<span class="hidden md:px-2 md:inline">&#x2022;</span>
 							</div>
 							<div>
 								{#each tv_details.genres as { id, name }, i}
@@ -84,7 +86,7 @@
 						</div>
 					</div>
 					<div
-						class="mb-1 w-full h-48 flex flex-wrap justify-center sm:justify-start sm:flex-nowrap sm:overflow-y-hidden relative"
+						class="mb-1 w-full md:h-48 flex flex-wrap justify-center md:justify-start md:flex-nowrap md:overflow-y-hidden relative"
 					>
 						{#if trailer_details.length > 0}
 							{#each trailer_details as trailer}
