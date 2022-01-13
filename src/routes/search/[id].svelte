@@ -4,7 +4,7 @@
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-	export async function load({ fetch, page }) {
+	export async function load({ params, fetch }) {
 		current_page.set(1);
 		const res = await (
 			await fetch('../api/postData', {
@@ -15,7 +15,7 @@
 				body: JSON.stringify({
 					api_ref: 'search',
 					media: get(media_type),
-					query: page.params.id,
+					query: params.id,
 					page: '1'
 				})
 			})
