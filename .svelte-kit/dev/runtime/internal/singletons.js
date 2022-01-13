@@ -1,9 +1,18 @@
 /** @type {import('./router').Router?} */
 let router;
 
-/** @param {import('./router').Router?} _ */
-function init(_) {
-	router = _;
+/** @type {import('./renderer').Renderer} */
+let renderer;
+
+/**
+ * @param {{
+ *   router: import('./router').Router?;
+ *   renderer: import('./renderer').Renderer;
+ * }} opts
+ */
+function init(opts) {
+	router = opts.router;
+	renderer = opts.renderer;
 }
 
-export { init, router };
+export { init, renderer, router };

@@ -1,5 +1,6 @@
 import Root from '../../generated/root.svelte';
 import { fallback, routes } from '../../generated/manifest.js';
+import { onMount, tick } from 'svelte';
 import { g as get_base_uri } from '../chunks/utils.js';
 import { writable } from 'svelte/store';
 import { init } from './singletons.js';
@@ -58,8 +59,21 @@ class Router {
 		// make it possible to reset focus
 		document.body.setAttribute('tabindex', '-1');
 
-		// create initial history entry, so we can return here
-		history.replaceState(history.state || {}, '', location.href);
+		// keeping track of the history index in order to prevent popstate navigation events if needed
+		this.current_history_index = history.state?.['sveltekit:index'] ?? 0;
+
+		if (this.current_history_index === 0) {
+			// create initial history entry, so we can return here
+			history.replaceState({ ...history.state, 'sveltekit:index': 0 }, '', location.href);
+		}
+
+		this.callbacks = {
+			/** @type {Array<({ from, to, cancel }: { from: URL, to: URL | null, cancel: () => void }) => void>} */
+			before_navigate: [],
+
+			/** @type {Array<({ from, to }: { from: URL | null, to: URL }) => void>} */
+			after_navigate: []
+		};
 	}
 
 	init_listeners() {
@@ -71,8 +85,23 @@ class Router {
 		// Reset scrollRestoration to auto when leaving page, allowing page reload
 		// and back-navigation from other pages to use the browser to restore the
 		// scrolling position.
-		addEventListener('beforeunload', () => {
-			history.scrollRestoration = 'auto';
+		addEventListener('beforeunload', (e) => {
+			let should_block = false;
+
+			const intent = {
+				from: this.renderer.current.url,
+				to: null,
+				cancel: () => (should_block = true)
+			};
+
+			this.callbacks.before_navigate.forEach((fn) => fn(intent));
+
+			if (should_block) {
+				e.preventDefault();
+				e.returnValue = '';
+			} else {
+				history.scrollRestoration = 'auto';
+			}
 		});
 
 		// Setting scrollRestoration to manual again when returning to this page.
@@ -127,7 +156,7 @@ class Router {
 		addEventListener('sveltekit:trigger_prefetch', trigger_prefetch);
 
 		/** @param {MouseEvent} event */
-		addEventListener('click', (event) => {
+		addEventListener('click', async (event) => {
 			if (!this.enabled) return;
 
 			// Adapted from https://github.com/visionmedia/page.js
@@ -160,31 +189,60 @@ class Router {
 			// Ignore if <a> has a target
 			if (a instanceof SVGAElement ? a.target.baseVal : a.target) return;
 
-			if (!this.owns(url)) return;
-
-			const noscroll = a.hasAttribute('sveltekit:noscroll');
-
-			const i1 = url_string.indexOf('#');
-			const i2 = location.href.indexOf('#');
-			const u1 = i1 >= 0 ? url_string.substring(0, i1) : url_string;
-			const u2 = i2 >= 0 ? location.href.substring(0, i2) : location.href;
-			history.pushState({}, '', url.href);
-			if (u1 === u2) {
-				window.dispatchEvent(new HashChangeEvent('hashchange'));
+			// Check if new url only differs by hash
+			if (url.href.split('#')[0] === location.href.split('#')[0]) {
+				// Call `pushState` to add url to history so going back works.
+				// Also make a delay, otherwise the browser default behaviour would not kick in
+				setTimeout(() => history.pushState({}, '', url.href));
+				const info = this.parse(url);
+				if (info) {
+					return this.renderer.update(info, [], false);
+				}
+				return;
 			}
-			this._navigate(url, noscroll ? scroll_state() : null, false, [], url.hash);
-			event.preventDefault();
+
+			this._navigate({
+				url,
+				scroll: a.hasAttribute('sveltekit:noscroll') ? scroll_state() : null,
+				keepfocus: false,
+				chain: [],
+				details: {
+					state: {},
+					replaceState: false
+				},
+				accepted: () => event.preventDefault(),
+				blocked: () => event.preventDefault()
+			});
 		});
 
 		addEventListener('popstate', (event) => {
 			if (event.state && this.enabled) {
-				const url = new URL(location.href);
-				this._navigate(url, event.state['sveltekit:scroll'], false, []);
+				// if a popstate-driven navigation is cancelled, we need to counteract it
+				// with history.go, which means we end up back here, hence this check
+				if (event.state['sveltekit:index'] === this.current_history_index) return;
+
+				this._navigate({
+					url: new URL(location.href),
+					scroll: event.state['sveltekit:scroll'],
+					keepfocus: false,
+					chain: [],
+					details: null,
+					accepted: () => {
+						this.current_history_index = event.state['sveltekit:index'];
+					},
+					blocked: () => {
+						const delta = this.current_history_index - event.state['sveltekit:index'];
+						history.go(delta);
+					}
+				});
 			}
 		});
 	}
 
-	/** @param {URL} url */
+	/**
+	 * Returns true if `url` has the same origin and basepath as the app
+	 * @param {URL} url
+	 */
 	owns(url) {
 		return url.origin === location.origin && url.pathname.startsWith(this.base);
 	}
@@ -195,15 +253,14 @@ class Router {
 	 */
 	parse(url) {
 		if (this.owns(url)) {
-			const path = url.pathname.slice(this.base.length) || '/';
+			const path = decodeURI(url.pathname.slice(this.base.length) || '/');
 
-			const decoded_path = decodeURI(path);
-			const routes = this.routes.filter(([pattern]) => pattern.test(decoded_path));
-
-			const query = new URLSearchParams(url.search);
-			const id = `${path}?${query}`;
-
-			return { id, routes, path, decoded_path, query };
+			return {
+				id: url.pathname + url.search,
+				routes: this.routes.filter(([pattern]) => pattern.test(path)),
+				url,
+				path
+			};
 		}
 	}
 
@@ -221,9 +278,19 @@ class Router {
 	) {
 		const url = new URL(href, get_base_uri(document));
 
-		if (this.enabled && this.owns(url)) {
-			history[replaceState ? 'replaceState' : 'pushState'](state, '', href);
-			return this._navigate(url, noscroll ? scroll_state() : null, keepfocus, chain, url.hash);
+		if (this.enabled) {
+			return this._navigate({
+				url,
+				scroll: noscroll ? scroll_state() : null,
+				keepfocus,
+				chain,
+				details: {
+					state,
+					replaceState
+				},
+				accepted: () => {},
+				blocked: () => {}
+			});
 		}
 
 		location.href = url.href;
@@ -254,46 +321,106 @@ class Router {
 		return this.renderer.load(info);
 	}
 
-	/**
-	 * @param {URL} url
-	 * @param {{ x: number, y: number }?} scroll
-	 * @param {boolean} keepfocus
-	 * @param {string[]} chain
-	 * @param {string} [hash]
-	 */
-	async _navigate(url, scroll, keepfocus, chain, hash) {
-		const info = this.parse(url);
+	/** @param {({ from, to }: { from: URL | null, to: URL }) => void} fn */
+	after_navigate(fn) {
+		onMount(() => {
+			this.callbacks.after_navigate.push(fn);
 
-		if (!info) {
-			throw new Error('Attempted to navigate to a URL that does not belong to this app');
+			return () => {
+				const i = this.callbacks.after_navigate.indexOf(fn);
+				this.callbacks.after_navigate.splice(i, 1);
+			};
+		});
+	}
+
+	/**
+	 * @param {({ from, to, cancel }: { from: URL, to: URL | null, cancel: () => void }) => void} fn
+	 */
+	before_navigate(fn) {
+		onMount(() => {
+			this.callbacks.before_navigate.push(fn);
+
+			return () => {
+				const i = this.callbacks.before_navigate.indexOf(fn);
+				this.callbacks.before_navigate.splice(i, 1);
+			};
+		});
+	}
+
+	/**
+	 * @param {{
+	 *   url: URL;
+	 *   scroll: { x: number, y: number } | null;
+	 *   keepfocus: boolean;
+	 *   chain: string[];
+	 *   details: {
+	 *     replaceState: boolean;
+	 *     state: any;
+	 *   } | null;
+	 *   accepted: () => void;
+	 *   blocked: () => void;
+	 * }} opts
+	 */
+	async _navigate({ url, scroll, keepfocus, chain, details, accepted, blocked }) {
+		const from = this.renderer.current.url;
+		let should_block = false;
+
+		const intent = {
+			from,
+			to: url,
+			cancel: () => (should_block = true)
+		};
+
+		this.callbacks.before_navigate.forEach((fn) => fn(intent));
+
+		if (should_block) {
+			blocked();
+			return;
 		}
+
+		const info = this.parse(url);
+		if (!info) {
+			location.href = url.href;
+			return new Promise(() => {
+				// never resolves
+			});
+		}
+
+		accepted();
 
 		if (!this.navigating) {
 			dispatchEvent(new CustomEvent('sveltekit:navigation-start'));
 		}
 		this.navigating++;
 
-		// remove trailing slashes
-		if (info.path !== '/') {
-			const has_trailing_slash = info.path.endsWith('/');
+		let { pathname } = url;
 
-			const incorrect =
-				(has_trailing_slash && this.trailing_slash === 'never') ||
-				(!has_trailing_slash &&
-					this.trailing_slash === 'always' &&
-					!(info.path.split('/').pop() || '').includes('.'));
-
-			if (incorrect) {
-				info.path = has_trailing_slash ? info.path.slice(0, -1) : info.path + '/';
-				history.replaceState({}, '', `${this.base}${info.path}${location.search}`);
-			}
+		if (this.trailing_slash === 'never') {
+			if (pathname !== '/' && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+		} else if (this.trailing_slash === 'always') {
+			const is_file = /** @type {string} */ (url.pathname.split('/').pop()).includes('.');
+			if (!is_file && !pathname.endsWith('/')) pathname += '/';
 		}
 
-		await this.renderer.handle_navigation(info, chain, false, { hash, scroll, keepfocus });
+		info.url = new URL(url.origin + pathname + url.search + url.hash);
+
+		if (details) {
+			const change = details.replaceState ? 0 : 1;
+			details.state['sveltekit:index'] = this.current_history_index += change;
+			history[details.replaceState ? 'replaceState' : 'pushState'](details.state, '', info.url);
+		}
+
+		await this.renderer.handle_navigation(info, chain, false, {
+			scroll,
+			keepfocus
+		});
 
 		this.navigating--;
 		if (!this.navigating) {
 			dispatchEvent(new CustomEvent('sveltekit:navigation-end'));
+
+			const navigation = { from, to: url };
+			this.callbacks.after_navigate.forEach((fn) => fn(navigation));
 		}
 	}
 }
@@ -393,13 +520,11 @@ function normalize(loaded) {
 
 /**
  * @typedef {import('types/internal').CSRComponent} CSRComponent
- *
- * @typedef {Partial<import('types/page').Page>} Page
- * @typedef {{ from: Page; to: Page }} Navigating
+ * @typedef {{ from: URL; to: URL }} Navigating
  */
 
 /** @param {any} value */
-function page_store(value) {
+function notifiable_store(value) {
 	const store = writable(value);
 	let ready = true;
 
@@ -457,13 +582,11 @@ class Renderer {
 	 *   fallback: [CSRComponent, CSRComponent];
 	 *   target: Node;
 	 *   session: any;
-	 *   host: string;
 	 * }} opts
 	 */
-	constructor({ Root, fallback, target, session, host }) {
+	constructor({ Root, fallback, target, session }) {
 		this.Root = Root;
 		this.fallback = fallback;
-		this.host = host;
 
 		/** @type {import('./router').Router | undefined} */
 		this.router;
@@ -475,11 +598,13 @@ class Renderer {
 		this.session_id = 1;
 		this.invalid = new Set();
 		this.invalidating = null;
+		this.autoscroll = true;
+		this.updating = false;
 
 		/** @type {import('./types').NavigationState} */
 		this.current = {
 			// @ts-ignore - we need the initial value to be null
-			page: null,
+			url: null,
 			session_id: 0,
 			branch: []
 		};
@@ -494,7 +619,8 @@ class Renderer {
 		};
 
 		this.stores = {
-			page: page_store({}),
+			url: notifiable_store({}),
+			page: notifiable_store({}),
 			navigating: writable(/** @type {Navigating | null} */ (null)),
 			session: writable(session)
 		};
@@ -516,15 +642,26 @@ class Renderer {
 		ready = true;
 	}
 
+	disable_scroll_handling() {
+		if (import.meta.env.DEV && this.started && !this.updating) {
+			throw new Error('Can only disable scroll handling during navigation');
+		}
+
+		if (this.updating || !this.started) {
+			this.autoscroll = false;
+		}
+	}
+
 	/**
 	 * @param {{
 	 *   status: number;
 	 *   error: Error;
 	 *   nodes: Array<Promise<CSRComponent>>;
-	 *   page: import('types/page').Page;
+	 *   url: URL;
+	 *   params: Record<string, string>;
 	 * }} selected
 	 */
-	async start({ status, error, nodes, page }) {
+	async start({ status, error, nodes, url, params }) {
 		/** @type {Array<import('./types').BranchNode | undefined>} */
 		const branch = [];
 
@@ -536,13 +673,17 @@ class Renderer {
 
 		let error_args;
 
+		// url.hash is empty when coming from the server
+		url.hash = window.location.hash;
+
 		try {
 			for (let i = 0; i < nodes.length; i += 1) {
 				const is_leaf = i === nodes.length - 1;
 
 				const node = await this._load_node({
 					module: await nodes[i],
-					page,
+					url,
+					params,
 					stuff,
 					status: is_leaf ? status : undefined,
 					error: is_leaf ? error : undefined
@@ -556,8 +697,7 @@ class Renderer {
 						error_args = {
 							status: node.loaded.status,
 							error: node.loaded.error,
-							path: page.path,
-							query: page.query
+							url
 						};
 					} else if (node.loaded.stuff) {
 						stuff = {
@@ -570,15 +710,21 @@ class Renderer {
 
 			result = error_args
 				? await this._load_error(error_args)
-				: await this._get_navigation_result_from_branch({ page, branch });
+				: await this._get_navigation_result_from_branch({
+						url,
+						params,
+						stuff,
+						branch,
+						status,
+						error
+				  });
 		} catch (e) {
 			if (error) throw e;
 
 			result = await this._load_error({
 				status: 500,
 				error: coalesce_to_error(e),
-				path: page.path,
-				query: page.query
+				url
 			});
 		}
 
@@ -601,14 +747,8 @@ class Renderer {
 	async handle_navigation(info, chain, no_cache, opts) {
 		if (this.started) {
 			this.stores.navigating.set({
-				from: {
-					path: this.current.page.path,
-					query: this.current.page.query
-				},
-				to: {
-					path: info.path,
-					query: info.query
-				}
+				from: this.current.url,
+				to: info.url
 			});
 		}
 
@@ -631,19 +771,19 @@ class Renderer {
 		this.invalid.clear();
 
 		if (navigation_result.redirect) {
-			if (chain.length > 10 || chain.includes(info.path)) {
+			if (chain.length > 10 || chain.includes(info.url.pathname)) {
 				navigation_result = await this._load_error({
 					status: 500,
 					error: new Error('Redirect loop'),
-					path: info.path,
-					query: info.query
+					url: info.url
 				});
 			} else {
 				if (this.router) {
-					this.router.goto(navigation_result.redirect, { replaceState: true }, [
-						...chain,
-						info.path
-					]);
+					this.router.goto(
+						new URL(navigation_result.redirect, info.url).href,
+						{ replaceState: true },
+						[...chain, info.url.pathname]
+					);
 				} else {
 					location.href = new URL(navigation_result.redirect, location.href).href;
 				}
@@ -651,6 +791,8 @@ class Renderer {
 				return;
 			}
 		}
+
+		this.updating = true;
 
 		if (this.started) {
 			this.current = navigation_result.state;
@@ -661,36 +803,20 @@ class Renderer {
 			this._init(navigation_result);
 		}
 
-		// opts must be passed if we're navigating...
+		// opts must be passed if we're navigating
 		if (opts) {
-			const { hash, scroll, keepfocus } = opts;
+			const { scroll, keepfocus } = opts;
 
 			if (!keepfocus) {
 				getSelection()?.removeAllRanges();
 				document.body.focus();
 			}
 
-			const old_page_y_offset = Math.round(pageYOffset);
-			const old_max_page_y_offset = document.documentElement.scrollHeight - innerHeight;
+			// need to render the DOM before we can scroll to the rendered elements
+			await tick();
 
-			await 0;
-
-			const new_page_y_offset = Math.round(pageYOffset);
-			const new_max_page_y_offset = document.documentElement.scrollHeight - innerHeight;
-
-			// After `await 0`, the `onMount()` function in the component executed.
-			// Check if no scrolling happened on mount.
-			const no_scroll_happened =
-				// In most cases, we can compare whether `pageYOffset` changed between navigation
-				new_page_y_offset === Math.min(old_page_y_offset, new_max_page_y_offset) ||
-				// But if the page is scrolled to/near the bottom, the browser would also scroll
-				// to/near the bottom of the new page on navigation. Since we can't detect when this
-				// behaviour happens, we naively compare by the y offset from the bottom of the page.
-				old_max_page_y_offset - old_page_y_offset === new_max_page_y_offset - new_page_y_offset;
-
-			// If there was no scrolling, we run on our custom scroll handling
-			if (no_scroll_happened) {
-				const deep_linked = hash && document.getElementById(hash.slice(1));
+			if (this.autoscroll) {
+				const deep_linked = info.url.hash && document.getElementById(info.url.hash.slice(1));
 				if (scroll) {
 					scrollTo(scroll.x, scroll.y);
 				} else if (deep_linked) {
@@ -703,12 +829,14 @@ class Renderer {
 				}
 			}
 		} else {
-			// ...they will not be supplied if we're simply invalidating
-			await 0;
+			// in this case we're simply invalidating
+			await tick();
 		}
 
 		this.loading.promise = null;
 		this.loading.id = null;
+		this.autoscroll = true;
+		this.updating = false;
 
 		if (!this.router) return;
 
@@ -764,6 +892,11 @@ class Renderer {
 		});
 
 		this.started = true;
+
+		if (this.router) {
+			const navigation = { from: null, to: new URL(location.href) };
+			this.router.callbacks.after_navigate.forEach((fn) => fn(navigation));
+		}
 	}
 
 	/**
@@ -804,20 +937,23 @@ class Renderer {
 
 		return await this._load_error({
 			status: 404,
-			error: new Error(`Not found: ${info.path}`),
-			path: info.path,
-			query: info.query
+			error: new Error(`Not found: ${info.url.pathname}`),
+			url: info.url
 		});
 	}
 
 	/**
 	 *
 	 * @param {{
-	 *   page: import('types/page').Page;
-	 *   branch: Array<import('./types').BranchNode | undefined>
+	 *   url: URL;
+	 *   params: Record<string, string>;
+	 *   stuff: Record<string, any>;
+	 *   branch: Array<import('./types').BranchNode | undefined>;
+	 *   status: number;
+	 *   error?: Error;
 	 * }} opts
 	 */
-	async _get_navigation_result_from_branch({ page, branch }) {
+	async _get_navigation_result_from_branch({ url, params, stuff, branch, status, error }) {
 		const filtered = /** @type {import('./types').BranchNode[] } */ (branch.filter(Boolean));
 		const redirect = filtered.find((f) => f.loaded && f.loaded.redirect);
 
@@ -825,7 +961,8 @@ class Renderer {
 		const result = {
 			redirect: redirect && redirect.loaded ? redirect.loaded.redirect : undefined,
 			state: {
-				page,
+				url,
+				params,
 				branch,
 				session_id: this.session_id
 			},
@@ -839,19 +976,32 @@ class Renderer {
 			result.props[`props_${i}`] = loaded ? await loaded.props : null;
 		}
 
-		if (
-			!this.current.page ||
-			page.path !== this.current.page.path ||
-			page.query.toString() !== this.current.page.query.toString()
-		) {
-			result.props.page = page;
+		if (!this.current.url || url.href !== this.current.url.href) {
+			result.props.page = { url, params, status, error, stuff };
+
+			// TODO remove this for 1.0
+			/**
+			 * @param {string} property
+			 * @param {string} replacement
+			 */
+			const print_error = (property, replacement) => {
+				Object.defineProperty(result.props.page, property, {
+					get: () => {
+						throw new Error(`$page.${property} has been replaced by $page.url.${replacement}`);
+					}
+				});
+			};
+
+			print_error('origin', 'origin');
+			print_error('path', 'pathname');
+			print_error('query', 'searchParams');
 		}
 
 		const leaf = filtered[filtered.length - 1];
 		const maxage = leaf.loaded && leaf.loaded.maxage;
 
 		if (maxage) {
-			const key = `${page.path}?${page.query}`;
+			const key = url.pathname + url.search; // omit hash
 			let ready = false;
 
 			const clear = () => {
@@ -882,19 +1032,19 @@ class Renderer {
 	 *   status?: number;
 	 *   error?: Error;
 	 *   module: CSRComponent;
-	 *   page: import('types/page').Page;
+	 *   url: URL;
+	 *   params: Record<string, string>;
 	 *   stuff: Record<string, any>;
 	 * }} options
 	 * @returns
 	 */
-	async _load_node({ status, error, module, page, stuff }) {
+	async _load_node({ status, error, module, url, params, stuff }) {
 		/** @type {import('./types').BranchNode} */
 		const node = {
 			module,
 			uses: {
 				params: new Set(),
-				path: false,
-				query: false,
+				url: false,
 				session: false,
 				stuff: false,
 				dependencies: []
@@ -904,12 +1054,12 @@ class Renderer {
 		};
 
 		/** @type {Record<string, string>} */
-		const params = {};
-		for (const key in page.params) {
-			Object.defineProperty(params, key, {
+		const uses_params = {};
+		for (const key in params) {
+			Object.defineProperty(uses_params, key, {
 				get() {
 					node.uses.params.add(key);
-					return page.params[key];
+					return params[key];
 				},
 				enumerable: true
 			});
@@ -922,17 +1072,10 @@ class Renderer {
 
 			/** @type {import('types/page').LoadInput | import('types/page').ErrorLoadInput} */
 			const load_input = {
-				page: {
-					host: page.host,
-					params,
-					get path() {
-						node.uses.path = true;
-						return page.path;
-					},
-					get query() {
-						node.uses.query = true;
-						return page.query;
-					}
+				params: uses_params,
+				get url() {
+					node.uses.url = true;
+					return url;
 				},
 				get session() {
 					node.uses.session = true;
@@ -943,13 +1086,22 @@ class Renderer {
 					return { ...stuff };
 				},
 				fetch(resource, info) {
-					const url = typeof resource === 'string' ? resource : resource.url;
-					const { href } = new URL(url, new URL(page.path, document.baseURI));
+					const requested = typeof resource === 'string' ? resource : resource.url;
+					const { href } = new URL(requested, url);
 					node.uses.dependencies.push(href);
 
 					return started ? fetch(resource, info) : initial_fetch(resource, info);
 				}
 			};
+
+			if (import.meta.env.DEV) {
+				// TODO remove this for 1.0
+				Object.defineProperty(load_input, 'page', {
+					get: () => {
+						throw new Error('`page` in `load` functions has been replaced by `url` and `params`');
+					}
+				});
+			}
 
 			if (error) {
 				/** @type {import('types/page').ErrorLoadInput} */ (load_input).status = status;
@@ -958,8 +1110,9 @@ class Renderer {
 
 			const loaded = await module.load.call(null, load_input);
 
-			// if the page component returns nothing from load, fall through
-			if (!loaded) return;
+			if (!loaded) {
+				throw new Error('load function must return a value');
+			}
 
 			node.loaded = normalize(loaded);
 			if (node.loaded.stuff) node.stuff = node.loaded.stuff;
@@ -973,8 +1126,8 @@ class Renderer {
 	 * @param {boolean} no_cache
 	 * @returns {Promise<import('./types').NavigationResult | undefined>} undefined if fallthrough
 	 */
-	async _load({ route, info: { path, decoded_path, query } }, no_cache) {
-		const key = `${decoded_path}?${query}`;
+	async _load({ route, info: { url, path } }, no_cache) {
+		const key = url.pathname + url.search;
 
 		if (!no_cache) {
 			const cached = this.cache.get(key);
@@ -984,18 +1137,14 @@ class Renderer {
 		const [pattern, a, b, get_params] = route;
 		const params = get_params
 			? // the pattern is for the route which we've already matched to this path
-			  get_params(/** @type {RegExpExecArray}  */ (pattern.exec(decoded_path)))
+			  get_params(/** @type {RegExpExecArray}  */ (pattern.exec(path)))
 			: {};
 
-		const changed = this.current.page && {
-			path: path !== this.current.page.path,
-			params: Object.keys(params).filter((key) => this.current.page.params[key] !== params[key]),
-			query: query.toString() !== this.current.page.query.toString(),
+		const changed = this.current.url && {
+			url: key !== this.current.url.pathname + this.current.url.search,
+			params: Object.keys(params).filter((key) => this.current.params[key] !== params[key]),
 			session: this.session_id !== this.current.session_id
 		};
-
-		/** @type {import('types/page').Page} */
-		const page = { host: this.host, path, query, params };
 
 		/** @type {Array<import('./types').BranchNode | undefined>} */
 		let branch = [];
@@ -1026,9 +1175,8 @@ class Renderer {
 				const changed_since_last_render =
 					!previous ||
 					module !== previous.module ||
-					(changed.path && previous.uses.path) ||
+					(changed.url && previous.uses.url) ||
 					changed.params.some((param) => previous.uses.params.has(param)) ||
-					(changed.query && previous.uses.query) ||
 					(changed.session && previous.uses.session) ||
 					previous.uses.dependencies.some((dep) => this.invalid.has(dep)) ||
 					(stuff_changed && previous.uses.stuff);
@@ -1036,13 +1184,15 @@ class Renderer {
 				if (changed_since_last_render) {
 					node = await this._load_node({
 						module,
-						page,
+						url,
+						params,
 						stuff
 					});
 
-					const is_leaf = i === a.length - 1;
-
 					if (node && node.loaded) {
+						if (node.loaded.fallthrough) {
+							return;
+						}
 						if (node.loaded.error) {
 							status = node.loaded.status;
 							error = node.loaded.error;
@@ -1059,10 +1209,6 @@ class Renderer {
 						if (node.loaded.stuff) {
 							stuff_changed = true;
 						}
-					} else if (is_leaf && module.load) {
-						// if the leaf node has a `load` function
-						// that returns nothing, fall through
-						return;
 					}
 				} else {
 					node = previous;
@@ -1089,12 +1235,20 @@ class Renderer {
 								status,
 								error,
 								module: await b[i](),
-								page,
+								url,
+								params,
 								stuff: node_loaded.stuff
 							});
 
 							if (error_loaded && error_loaded.loaded && error_loaded.loaded.error) {
 								continue;
+							}
+
+							if (error_loaded && error_loaded.loaded && error_loaded.loaded.stuff) {
+								stuff = {
+									...stuff,
+									...error_loaded.loaded.stuff
+								};
 							}
 
 							branch = branch.slice(0, j + 1).concat(error_loaded);
@@ -1108,8 +1262,7 @@ class Renderer {
 				return await this._load_error({
 					status,
 					error,
-					path,
-					query
+					url
 				});
 			} else {
 				if (node && node.loaded && node.loaded.stuff) {
@@ -1123,43 +1276,53 @@ class Renderer {
 			}
 		}
 
-		return await this._get_navigation_result_from_branch({ page, branch });
+		return await this._get_navigation_result_from_branch({
+			url,
+			params,
+			stuff,
+			branch,
+			status,
+			error
+		});
 	}
 
 	/**
 	 * @param {{
-	 *   status?: number;
+	 *   status: number;
 	 *   error: Error;
-	 *   path: string;
-	 *   query: URLSearchParams
+	 *   url: URL;
 	 * }} opts
 	 */
-	async _load_error({ status, error, path, query }) {
-		const page = {
-			host: this.host,
-			path,
-			query,
-			params: {}
-		};
+	async _load_error({ status, error, url }) {
+		/** @type {Record<string, string>} */
+		const params = {}; // error page does not have params
 
 		const node = await this._load_node({
 			module: await this.fallback[0],
-			page,
+			url,
+			params,
 			stuff: {}
 		});
+		const error_node = await this._load_node({
+			status,
+			error,
+			module: await this.fallback[1],
+			url,
+			params,
+			stuff: (node && node.loaded && node.loaded.stuff) || {}
+		});
 
-		const branch = [
-			node,
-			await this._load_node({
-				status,
-				error,
-				module: await this.fallback[1],
-				page,
-				stuff: (node && node.loaded && node.loaded.stuff) || {}
-			})
-		];
+		const branch = [node, error_node];
+		const stuff = { ...node?.loaded?.stuff, ...error_node?.loaded?.stuff };
 
-		return await this._get_navigation_result_from_branch({ page, branch });
+		return await this._get_navigation_result_from_branch({
+			url,
+			params,
+			stuff,
+			branch,
+			status,
+			error
+		});
 	}
 }
 
@@ -1173,7 +1336,6 @@ class Renderer {
  *   },
  *   target: Node;
  *   session: any;
- *   host: string;
  *   route: boolean;
  *   spa: boolean;
  *   trailing_slash: import('types/internal').TrailingSlash;
@@ -1181,11 +1343,12 @@ class Renderer {
  *     status: number;
  *     error: Error;
  *     nodes: Array<Promise<import('types/internal').CSRComponent>>;
- *     page: import('types/page').Page;
+ *     url: URL;
+ *     params: Record<string, string>;
  *   };
  * }} opts
  */
-async function start({ paths, target, session, host, route, spa, trailing_slash, hydrate }) {
+async function start({ paths, target, session, route, spa, trailing_slash, hydrate }) {
 	if (import.meta.env.DEV && !target) {
 		throw new Error('Missing target element. See https://kit.svelte.dev/docs#configuration-target');
 	}
@@ -1194,8 +1357,7 @@ async function start({ paths, target, session, host, route, spa, trailing_slash,
 		Root,
 		fallback,
 		target,
-		session,
-		host
+		session
 	});
 
 	const router = route
@@ -1207,7 +1369,7 @@ async function start({ paths, target, session, host, route, spa, trailing_slash,
 		  })
 		: null;
 
-	init(router);
+	init({ router, renderer });
 	set_paths(paths);
 
 	if (hydrate) await renderer.start(hydrate);

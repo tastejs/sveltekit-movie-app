@@ -33,34 +33,24 @@
 	});
 </script>
 
-<svelte:component this={components[0]} {...(props_0 || {})}>
-	{#if components[1]}
-		<svelte:component this={components[1]} {...(props_1 || {})}>
-			{#if components[2]}
+{#if components[1]}
+	<svelte:component this={components[0]} {...(props_0 || {})}>
+		{#if components[2]}
+			<svelte:component this={components[1]} {...(props_1 || {})}>
 				<svelte:component this={components[2]} {...(props_2 || {})}/>
-			{/if}
-		</svelte:component>
-	{/if}
-</svelte:component>
+			</svelte:component>
+		{:else}
+			<svelte:component this={components[1]} {...(props_1 || {})} />
+		{/if}
+	</svelte:component>
+{:else}
+	<svelte:component this={components[0]} {...(props_0 || {})} />
+{/if}
 
 {#if mounted}
-	<div id="svelte-announcer" aria-live="assertive" aria-atomic="true">
+	<div id="svelte-announcer" aria-live="assertive" aria-atomic="true" style="position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; width: 1px; height: 1px">
 		{#if navigated}
 			{title}
 		{/if}
 	</div>
 {/if}
-
-<style>
-	#svelte-announcer {
-		position: absolute;
-		left: 0;
-		top: 0;
-		clip: rect(0 0 0 0);
-		clip-path: inset(50%);
-		overflow: hidden;
-		white-space: nowrap;
-		width: 1px;
-		height: 1px;
-	}
-</style>
