@@ -2,7 +2,7 @@
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-	export async function load({ fetch, page }) {
+	export async function load({ params, fetch }) {
 		const res = await (
 			await fetch('../../api/postData', {
 				headers: {
@@ -11,8 +11,8 @@
 				method: 'POST',
 				body: JSON.stringify({
 					api_ref: 'season',
-					id: page.params.id,
-					season_number: page.params.season_number
+					id: params.id,
+					season_number: params.season_number
 				})
 			})
 		).json();
