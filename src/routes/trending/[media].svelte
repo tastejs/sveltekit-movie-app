@@ -3,10 +3,10 @@
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
-	export async function load({ fetch, page }) {
+	export async function load({ params, fetch }) {
 		data.set(undefined);
 		current_page.set(1);
-		media_type.set(page.params.media as MediaType);
+		media_type.set(params.media as MediaType);
 		const res = await (
 			await fetch('../../api/postData', {
 				headers: {
@@ -14,7 +14,7 @@
 				},
 				method: 'POST',
 				body: JSON.stringify({
-					media: page.params.media,
+					media: params.media,
 					api_ref: 'show',
 					page: '1'
 				})
