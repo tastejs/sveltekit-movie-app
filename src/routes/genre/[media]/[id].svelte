@@ -4,11 +4,11 @@
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export const prerender: boolean = true;
-	export async function load({ fetch, page }) {
+	export async function load({ params, fetch }) {
 		current_page.set(1);
 		data.set(undefined);
-		const genres = page.params.id;
-		media_type.set(page.params.media);
+		const genres = params.id;
+		media_type.set(params.media);
 		const res = await (
 			await fetch('../../api/postData', {
 				headers: {
@@ -17,7 +17,7 @@
 				method: 'POST',
 				body: JSON.stringify({
 					api_ref: 'show_genres',
-					media: page.params.media,
+					media: params.media,
 					genre: genres,
 					page: '1'
 				})
