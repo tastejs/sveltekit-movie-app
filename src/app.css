@@ -21,12 +21,12 @@
 		--color-text-muted: #ffffff;
 		--color-text-inverted: #ececec;
 		--color-text-muted-inverted: #616161;
-		--color-text-selected: #79b646;
+		--color-text-selected: #ff206e;
 		--color-bg: #000000;
-		--color-primary: #021973;
-		--color-secondary: #0b327d;
+		--color-primary: #424242;
+		--color-secondary: #393737;
 		--color-tertiary: #1c1c1c;
-		--color-border: #1d536d;
+		--color-border: #303030;
 	}
 
 	@font-face {
