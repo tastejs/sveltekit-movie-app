@@ -12,7 +12,7 @@
 		href={`/${$media_type}/${datum.id}`}>
 		<div class="relative preserve-3d w-full">
 			<div class="backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg">
-				<img class="oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg  text-skin-muted "
+				<img width="176" height="256" class="oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg  text-skin-muted "
 					src={datum.poster_path ? IMAGE_API + datum.poster_path : '/default.jpg' } alt={datum.title} />
 				<div class="p-2 xl:ml-4">
 					<h6
