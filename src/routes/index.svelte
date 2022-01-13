@@ -3,7 +3,7 @@
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	import { data, current_page } from '$lib/stores/store';
-	export async function load({ fetch }) {
+	export async function load({ params, fetch }) {
 		data.set(undefined);
 		current_page.set(1);
 		const res = await (
