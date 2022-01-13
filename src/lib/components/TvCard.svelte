@@ -7,7 +7,11 @@
 </script>
 
 <section id="tv-card" class="group perspective-1000 w-44 xl:w-60 my-0.5 xl:my-2 xl:rounded-lg">
-	<div class="relative preserve-3d w-full duration-700 group-hover:rotate-y-180">
+	<div class="relative w-full">
+		<a
+		class=""
+		href={`/${$media_type}/${datum.id}`}
+	>
 		<div class="backface-hidden top-0 right-0 text-skin-base bg-skin-bg xl:rounded-lg">
 			<img
 				class="oject-cover w-44 h-64 xl:w-60 xl:h-90 xl:rounded-t-lg  text-skin-muted "
@@ -28,12 +32,9 @@
 				<ProgressBar progress={datum.vote_average} />
 			</div>
 		</div>
-		<a
-			class="w-full backface-hidden text-skin-base top-0 right-0 bg-skin-bg rounded-lg absolute bottom-0 text-decoration-none rotate-y-180 p-2 h-full ease-in-out movie-back text-sm overflow-auto duration-300 z-10"
-			href={`/${$media_type}/${datum.id}`}
-		>
-			<h6 class="mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded">Overview</h6>
-			<p class="md:text-base mt-1">{datum.overview}</p>
+
+			<!-- <h6 class="mt-1 xl:text-xl uppercase text-skin-base bg-secondary rounded">Overview</h6>
+			<p class="md:text-base mt-1">{datum.overview}</p> -->
 		</a>
 	</div>
 </section>
