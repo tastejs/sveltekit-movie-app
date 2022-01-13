@@ -12,7 +12,9 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			split: false
+		}),
 		// inline all stylesheets smaller than threshold
 		inlineStyleThreshold: 7000,
 		// hydrate the <div id="svelte"> element in src/app.html
