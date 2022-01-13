@@ -1,3 +1,7 @@
+## SvelteKit Movies
+
+Note: Majority credit for this implementation goes to [WayneMorganUK](https://github.com/WayneMorganUK/sveltekit-movie-app).
+
 ## please note this app will not work unles you provide your own TMDB api key
 
 ## adding environment variables
