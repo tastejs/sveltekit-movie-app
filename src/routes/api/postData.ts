@@ -1,6 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const api = import.meta.env.VITE_API_KEY
-
 const base = "https://api.themoviedb.org/3/"
 const urls = {
     cast: '${request.body["media"]}/${request.body["id"]}/credits?api_key=${api}&language=en-US',
@@ -17,6 +15,7 @@ const urls = {
 
 export async function post(request: { body: { [x: string]: string } }): Promise<{ body: string; }> {
     try {
+        let api = import.meta.env.VITE_API_KEY;
         const fetch_url = base + [eval('`' + urls[request.body["api_ref"]] + '`')]
         const res = await (await fetch(fetch_url)).json()
         return {
