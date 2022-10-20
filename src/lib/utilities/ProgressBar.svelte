@@ -9,7 +9,7 @@
 	let green: number;
 	let rgbcolour: string;
 
-	$: progress_percent = progress * 10;
+	$: progress_percent = (progress * 10).toLocaleString('en-US', { maximumFractionDigits: 2 });
 	$: pathcolour = '#2c2c2c';
 	$: blue = 0;
 	$: red = progress_percent < 50 ? 255 : 255 - Math.floor((progress_percent - 50) * 2.55 * 2);
